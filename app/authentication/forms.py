@@ -13,3 +13,4 @@ from wtforms.validators import InputRequired,Email,Length,ValidationError
     # Eyear=db.Column(db.Integer,nulable=True)
     # Module=db.Column(db.String(length=3),nullable=True)
 class RegisterForm(FlaskForm):
+    fname=StringField()
