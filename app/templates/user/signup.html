@@ -1,18 +1,16 @@
 {% extends "layout.html" %} {% block body %}
-<div class="flex bg-white rounded-md space-x-4 items-center justify-center ">
-
+<div class="flex bg-white rounded-md space-x-4 items-center justify-center">
   <div>
-
     <img
-    class="w-"
-    src="{{ url_for('static', filename='schoollogo3.png') }}"
-    alt="School Logo"
-  />
+      class="w-"
+      src="{{ url_for('static', filename='schoollogo3.png') }}"
+      alt="School Logo"
+    />
   </div>
 
   <div class="p-10">
     <form action="" method="POST">
-      <div class="font-bold text-xl" >Create New User</div>
+      <div class="font-bold text-xl">Create New User</div>
 
       <!-- start 1 -->
       <div class="my-2">
@@ -65,9 +63,13 @@
       <!-- start 5 -->
       <div class="my-2">
         <label for="">Role</label>
-        <select class="rounded-md border-none bg-gray-100" name="role" id="role">
-          <option value="admin">admin</option>
-          <option value="user">user</option>
+        <select
+          class="rounded-md border-none bg-gray-100"
+          name="role"
+          id="role"
+        >
+          <option value="admin">Student</option>
+          <option value="user">Lecturer</option>
         </select>
       </div>
       <!-- start 6 -->
@@ -83,12 +85,11 @@
         />
       </div>
       <!-- Button -->
-      <button class="p-2 px-3 bg-sky-600 rounded-md text-white hover:cursor-icon hover:bg-sky-700">Create User</button>
-      <span
-        ><a class="nav-link" href="{{url_for("auth.userLogin")}}"
-          >Already have an account? Sign Up</a
-        ></span
+      <button
+        class="p-2 px-3 bg-sky-600 rounded-md text-white hover:cursor-icon hover:bg-sky-700"
       >
+        Create User
+      </button>
     </form>
   </div>
 </div>
