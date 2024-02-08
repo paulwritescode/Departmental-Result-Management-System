@@ -1,5 +1,7 @@
 {% extends "layout.html" %} {% block body %}
-<div class="flex bg-white rounded-md space-x-4 items-center justify-center">
+<div
+  class="flex bg-white mx-auto rounded-md space-x-4 items-center justify-center"
+>
   <div>
     <img
       class="w-"
@@ -16,7 +18,8 @@
       <div class="my-2">
         <label for="">First Name</label>
         <input
-          class="rounded-md border-none bg-gray-100"
+          required
+          class="rounded-md border-none hover:shadow-md bg-gray-100"
           placeholder="Enter first name"
           type="text"
           name="fname"
@@ -28,7 +31,8 @@
       <div class="my-2">
         <label for="">Last Name</label>
         <input
-          class="rounded-md border-none bg-gray-100"
+          required
+          class="rounded-md hover:shadow-md border-none bg-gray-100"
           placeholder="Enter last name"
           type="text"
           name="lname"
@@ -40,7 +44,8 @@
       <div class="my-2">
         <label for="">Username</label>
         <input
-          class="rounded-md border-none bg-gray-100"
+          required
+          class="rounded-md hover:shadow-md border-none bg-gray-100"
           placeholder="Enter username"
           type="text"
           name="username"
@@ -52,7 +57,8 @@
       <div class="my-2">
         <label for="">Email</label>
         <input
-          class="rounded-md border-none bg-gray-100"
+          required
+          class="rounded-md hover:shadow-md border-none bg-gray-100"
           placeholder="Enter email"
           type="email"
           name="email"
@@ -64,10 +70,12 @@
       <div class="my-2">
         <label for="">Role</label>
         <select
-          class="rounded-md border-none bg-gray-100"
+          required
+          class="rounded-md hover:shadow-md border-none bg-gray-100"
           name="role"
           id="role"
         >
+          <option disabled selected value="admin">Role</option>
           <option value="admin">Student</option>
           <option value="user">Lecturer</option>
         </select>
@@ -76,7 +84,8 @@
       <div class="my-2">
         <label for="">Password</label>
         <input
-          class="rounded-md border-none bg-gray-100"
+          required
+          class="rounded-md hover:shadow-md border-none bg-gray-100"
           placeholder="Enter your password"
           type="password"
           name="password"
@@ -86,7 +95,7 @@
       </div>
       <!-- Button -->
       <button
-        class="p-2 px-3 bg-sky-600 rounded-md text-white hover:cursor-icon hover:bg-sky-700"
+        class="p-2 px-3 bg-sky-600 rounded-md text-white hover:shadow-md hover:cursor-icon hover:bg-sky-700"
       >
         Create User
       </button>
