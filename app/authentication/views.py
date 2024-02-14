@@ -1,13 +1,15 @@
-from flask import Blueprint
-from flask import request,render_template,redirect,flash,jsonify,url_for
-from ..models import User
+from flask import (Blueprint, flash, jsonify, redirect, render_template,
+                   request, url_for)
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from app import db
+
+from ..models import User
 from . import auth
-from werkzeug.security import generate_password_hash,check_password_hash
 
 
-
-@auth.route("/user/signup", methods = ['POST', 'GET'])
+# route for admin to create new users (lecturer and students)
+@auth.route("/admin/signup", methods = ['POST', 'GET'])
 def userSignUp():
     if request.method == 'POST':
         fname = request.form.get('fname')
@@ -30,9 +32,10 @@ def userSignUp():
             flash('Acount created successfully Admin will approve your account in 10 to 30 min', 'success')
             return ("Something goes here ")
     else:
-        return render_template('User/signup.html', title ="User signup")
-    
-@auth.route("/user/login", methods=['GET','POST'])
+        return render_template('admin/signup.html', title ="Create User")
+
+# login page when you start the project
+@auth.route("/login", methods=['GET','POST'])
 def userLogin():
     if request.method=='POST':
         email=request.form.get('email')
@@ -48,6 +51,6 @@ def userLogin():
             # Successful login
             flash("Login successful", 'success')
             return ("YOU ARE LOGGED IN AS " + email)
-  
-    return render_template('user/login.html', title="user login")
+
+    return render_template('login/login.html', title="user login")
 

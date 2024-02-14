@@ -1,6 +1,9 @@
-from flask_sqlalchemy import SQLAlchemy
-from . import db
 from datetime import datetime
+
+from flask_sqlalchemy import SQLAlchemy
+
+from . import db
+
 # class Users(db.Model):
 #     __tablename__="Users"
 
@@ -11,7 +14,7 @@ from datetime import datetime
 #     roll=db.Column(db.String(8),nullable=False)
 #     password=db.Column(db.String,nullable=False)
 #     Department_id=db.Column(db.Integer, nullable=False)
-#     Eyear=db.Column(db.Integer,nulable=True)
+#     year=db.Column(db.Integer,nullable=True)
 #     Module=db.Column(db.String(length=3),nullable=True)
 
 class User(db.Model):
@@ -28,6 +31,6 @@ class User(db.Model):
 
     def _repr_(self):
         return f'User("{self.id}","{self.fname}","{self.lname}","{self.email}","{self.edu}","{self.username}","{self.status}")'
-    
+
 
 
