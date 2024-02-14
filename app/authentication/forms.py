@@ -16,9 +16,9 @@ class RegisterForm(FlaskForm):
     fname=StringField(validators=[InputRequired(), Length(max=10,min=3)],render_kw={"placeholder": "First Name"})
     lname=StringField(validators=[InputRequired(), Length(max=10,min=3)],render_kw={"placeholder": "First Name"})
     role=SelectField(choices=
-                     [('student','student'),
-                      ('lecturer','Lecturer'),
-                      ('admin','admin'),],
+                     [('1','student'),
+                      ('2','Lecturer'),
+                      ('3','admin'),],
                       validators=[DataRequired()],
                       render_kw={"placeholder": "Role"})
     Department=IntegerField(validators=[NumberRange(min=1,max=50)],render_kw={"placeholder": "Department"})

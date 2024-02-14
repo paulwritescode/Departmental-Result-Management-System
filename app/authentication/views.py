@@ -1,15 +1,17 @@
-from flask import Blueprint
 from flask import request,render_template,redirect,flash,jsonify,url_for
 from ..models import User
 from .forms import RegisterForm,LoginForm
 from app import db
 from . import auth
 from flask_login import login_user,LoginManager,login_required,logout_user,current_user
-import logging
 from werkzeug.security import generate_password_hash,check_password_hash
 
+@auth.before_app_request
+def before_request():
+    excluded_endpoints = ['auth.userLogin', 'auth.userSignUp', 'static']
 
-
+    if not current_user.is_authenticated and request.endpoint not in excluded_endpoints:
+        return redirect(url_for('auth.userLogin'))
 
 
 @auth.route("/base",  methods=['POST', 'GET'])
@@ -20,7 +22,8 @@ def base():
 
 @auth.route("/user/signup", methods=['POST', 'GET'])
 def userSignUp():
-    reg_form = RegisterForm()
+    print("blah this should appear")
+    reg_form = RegisterForm()  
     if request.method == 'POST':
       if reg_form.validate_on_submit():
         print("Validation successful")
@@ -32,7 +35,7 @@ def userSignUp():
         password = reg_form.password.data
         username = reg_form.username.data
         hash_password = generate_password_hash(password)
-        user = User(fname=fname, lname=lname, email=email, password=hash_password, role=role, username=username)
+        user = User(fname=fname, lname=lname, email=email, password=hash_password, role_id=role, username=username)
         db.session.add(user)
         db.session.commit()
         flash('Account created successfully. Admin will approve your account in 10 to 30 min', 'success')
@@ -57,7 +60,7 @@ def userLogin():
         user = User.query.filter_by(email = email).first()
         if user is not None and check_password_hash(user.password, password ):
               login_user(user)
-              return redirect(url_for("auth.base"))  
+              return redirect(url_for("main.home"))  
         else:
               print("Error ocurred")
               print(check_password_hash(user.password, password))
@@ -73,11 +76,5 @@ def logout():
 
     return redirect(url_for('auth.userLogin'))
 # if user has not logged in 
-@auth.before_app_request
-def before_request():
-    if not current_user.is_authenticated\
-        and request.endpoint != 'auth.userLogin'\
-            and request.endpoint != 'static':
-        
-        return redirect(url_for('auth.userLogin'))
+
 
