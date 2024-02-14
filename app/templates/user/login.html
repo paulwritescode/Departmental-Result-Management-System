@@ -8,6 +8,13 @@
       src="{{ url_for('static', filename='schoollogo.png') }}"
       alt="School Logo"
     />
+    <ul class="nav navbar-nav navbar-right">
+      {% if current_user.is_authenticated %}
+      <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+      {% else %}
+      <li><a href="{{ url_for('auth.userLogin') }}">Log In</a></li>
+      {% endif %}
+    </ul>
 
     <h1 class="font-bold text-xl text-sky-800">Login Page</h1>
   </div>
@@ -16,31 +23,17 @@
 
     <div class="flex flex-col">
       <label value="name">Username</label>
-      <input
-        class="rounded-md border-none bg-slate-100"
-        placeholder="Enter Username"
-        type="text"
-        name="email"
-        value=""
-      />
+      {{form.email(class="rounded-md border-none bg-slate-100")}}
     </div>
+    {{form.hidden_tag()}}
     <!-- two -->
     <div class="flex flex-col">
       <label for="">Password</label>
-      <input
-        class="rounded-md border-none bg-slate-100"
-        placeholder="Enter Password"
-        type="password"
-        name="password"
-        id=""
-      />
+      {{form.password(class="rounded-md border-none bg-slate-100")}}
     </div>
     <div class="space-y-2">
-      <input
-        type="submit"
-        value="Login"
-        class="bg-sky-600 text-white px-2 py-1 rounded-md hover:shadow-md"
-      />
+      {{form.submit( class="bg-sky-600 text-white px-2 py-1 rounded-md
+      hover:shadow-md")}}
       <p>
         Dont have an account ?
         <a href="{{ url_for('auth.userSignUp') }}"> SignUp</a>
