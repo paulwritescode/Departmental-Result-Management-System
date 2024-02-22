@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+from datetime import datetime
+
+from flask_sqlalchemy import SQLAlchemy
+
+from . import db
+
+=======
 from flask_sqlalchemy import SQLAlchemy
 from . import db,login_manager
 from datetime import datetime
@@ -34,6 +42,9 @@ class User(db.Model,UserMixin):
                     self.role=Role.query.filter_by(default=True).first() 
     def __repr__(self):
         return f'User("{self.id}","{self.fname}","{self.lname}","{self.email}","{self.edu}","{self.username}","{self.status}")'
+<<<<<<< HEAD
+
+=======
     def can(self, perm):
         return self.role is not None and self.role.has_permission(perm)
     def is_administartor(self):
@@ -53,6 +64,7 @@ class AnonymousUser(AnonymousUserMixin):
         return False
 login_manager.anonymous_user=AnonymousUser
     
+>>>>>>> refs/remotes/origin/main
 
 
 # Permissions class defination 
