@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block content %}
+<h2>Add Marks</h2>
+<form id="myForm" action="/submit" method="POST">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Address</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in range(15) %}
+      <tr>
+        <td>
+          <input type="text" name="names[]" placeholder="Enter Name" />
+        </td>
+        <td>
+          <input type="email" name="emails[]" placeholder="Enter Email" />
+        </td>
+        <td>
+          <input
+            type="tel"
+            name="phone_numbers[]"
+            placeholder="Enter Phone Number"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            name="addresses[]"
+            value="Default Address"
+            readonly
+          />
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <input type="submit" value="Submit All" />
+</form>
+{% endblock %}

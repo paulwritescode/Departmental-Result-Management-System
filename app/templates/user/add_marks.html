@@ -1,0 +1,65 @@
+<!-- Your add_marks.html template -->
+
+{% extends 'index.html' %} {% block content %}
+<h2>Add Marks</h2>
+
+<form method="POST" action="{{ url_for('addmarks') }}">
+  {{ form.hidden_tag() }}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Student ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Unit Name</th>
+        <th>Unit Code</th>
+        <th>CAT Marks</th>
+        <th>Assignment Marks</th>
+        <th>Practical Marks</th>
+        <th>Exam Marks</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for student in student_data %}
+      <tr>
+        <td>{{ student.user_id }}</td>
+        <td>{{ student.fname }} {{ student.lname }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.unit_name }}</td>
+        <td>{{ student.unit_code }}</td>
+        <td>
+          <input
+            type="text"
+            name="cat_marks_{{ student.user_id }}"
+            value="{{ form['cat_marks_' + student.user_id].value }}"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            name="assignment_marks_{{ student.user_id }}"
+            value="{{ form['assignment_marks_' + student.user_id].value }}"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            name="practical_marks_{{ student.user_id }}"
+            value="{{ form['practical_marks_' + student.user_id].value }}"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            name="exam_marks_{{ student.user_id }}"
+            value="{{ form['exam_marks_' + student.user_id].value }}"
+          />
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <button type="submit" class="btn btn-primary">Submit Marks</button>
+</form>
+{% endblock %}

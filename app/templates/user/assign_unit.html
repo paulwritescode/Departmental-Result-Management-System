@@ -1,0 +1,20 @@
+<!-- templates/assign_unit.html -->
+
+{% extends "user/index.html" %} {% block content %} {{super()}}
+<h2>Assign Unit</h2>
+<form method="post" action="{{ url_for('main.assign_unit') }}">
+  {{ form.hidden_tag() }}
+  <label for="lecturer_id">Lecturer ID:</label>
+  {{ form.lecturer_id(size=10, placeholder="Enter lecturer ID", required=true)
+  }}
+  <br />
+  <label for="unit_id">Unit ID:</label>
+  {{ form.unit_id(size=10, placeholder="Enter unit ID", required=true) }}
+  <br />
+  <label for="academic_year">Academic Year:</label>
+  {{ form.academic_year(size=4, placeholder="Enter academic year",
+  required=true) }}
+  <br />
+  <input type="submit" value="Assign" />
+</form>
+{% endblock %}

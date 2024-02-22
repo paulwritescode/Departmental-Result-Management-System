@@ -1,0 +1,19 @@
+<!-- templates/enroll_student.html -->
+
+{% extends "user/index.html" %} {% block content %}
+<h2>Enroll Student</h2>
+<form method="post" action="{{ url_for('main.enroll_student') }}">
+  {{ form.hidden_tag() }}
+  <label for="student_id">Student ID:</label>
+  {{ form.student_id(size=10, placeholder="Enter student ID", required=true) }}
+  <br />
+  <label for="module_id">Module ID:</label>
+  {{ form.module_id(size=10, placeholder="Enter module ID", required=true) }}
+  <br />
+  <label for="academic_year">Academic Year:</label>
+  {{ form.academic_year(size=4, placeholder="Enter academic year",
+  required=true) }}
+  <br />
+  <input type="submit" value="Enroll" />
+</form>
+{% endblock %}

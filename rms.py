@@ -1,5 +1,7 @@
 import os
 from app import create_app, db
+
+from app.models import Role,Units
 from flask_migrate import Migrate
 
 app=create_app('default')
@@ -16,6 +18,10 @@ def make_shellprocessor():
 
 if __name__=="__main__":
     with app.app_context():
-        db.create_all()    
+        db.create_all()
+        Role.insert_roles()
+        Units.insert_units()
+
+            
     app.run(debug=True)
     
