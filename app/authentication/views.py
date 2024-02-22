@@ -2,6 +2,8 @@ from flask import request,render_template,redirect,flash,jsonify,url_for
 from ..models import User
 from .forms import RegisterForm,LoginForm
 from app import db
+
+from ..models import User
 from . import auth
 from flask_login import login_user,LoginManager,login_required,logout_user,current_user
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -47,7 +49,7 @@ def userSignUp():
         flash('Form validation failed. Please check your input.', 'danger')
         return redirect(url_for("auth.userSignUp"))
 
-    return render_template('User/signup.html', form=reg_form, title="User signup")
+    return render_template('Admin/signup.html', form=reg_form, title="User signup")
   
 @auth.route("/user/login", methods=['GET','POST'])
 def userLogin():

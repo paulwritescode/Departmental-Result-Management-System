@@ -1,21 +1,19 @@
 {% extends "layout.html" %} {% block body %}
-<div
-  class="space-y-5 mt-15 m-12 py-20 rounded-md w-1/4 p-4 bg-white flex justify-center items-center flex-col"
->
+<div class="space-x-5 rounded-md bg-white flex justify-center items-center">
   <div class="flex flex-col items-center space-y-3">
     <img
-      class="w-48"
-      src="{{ url_for('static', filename='schoollogo.png') }}"
+      class="w-80"
+      src="{{ url_for('static', filename='deer1.jpg') }}"
       alt="School Logo"
     />
-
-    <h1 class="font-bold text-xl text-sky-800">Login Page</h1>
   </div>
-  <form class="space-y-5" action="">
+  <form class="space-y-5 p-5" action="">
+    <h1 class="font-bold text-xl text-sky-800">Login Page</h1>
     <!-- one -->
     <div class="flex flex-col">
       <label value="name">Username</label>
       <input
+        required
         class="rounded-md border-none bg-slate-100"
         placeholder="Enter Email"
         name="email"
@@ -26,6 +24,7 @@
     <div class="flex flex-col">
       <label for="">Password</label>
       <input
+        required
         class="rounded-md border-none bg-slate-100"
         placeholder="Enter Password"
         type="text"
@@ -39,7 +38,7 @@
         class="bg-sky-600 text-white px-2 py-1 rounded-md hover:shadow-md"
         >Login</a
       >
-      <div class="flex space-x-2">
+      <div class="flex space-x-7">
         <i class="fa-brands fa-linkedin"></i>
         <i class="fa-brands fa-medium"></i>
       </div>
