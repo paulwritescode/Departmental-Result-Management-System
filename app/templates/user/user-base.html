@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+   <title>{{title}}</title>
+{% endblock %}
+
+{% block body %}
+<!--SECTION START: User Profile -->
+
+    <div class="bg-white p-1 w-full flex justify-end items-center space-x-1 rounded-md">
+    <div>
+      Welcome
+    </div>
+
+    <button class="flex space-x-1 bg-sky-300 hover:bg-sky-500 hover:text-white p-1 px-2 rounded-md" id="userButton">
+      <div class=""><i class="fa-solid fa-lg fa-circle-user"></i></div>
+      <div>
+        {% if current_user.is_authenticated %}
+          {{ current_user.username }}
+        {% else %}
+          Stranger
+        {% endif %}
+      </div>
+    </button>
+
+    <div id="signOutMenu" class="hidden absolute right-10 top-20 p-1 overflow-hidden">
+      <form action="/logout" class="flex items-center space-x-1 justify-center block p-1 px-3 bg-rose-400 hover:bg-rose-500 hover:text-white rounded-md" href="{}">
+        <button>
+            <div>End Session</div>
+        </button>
+    </form>
+    </div>
+    </div>
+
+
+    <div class="bg-white p-5 rounded-md">
+    <div>this is the lecturer page</div>
+    </div>
+
+ <!-- SCRIPT START -->
+ <script>
+    const userButton = document.getElementById('userButton');
+    const signOutMenu = document.getElementById('signOutMenu');
+
+    userButton.addEventListener('click', () => {
+      signOutMenu.classList.toggle('hidden');
+    });
+  </script>
+   <!-- SCRIPT END -->
+{% endblock %}
