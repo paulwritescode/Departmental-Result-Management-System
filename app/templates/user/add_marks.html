@@ -26,7 +26,14 @@
     <tbody>
       {% for student in students %}
       <tr class="border-b-2">
-        <td  class="border-r-2" >{{ student.enrollment_id }}</td>
+        <td>
+          <input
+            type="text"
+            value="{{ student.enrollment_id }}"
+            readonly
+            name="enrollment_id[]"
+          />
+        </td>
         <td  class="border-r-2" >{{ student.student_name }}</td>
         <td  class="border-r-2" >{{ student.student_reg }}</td>
         <td  class="border-r-2" >{{ student.course_name }}</td>

@@ -73,6 +73,12 @@ def home():
         assignmentmarks=request.form.getlist('assignment_marks[]')
         practicalmarks=request.form.getlist('practical_marks[]')
         exammarks=request.form.getlist('exam_marks[]')
+
+        print(enrollment_id)
+        print(catmarks)
+        print(assignmentmarks)
+        print(practicalmarks)
+        print(exammarks)
         for enrollment_id,catmarks,assignmentmarks,practicalmarks,exammarks in zip(enrollment_id,catmarks,assignmentmarks,practicalmarks,exammarks):
             overallmarks = 0.2 * float(catmarks) + 0.1 * float(assignmentmarks) + 0.1 * float(practicalmarks) + 0.6 * float(exammarks)
 
