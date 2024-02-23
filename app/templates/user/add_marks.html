@@ -3,7 +3,7 @@
 {% extends 'user/user-base.html' %} {% block content %}
 <h2>Add Marks</h2>
 
-<form method="POST" action="{{ url_for('main.home') }}" id="marksForm">
+<form class="bg-white  p-3 rounded-md" method="POST" action="{{ url_for('main.home') }}" id="marksForm">
   <table class="table">
     <thead>
       <tr>
@@ -53,6 +53,6 @@
     </tbody>
   </table>
 
-  <input type="submit" class="btn btn-primary" value="Submit Marks" />
+  <input  type="submit" class="p-2 bg-sky-500 hover:bg-sky-700 hover:text-white rounded-md shadow-md" value="Submit Marks" />
 </form>
 {% endblock %}
