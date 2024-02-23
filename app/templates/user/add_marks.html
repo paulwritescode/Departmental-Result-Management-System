@@ -1,58 +1,73 @@
 <!-- Your add_marks.html template -->
 
 {% extends 'user/user-base.html' %} {% block content %}
-<h2>Add Marks</h2>
 
 <form class="bg-white  p-3 rounded-md" method="POST" action="{{ url_for('main.home') }}" id="marksForm">
-  <table class="table">
+<h2 class="text-sky-600 font-bold text-xl">Marks Recording</h2>
+<table class="table">
     <thead>
-      <tr>
-        <th>UEID</th>
-        <th>Name</th>
-        <th>Reg No</th>
-        <th>Unit Name</th>
-        <th>Unit Code</th>
-        <th>Academic Year</th>
-        <th>CAT Marks</th>
-        <th>Assignment Marks</th>
-        <th>Practical Marks</th>
-        <th>Exam Marks</th>
+      <tr >
+        <th class="text-left bg-sky-600 text-white w-32 ">Unit Enroll Id</th>
+        <th class="text-left bg-sky-600 text-white w-32 " >Name</th>
+        <th class="text-left bg-sky-600 text-white w-32 " >Reg-No</th>
+        <th class="text-left bg-sky-600 text-white w-32 " >Unit-Name</th>
+        <th class="text-left bg-sky-600 text-white w-32 " >Unit-Code</th>
+        <th class="text-left bg-sky-600 text-white w-32 " >Academic-Year</th>
+        <th class="text-left bg-sky-600 text-white w-32 " >CAT</th>
+        <th class="text-left bg-sky-600 text-white w-32 " >Assignment</th>
+        <th class="text-left bg-sky-600 text-white w-32 " >Practical</th>
+        <th class="text-left bg-sky-600 text-white w-32 " >Exam</th>
       </tr>
     </thead>
     <tbody>
       {% for student in students %}
       <tr>
         <td>
-          <input
-            type="text"
-            value="{{ student.enrollment_id }}"
-            readonly
-            name="enrollment_id[]"
-          />
+          {{ student.enrollment_id }}
         </td>
-        <td>{{ student.student_name }}</td>
-        <td>{{ student.student_reg }}</td>
-        <td>{{ student.course_name }}</td>
-        <td>{{ student.course_code }}</td>
-        <td>{{ student.academicYear }}</td>
+        <td >{{ student.student_name }}</td>
+        <td >{{ student.student_reg }}</td>
+        <td >{{ student.course_name }}</td>
+        <td >{{ student.course_code }}</td>
+        <td >{{ student.academicYear }}</td>
 
         <td>
-          <input type="number" name="cat_marks[]" step="0.1" />
+          <input
+          placeholder="Enter marks"
+          class="border-none rounded-md hover:shadow-md text-center bg-slate-50 w-32"
+          type="number"
+          name="cat_marks[]"
+          step="0.1" />
         </td>
         <td>
-          <input type="number" name="assignment_marks[]" step="0.1" />
+          <input
+          placeholder="Enter marks"
+          class="border-none rounded-md hover:shadow-md text-center bg-slate-50 w-32"
+          type="number"
+          name="assignment_marks[]"
+          step="0.1" />
         </td>
         <td>
-          <input type="number" name="practical_marks[]" step="0.1" />
+          <input
+          placeholder="Enter marks"
+          class="border-none rounded-md hover:shadow-md text-center bg-slate-50 w-32"
+          type="number"
+          name="practical_marks[]"
+          step="0.1" />
         </td>
         <td>
-          <input type="number" name="exam_marks[]" step="0.1" />
+          <input
+          placeholder="Enter Exam"
+          class="border-none rounded-md hover:shadow-md text-center bg-slate-50 w-32"
+          type="number"
+          name="exam_marks[]"
+          step="0.1" />
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
-  <input  type="submit" class="p-2 bg-sky-500 hover:bg-sky-700 hover:text-white rounded-md shadow-md" value="Submit Marks" />
+  <input  type="submit" class="p-2 mt-3 bg-sky-600 hover:bg-sky-700 hover:text-white rounded-md shadow-md" value="Submit Marks" />
 </form>
 {% endblock %}
