@@ -55,7 +55,7 @@ def userSignUp():
 
 
 
-# login
+# Landing page User login
 @auth.route("/user/login", methods=['GET','POST'])
 def userLogin():
     log_form=LoginForm()
@@ -77,7 +77,7 @@ def userLogin():
         else:
               print("Error ocurred")
               print(check_password_hash(user.password, password))
-    return render_template('login/login.html', form=log_form, title = 'Department System Login')
+    return render_template('login/login.html', form=log_form, title = 'System User Login')
 
 
 

@@ -1,6 +1,10 @@
 <!-- Your add_marks.html template -->
 
-{% extends 'user/user-base.html' %} {% block content %}
+{% extends 'user/user-base.html' %}
+{% block title %}
+<title> {{title}} </title>
+{% endblock %}
+{% block content %}
 
 <form class="bg-white  p-3 rounded-md" method="POST" action="{{ url_for('main.home') }}" id="marksForm">
 <h2 class="text-sky-600 font-bold text-xl">Marks Recording</h2>
