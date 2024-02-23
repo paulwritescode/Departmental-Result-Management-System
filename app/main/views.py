@@ -7,7 +7,7 @@ from ..decorators import admin_required, permission_required
 from .. import  db
 from .forms import *
 
-@main.route('/',methods=['GET', 'POST'])
+@main.route('/')
 @login_required
 @permission_required(Permission.VIEW)
 def home():
@@ -16,105 +16,81 @@ def home():
 
     # Now you can use the lecturer_id in your queries or any other logic
     # For example, querying for units assigned to the lecturer
-    if request.method=='GET':
-        assigned_units = (
-            LecturerAssignment.query
-            .filter_by(lecturer_id=lecturer_id)
-            .with_entities(LecturerAssignment.unit_id, LecturerAssignment.academic_year)
-            .all()
-        )
-        if assigned_units:
-            print("There exists permission for",current_user.username)
-            enrolled_students = []
+    assigned_units = (
+        LecturerAssignment.query
+        .filter_by(lecturer_id=lecturer_id)
+        .with_entities(LecturerAssignment.unit_id, LecturerAssignment.academic_year)
+        .all()
+    )
 
-            for assigned_unit in assigned_units:
-                academic_year = assigned_unit.academic_year
-                unit_id = assigned_unit.unit_id
-                query=db.session.query(
-                    # EnrollmentUnits,
-                    User.fname.label('student_fname'),
-                    User.lname.label("student_lname"),
-                    User.Reg_no.label("student_regNo"),
-                    Units.name.label("unit_name"),
-                    Units.code.label("unit_code"),
-                    EnrollmentUnits.id.label("unitenrollment_id"),
-                    # EnrollmentUnits.enrollment_id.label("studentEnrollment_id"),
-                    StudentEnrollment.academic_year.label("academicYear")
-                    ).join(
-                        StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
-                    ).join(
-                        User,StudentEnrollment.student_id==User.id
-                    ).join(
-                        Units, EnrollmentUnits.unit_id==Units.id
-                    )
-                enrolledStudents=query.filter(Units.id == unit_id,
-                        StudentEnrollment.academic_year == academic_year)
-                students=enrolledStudents.all()
-                
-                InMyUnit=[]
-                for student_data in students:
-                    print(student_data.unitenrollment_id)
-               
+    if assigned_units:
+        print("There exists permission for",current_user.username)
+        enrolled_students = []
 
-
-                for student_fname,student_lname,student_regNo,unit_name,unit_code,unitenrollment_id,academicYear in students:
-                    InMyUnit.append({
-                        "enrollment_id":unitenrollment_id,
-                        "student_fname": student_fname, 
-                        "studentlname":student_lname,
-                        "course_name": unit_name,
-                        "course_code": unit_code,
-                        "student_reg": student_regNo,
-                        "academicYear":academicYear
-                                })
-              
-                   
-
-                return render_template('user/add_marks.html',students=InMyUnit)     
-                
-
-                # students = (
-                #     User.query
-                #     .join(StudentEnrollment)
-                #     .join(EnrollmentUnits)
-                #     .join(Units)
-                #     .add_columns(
-                #         User.id.label('user_id'),
-                #         User.fname,
-                #         User.lname,
-                #         User.email,
-                #         Units.name.label('unit_name'),
-                #         Units.code.label('unit_code')
-                #     )
-                #     .filter(
-                #         Units.id == unit_id,
-                #         StudentEnrollment.academic_year == academic_year
-                #     )
-                #     .all()
-                # )
-
-                # enrolled_students.extend(students)
-
-                # for student in enrolled_students:
-                #     print(f"Student ID: {student.user_id}, Name: {student.fname} {student.lname}, Email: {student.email}, Unit: {student.unit_name}, Code: {student.unit_code}")
-    elif request.method=='POST':
-            print("currently in post method")
-            enrollment_id=request.form.getlist("enrollment_id[]")
-            catmarks=request.form.getlist("cat_marks[]")
-            assignmentmarks=request.form.getlist("assignment_marks[]")
-            practicalmarks=request.form.getlist("practical_marks[]")
-            exammarks=request.form.getlist("exam_marks[]")
-            print(enrollment_id,catmarks,assignmentmarks,practicalmarks,exammarks)
-
-            for enrollment_id,catmarks,assignmentmarks,practicalmarks,exammarks in zip(enrollment_id,catmarks,assignmentmarks,practicalmarks,exammarks):
-                new_mark=Marks(enrollment_id=enrollment_id,cat_marks=catmarks,assignments_marks=assignmentmarks,practical_marks=practicalmarks,exam_marks=exammarks,overall_marks=((catmarks*0.2)+(assignmentmarks*0.1)+(practicalmarks*0.1)+(exammarks*0.7)),status=1)
-                db.session.add(new_mark)
-                print(enrollment_id,catmarks,assignmentmarks,practicalmarks,exammarks)
-            db.session.commit()
-            return('Added')
+        for assigned_unit in assigned_units:
+            academic_year = assigned_unit.academic_year
+            unit_id = assigned_unit.unit_id
+            query=db.session.query(
+                EnrollmentUnits,
+                User.fname.label('student_fname'),
+                User.lname.label("student_lname"),
+                User.Reg_no.label("student_regNo"),
+                Units.name.label("unit_name"),
+                Units.code.label("unit_code"),
+                EnrollmentUnits.id.label("unitenrollment_id"),
+                EnrollmentUnits.enrollment_id.label("studentEnrollment_id"),
+                StudentEnrollment.academic_year.label("academicYear")
+                ).join(
+                    StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
+                ).join(
+                    User,StudentEnrollment.student_id==User.id
+                ).join(
+                    Units, EnrollmentUnits.unit_id==Units.id
+                )
+            enrolledStudents=query.filter(Units.id == unit_id,
+                    StudentEnrollment.academic_year == academic_year)
+            students=enrolledStudents.all()
+            
+            InMyUnit=[]
+            for student_data in students:
+                print(student_data)
 
 
+            # for student_fname,student_lname,unit_name,unit_code,unitenrollment_id,academicYear,student_regNo in students:
+            #      InMyUnit.append({
+            #         "enrollment_id":unitenrollment_id,
+            #         "student_name": student_fname + student_lname,
+            #         "course_name": unit_name,
+            #         "course_code": unit_code,
+            #         "student_reg": student_regNo,
+            #         "academicYear":academicYear
+            #                  })
+            
 
+            # students = (
+            #     User.query
+            #     .join(StudentEnrollment)
+            #     .join(EnrollmentUnits)
+            #     .join(Units)
+            #     .add_columns(
+            #         User.id.label('user_id'),
+            #         User.fname,
+            #         User.lname,
+            #         User.email,
+            #         Units.name.label('unit_name'),
+            #         Units.code.label('unit_code')
+            #     )
+            #     .filter(
+            #         Units.id == unit_id,
+            #         StudentEnrollment.academic_year == academic_year
+            #     )
+            #     .all()
+            # )
+
+            # enrolled_students.extend(students)
+
+            # for student in enrolled_students:
+            #     print(f"Student ID: {student.user_id}, Name: {student.fname} {student.lname}, Email: {student.email}, Unit: {student.unit_name}, Code: {student.unit_code}")
 
     return render_template("user/index.html")
 
@@ -304,77 +280,77 @@ def assign_unit():
 #     return redirect(url_for('user.login'))  # Redirect to login if not authenticated or not a lecturer
 
 
-# @main.route('/addmarks', methods=['GET', 'POST'])
-# @login_required
-# def addmarks():
-#     if current_user.is_authenticated and current_user.role.name == 'Lecturer':
-#         lecturer_id = current_user.id
+@main.route('/addmarks', methods=['GET', 'POST'])
+@login_required
+def addmarks():
+    if current_user.is_authenticated and current_user.role.name == 'Lecturer':
+        lecturer_id = current_user.id
 
-#         # Fetch assigned units for the lecturer
-#         assigned_units = (
-#             LecturerAssignment.query
-#             .filter_by(lecturer_id=lecturer_id)
-#             .with_entities(LecturerAssignment.unit_id, LecturerAssignment.academic_year)
-#             .all()
-#         )
+        # Fetch assigned units for the lecturer
+        assigned_units = (
+            LecturerAssignment.query
+            .filter_by(lecturer_id=lecturer_id)
+            .with_entities(LecturerAssignment.unit_id, LecturerAssignment.academic_year)
+            .all()
+        )
 
-#         if assigned_units:
-#             enrolled_students = []
+        if assigned_units:
+            enrolled_students = []
 
-#             # Fetch enrolled students for each assigned unit
-#             for assigned_unit in assigned_units:
-#                 academic_year = assigned_unit.academic_year
-#                 unit_id = assigned_unit.unit_id
+            # Fetch enrolled students for each assigned unit
+            for assigned_unit in assigned_units:
+                academic_year = assigned_unit.academic_year
+                unit_id = assigned_unit.unit_id
 
-#                 students = (
-#                     User.query
-#                     .join(StudentEnrollment)
-#                     .join(EnrollmentUnits)
-#                     .join(Units)
-#                     .add_columns(
-#                         User.id.label('user_id'),
-#                         User.fname,
-#                         User.lname,
-#                         User.email,
-#                         Units.name.label('unit_name'),
-#                         Units.code.label('unit_code'),
-#                         EnrollmentUnits.id.label('enrollment_id')
-#                     )
-#                     .filter(
-#                         Units.id == unit_id,
-#                         StudentEnrollment.academic_year == academic_year
-#                     )
-#                     .all()
-#                 )
+                students = (
+                    User.query
+                    .join(StudentEnrollment)
+                    .join(EnrollmentUnits)
+                    .join(Units)
+                    .add_columns(
+                        User.id.label('user_id'),
+                        User.fname,
+                        User.lname,
+                        User.email,
+                        Units.name.label('unit_name'),
+                        Units.code.label('unit_code'),
+                        EnrollmentUnits.id.label('enrollment_id')
+                    )
+                    .filter(
+                        Units.id == unit_id,
+                        StudentEnrollment.academic_year == academic_year
+                    )
+                    .all()
+                )
 
-#                 enrolled_students.extend(students)
+                enrolled_students.extend(students)
 
-#             # Handle form submission
-#             form = AddMarksForm()
-#             if form.validate_on_submit():
-#                 # Process the submitted form data here (e.g., update the database with the entered marks)
-#                 flash('Marks added successfully!', 'success')
-#                 return redirect(url_for('main.addmarks'))
+            # Handle form submission
+            form = AddMarksForm()
+            if form.validate_on_submit():
+                # Process the submitted form data here (e.g., update the database with the entered marks)
+                flash('Marks added successfully!', 'success')
+                return redirect(url_for('main.addmarks'))
 
-#             return render_template('addmarks.html', students=enrolled_students, form=form)
+            return render_template('addmarks.html', students=enrolled_students, form=form)
 
-#     # Handle the case where the user is not a lecturer
-#     flash('Permission denied. You must be a lecturer to access this page.', 'danger')
-#     return redirect(url_for('main.index'))
-# def calculate_status(cat_marks, assignment_marks, practical_marks, exam_marks):
-#     # Customize this logic based on your grading system
-#     total_marks = cat_marks + assignment_marks + practical_marks + exam_marks
+    # Handle the case where the user is not a lecturer
+    flash('Permission denied. You must be a lecturer to access this page.', 'danger')
+    return redirect(url_for('main.index'))
+def calculate_status(cat_marks, assignment_marks, practical_marks, exam_marks):
+    # Customize this logic based on your grading system
+    total_marks = cat_marks + assignment_marks + practical_marks + exam_marks
 
-#     if total_marks >= 70:
-#         return 'Distinction'
-#     elif 60 <= total_marks < 70:
-#         return 'Credit'
-#     elif 50 <= total_marks < 60:
-#         return 'Pass'
-#     else:
-#         return 'Fail'
+    if total_marks >= 70:
+        return 'Distinction'
+    elif 60 <= total_marks < 70:
+        return 'Credit'
+    elif 50 <= total_marks < 60:
+        return 'Pass'
+    else:
+        return 'Fail'
 
-# def calculate_overall_marks(cat_marks, assignment_marks, practical_marks, exam_marks):
-#     # Customize this logic based on your weighting system
-#     overall_marks = (cat_marks * 0.2) + (assignment_marks * 0.3) + (practical_marks * 0.2) + (exam_marks * 0.3)
-#     return overall_marks
+def calculate_overall_marks(cat_marks, assignment_marks, practical_marks, exam_marks):
+    # Customize this logic based on your weighting system
+    overall_marks = (cat_marks * 0.2) + (assignment_marks * 0.3) + (practical_marks * 0.2) + (exam_marks * 0.3)
+    return overall_marks
