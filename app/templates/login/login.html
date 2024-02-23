@@ -1,48 +1,66 @@
-{% extends "layout.html" %} {% block body %}
-<div class="space-x-5 rounded-md bg-white flex justify-center items-center">
-  <div class="flex flex-col items-center space-y-3">
-    <img
-      class="w-80"
-      src="{{ url_for('static', filename='deer1.jpg') }}"
-      alt="School Logo"
-    />
-  </div>
-  <form class="space-y-5 p-5" action="">
-    <h1 class="font-bold text-xl text-sky-800">Login Page</h1>
-    <!-- one -->
-    <div class="flex flex-col">
-      <label value="name">Username</label>
-      <input
-        required
-        class="rounded-md border-none bg-slate-100"
-        placeholder="Enter Email"
-        name="email"
-        type="email"
+{% extends "layout.html" %}
+{% block title %}
+  <title> {{title}} </title>
+{% endblock %}
+{% block body %}
+<div class="h-screen  flex  ">
+  <div
+    class="rounded-md flex justify-between items-center "
+  >
+
+  <!-- image -->
+    <div class="flex flex-col items-center space-y-3">
+  <h1 class="text-white font-bold text-xl">Melick Ognee International school</h1>
+
+      <img
+        class="w-96"
+        src="{{ url_for('static', filename='deer1.jpg') }}"
+        alt="School Logo"
       />
+
+
     </div>
-    <!-- two -->
-    <div class="flex flex-col">
-      <label for="">Password</label>
-      <input
-        required
-        class="rounded-md border-none bg-slate-100"
-        placeholder="Enter Password"
-        type="text"
-        name="password"
-        id=""
-      />
-    </div>
-    <div class="space-y-2">
-      <a
-        href=""
-        class="bg-sky-600 text-white px-2 py-1 rounded-md hover:shadow-md"
-        >Login</a
-      >
-      <div class="flex space-x-7">
-        <i class="fa-brands fa-linkedin"></i>
-        <i class="fa-brands fa-medium"></i>
+
+  <!-- Form input details -->
+    <form class="space-y-5 p-12 bg-white shadow-lg-left" action="" method="POST">
+      <h1 class="font-bold text-xl text-sky-800">Login Page</h1>
+
+      <!-- one -->
+
+      <div class="flex flex-col">
+        <label value="name">Username</label>
+        {{form.email(class="rounded-md border-none bg-slate-100")}}
       </div>
-    </div>
-  </form>
+      {{form.hidden_tag()}}
+      <!-- two -->
+      <div class="flex flex-col">
+        <label for="">Password</label>
+        {{form.password(class="rounded-md border-none bg-slate-100")}}
+      </div>
+      <div class="space-y-2">
+        {{form.submit( class="bg-sky-600 text-white px-2 py-1 rounded-md
+        hover:shadow-md")}}
+        <p>
+          Don't have an account ?
+          <a href="{{ url_for('auth.userSignUp') }}"> SignUp</a>
+        </p>
+        <div class="flex space-x-2">
+          <i class="fa-brands fa-linkedin"></i>
+          <i class="fa-brands fa-medium"></i>
+        </div>
+
+        <!-- TODO Figure our where this is supposed to be used -->
+  <!--
+        <ul class="nav navbar-nav navbar-right">
+          {% if current_user.is_authenticated %}
+          <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+          {% else %}
+          <li><a href="{{ url_for('auth.userLogin') }}">Log In</a></li>
+          {% endif %}
+        </ul> -->
+
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock body %}

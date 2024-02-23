@@ -77,7 +77,7 @@ def userLogin():
         else:
               print("Error ocurred")
               print(check_password_hash(user.password, password))
-    return render_template('user/login.html', form=log_form)
+    return render_template('login/login.html', form=log_form, title = 'Department System Login')
 
 
 
