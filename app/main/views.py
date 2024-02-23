@@ -1,11 +1,14 @@
-from . import main
-from flask import request,render_template,redirect,flash,jsonify,url_for
-from flask_login import login_user,LoginManager,login_required,logout_user,current_user
-from flask import  redirect,render_template,request,url_for
-from ..models import Permission,User, LecturerAssignment, Marks, StudentEnrollment, Units, Modules, EnrollmentUnits
+from flask import flash, jsonify, redirect, render_template, request, url_for
+from flask_login import (LoginManager, current_user, login_required,
+                         login_user, logout_user)
+
+from .. import db
 from ..decorators import admin_required, permission_required
-from .. import  db
+from ..models import (EnrollmentUnits, LecturerAssignment, Marks, Modules,
+                      Permission, StudentEnrollment, Units, User)
+from . import main
 from .forms import *
+
 
 @main.route('/')
 @login_required
@@ -50,7 +53,7 @@ def home():
             enrolledStudents=query.filter(Units.id == unit_id,
                     StudentEnrollment.academic_year == academic_year)
             students=enrolledStudents.all()
-            
+
             InMyUnit=[]
             for student_data in students:
                 print(student_data)
@@ -65,7 +68,7 @@ def home():
             #         "student_reg": student_regNo,
             #         "academicYear":academicYear
             #                  })
-            
+
 
             # students = (
             #     User.query
@@ -92,16 +95,15 @@ def home():
             # for student in enrolled_students:
             #     print(f"Student ID: {student.user_id}, Name: {student.fname} {student.lname}, Email: {student.email}, Unit: {student.unit_name}, Code: {student.unit_code}")
 
-    return render_template("user/index.html")
+    return render_template("user/index.html" title= )
 
 
 
 
-
+# TODO Move to admin under templates (this is the admin enrolling students)
 @main.route('/enroll_student', methods=['GET', 'POST'])
 def enroll_student():
     form = EnrollStudentForm()
-
     if form.validate_on_submit():
         student_id = form.student_id.data
         module_id = form.module_id.data
@@ -114,24 +116,25 @@ def enroll_student():
         else:
             # Create a new enrollment
             new_enrollment = StudentEnrollment(student_id=student_id, module_id=module_id, academic_year=academic_year)
-            
+
             db.session.add(new_enrollment)
             db.session.commit()
             new_enrollment_id = new_enrollment.id
             enroll_units=Units.query.filter_by(module_id=module_id).all()
-            print(enroll_units[0].id)  
-            y=2         
+            print(enroll_units[0].id)
+            y=2
             for unit in enroll_units:
                 new_unit_enrollment=EnrollmentUnits(enrollment_id=new_enrollment_id,unit_id=unit.id)
                 print(new_unit_enrollment)
                 db.session.add(new_unit_enrollment)
-            
-            
             db.session.commit()
             flash('Student enrolled successfully.', 'success')
 
     return render_template('user/enroll_student.html', form=form)
 
+
+
+# TODO move it to admin under templates (this is the admin assigning units)
 @main.route('/assign_unit', methods=['GET', 'POST'])
 def assign_unit():
     form = AssignUnitForm()
@@ -280,6 +283,8 @@ def assign_unit():
 #     return redirect(url_for('user.login'))  # Redirect to login if not authenticated or not a lecturer
 
 
+
+# lecture adding marks
 @main.route('/addmarks', methods=['GET', 'POST'])
 @login_required
 def addmarks():

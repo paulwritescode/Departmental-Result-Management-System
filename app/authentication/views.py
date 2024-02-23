@@ -13,15 +13,16 @@ from .forms import LoginForm, RegisterForm
 @auth.before_app_request
 def before_request():
     excluded_endpoints = ['auth.userLogin', 'auth.userSignUp', 'static']
-
     if not current_user.is_authenticated and request.endpoint not in excluded_endpoints:
         return redirect(url_for('auth.userLogin'))
+
 
 
 @auth.route("/base",  methods=['POST', 'GET'])
 @login_required
 def base():
    return render_template("layout.html")
+
 
 
 @auth.route("/admin/signup", methods=['POST', 'GET'])
@@ -50,8 +51,8 @@ def userSignUp():
             print(f"Validation error for {field}: {errors}")
         flash('Form validation failed. Please check your input.', 'danger')
         return redirect(url_for("auth.userSignUp"))
-
     return render_template('admin/signup.html', form=reg_form, title="User signup")
+
 
 
 # login
@@ -60,7 +61,6 @@ def userLogin():
     log_form=LoginForm()
     if request.method == 'POST' and log_form.validate_on_submit():
         # Form submitted and validated successfully
-
         email = log_form.email.data
         password = log_form.password.data
         user = User.query.filter_by(email = email).first()
@@ -77,17 +77,14 @@ def userLogin():
         else:
               print("Error ocurred")
               print(check_password_hash(user.password, password))
-
-
-
     return render_template('user/login.html', form=log_form)
 
 
+
+# Logout function
 @auth.route("/logout")
 def logout():
     logout_user()
-
     return redirect(url_for('auth.userLogin'))
-# if user has not logged in
 
 
