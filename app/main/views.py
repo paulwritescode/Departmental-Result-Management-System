@@ -10,7 +10,7 @@ from . import main
 from .forms import *
 
 
-@main.route('/')
+@main.route('/',methods=['GET','POST'])
 @login_required
 @permission_required(Permission.VIEW)
 def home():
@@ -67,6 +67,20 @@ def home():
                              })
             return render_template('user/add_marks.html',students=InMyUnit)
     elif request.method=='POST':
+        print("Currently in post Method 😂🥳🥳")
+        enrollment_id=request.form.getlist('enrollment_id[]')
+        catmarks=request.form.getlist('cat_marks[]')
+        assignmentmarks=request.form.getlist('assignment_marks[]')
+        practicalmarks=request.form.getlist('practical_marks[]')
+        exammarks=request.form.getlist('exam_marks[]')
+        for enrollment_id,catmarks,assignmentmarks,practicalmarks,exammarks in zip(enrollment_id,catmarks,assignmentmarks,practicalmarks,exammarks):
+            overallmarks = 0.2 * float(catmarks) + 0.1 * float(assignmentmarks) + 0.1 * float(practicalmarks) + 0.6 * float(exammarks)
+
+           
+            new_mark=Marks(enrollment_id=enrollment_id,cat_marks=catmarks,assignment_marks=assignmentmarks,practical_marks=practicalmarks,exam_marks=exammarks,overall_marks=overallmarks,status=1)
+            db.session.add(new_mark)
+        db.session.commit()
+
         return("added Successfully")
             # students = (
             #     User.query

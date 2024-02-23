@@ -3,7 +3,7 @@
 {% extends 'user/user-base.html' %} {% block content %}
 <h2>Add Marks</h2>
 
-<form method="POST" action="{{ url_for('main.home') }}">
+<form method="POST" action="{{ url_for('main.home') }}" id="marksForm">
   <table class="table">
     <thead>
       <tr>
@@ -23,7 +23,12 @@
       {% for student in students %}
       <tr>
         <td>
-          <input type="text" value="{{ student.enrollment_id }}" readonly />
+          <input
+            type="text"
+            value="{{ student.enrollment_id }}"
+            readonly
+            name="enrollment_id[]"
+          />
         </td>
         <td>{{ student.student_name }}</td>
         <td>{{ student.student_reg }}</td>
@@ -32,16 +37,16 @@
         <td>{{ student.academicYear }}</td>
 
         <td>
-          <input type="text" name="cat_marks[]" />
+          <input type="number" name="cat_marks[]" step="0.1" />
         </td>
         <td>
-          <input type="text" name="assignment_marks[]" />
+          <input type="number" name="assignment_marks[]" step="0.1" />
         </td>
         <td>
-          <input type="text" name="practical_marks[]" />
+          <input type="number" name="practical_marks[]" step="0.1" />
         </td>
         <td>
-          <input type="text" name="exam_marks[]" />
+          <input type="number" name="exam_marks[]" step="0.1" />
         </td>
       </tr>
       {% endfor %}
