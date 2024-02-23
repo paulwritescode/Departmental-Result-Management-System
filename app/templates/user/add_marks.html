@@ -10,35 +10,33 @@
 <h2 class="text-sky-600 font-bold text-xl">Marks Recording</h2>
 <table class="table">
     <thead>
-      <tr >
-        <th class="text-left bg-sky-600 text-white w-32 px-1 ">Unit Enroll Id</th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 " >Name</th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 " >Reg-No</th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 " >Unit-Name</th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 " >Unit-Code</th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 " >Academic-Year</th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 " >CAT</th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 " >Assignment</th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 " >Practical</th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 " >Exam</th>
+      <tr class="" >
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">Unit Enroll Id</th>
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2" >Name</th>
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2" >Reg-No</th>
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2" >Unit-Name</th>
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2" >Unit-Code</th>
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2" >Academic-Year</th>
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2" >CAT</th>
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2" >Assignment</th>
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2" >Practical</th>
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2" >Exam</th>
       </tr>
     </thead>
     <tbody>
       {% for student in students %}
-      <tr>
-        <td>
-          {{ student.enrollment_id }}
-        </td>
-        <td >{{ student.student_name }}</td>
-        <td >{{ student.student_reg }}</td>
-        <td >{{ student.course_name }}</td>
-        <td >{{ student.course_code }}</td>
-        <td >{{ student.academicYear }}</td>
+      <tr class="border-b-2">
+        <td  class="border-r-2" >{{ student.enrollment_id }}</td>
+        <td  class="border-r-2" >{{ student.student_name }}</td>
+        <td  class="border-r-2" >{{ student.student_reg }}</td>
+        <td  class="border-r-2" >{{ student.course_name }}</td>
+        <td  class="border-r-2" >{{ student.course_code }}</td>
+        <td  class="border-r-2" >{{ student.academicYear }}</td>
 
         <td>
           <input
           placeholder="Enter marks"
-          class="border-none rounded-md hover:shadow-md text-center bg-slate-50 w-32"
+          class="border-none  hover:shadow-md text-center bg-green-100 w-32"
           type="number"
           name="cat_marks[]"
           step="0.1" />
@@ -46,7 +44,7 @@
         <td>
           <input
           placeholder="Enter marks"
-          class="border-none rounded-md hover:shadow-md text-center bg-slate-50 w-32"
+          class="border-none  hover:shadow-md text-center bg-green-100 w-32"
           type="number"
           name="assignment_marks[]"
           step="0.1" />
@@ -54,7 +52,7 @@
         <td>
           <input
           placeholder="Enter marks"
-          class="border-none rounded-md hover:shadow-md text-center bg-slate-50 w-32"
+          class="border-none  hover:shadow-md text-center bg-green-100 w-32"
           type="number"
           name="practical_marks[]"
           step="0.1" />
@@ -62,7 +60,7 @@
         <td>
           <input
           placeholder="Enter Exam"
-          class="border-none rounded-md hover:shadow-md text-center bg-slate-50 w-32"
+          class="border-none  hover:shadow-md text-center bg-green-100 w-32"
           type="number"
           name="exam_marks[]"
           step="0.1" />
