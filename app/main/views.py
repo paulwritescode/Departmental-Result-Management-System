@@ -17,54 +17,57 @@ def home():
   if current_user.is_authenticated and current_user.role.name == 'Lecturer':
     lecturer_id = current_user.id
 
+    if request.method=='GET':
+
     # Now you can use the lecturer_id in your queries or any other logic
     # For example, querying for units assigned to the lecturer
-    assigned_units = (
-        LecturerAssignment.query
-        .filter_by(lecturer_id=lecturer_id)
-        .with_entities(LecturerAssignment.unit_id, LecturerAssignment.academic_year)
-        .all()
-    )
+        assigned_units = (
+            LecturerAssignment.query
+            .filter_by(lecturer_id=lecturer_id)
+            .with_entities(LecturerAssignment.unit_id, LecturerAssignment.academic_year)
+            .all()
+        )
 
-    if assigned_units:
-        print("There exists permission for",current_user.username)
-        enrolled_students = []
-        for assigned_unit in assigned_units:
-            academic_year = assigned_unit.academic_year
-            unit_id = assigned_unit.unit_id
-            query=db.session.query(
-                EnrollmentUnits,
-                User.fname.label('student_fname'),
-                User.lname.label("student_lname"),
-                User.Reg_no.label("student_regNo"),
-                Units.name.label("unit_name"),
-                Units.code.label("unit_code"),
-                EnrollmentUnits.id.label("unitenrollment_id"),
-                EnrollmentUnits.enrollment_id.label("studentEnrollment_id"),
-                StudentEnrollment.academic_year.label("academicYear")
-                ).join(
-                    StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
-                ).join(
-                    User,StudentEnrollment.student_id==User.id
-                ).join(
-                    Units, EnrollmentUnits.unit_id==Units.id
-                )
-            enrolledStudents=query.filter(Units.id == unit_id,
+        if assigned_units:
+            print("There exists permission for",current_user.username)
+            enrolled_students = []
+            for assigned_unit in assigned_units:
+                academic_year = assigned_unit.academic_year
+                unit_id = assigned_unit.unit_id
+                query=db.session.query(
+                
+                    User.fname.label('student_fname'),
+                    User.lname.label("student_lname"),
+                    User.Reg_no.label("student_regNo"),
+                    Units.name.label("unit_name"),
+                    Units.code.label("unit_code"),
+                    EnrollmentUnits.id.label("unitenrollment_id"),
+                    StudentEnrollment.academic_year.label("academicYear")
+                    ).join(
+                        StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
+                    ).join(
+                        User,StudentEnrollment.student_id==User.id
+                    ).join(
+                        Units, EnrollmentUnits.unit_id==Units.id
+                    )
+                enrolledStudents=query.filter(Units.id == unit_id,
                     StudentEnrollment.academic_year == academic_year)
             students=enrolledStudents.all()
             InMyUnit=[]
             for student_data in students:
                 print(student_data)
-
-            # for student_fname,student_lname,unit_name,unit_code,unitenrollment_id,academicYear,student_regNo in students:
-            #      InMyUnit.append({
-            #         "enrollment_id":unitenrollment_id,
-            #         "student_name": student_fname + student_lname,
-            #         "course_name": unit_name,
-            #         "course_code": unit_code,
-            #         "student_reg": student_regNo,
-            #         "academicYear":academicYear
-            #                  })
+            for student_fname,student_lname,student_regNo,unit_name,unit_code,unitenrollment_id,academicYear in students:
+                 InMyUnit.append({
+                    "enrollment_id":unitenrollment_id,
+                    "student_name": student_fname + student_lname,
+                    "course_name": unit_name,
+                    "course_code": unit_code,
+                    "student_reg": student_regNo,
+                    "academicYear":academicYear
+                             })
+            return render_template('user/add_marks.html',students=InMyUnit)
+    elif request.method=='POST':
+        return("added Successfully")
             # students = (
             #     User.query
             #     .join(StudentEnrollment)

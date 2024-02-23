@@ -1,18 +1,18 @@
 <!-- Your add_marks.html template -->
 
-{% extends 'index.html' %} {% block content %}
+{% extends 'user/user-base.html' %} {% block content %}
 <h2>Add Marks</h2>
 
-<form method="POST" action="{{ url_for('addmarks') }}">
-  {{ form.hidden_tag() }}
+<form method="POST" action="{{ url_for('main.home') }}">
   <table class="table">
     <thead>
       <tr>
-        <th>Student ID</th>
+        <th>UEID</th>
         <th>Name</th>
-        <th>Email</th>
+        <th>Reg No</th>
         <th>Unit Name</th>
         <th>Unit Code</th>
+        <th>Academic Year</th>
         <th>CAT Marks</th>
         <th>Assignment Marks</th>
         <th>Practical Marks</th>
@@ -20,46 +20,34 @@
       </tr>
     </thead>
     <tbody>
-      {% for student in student_data %}
+      {% for student in students %}
       <tr>
-        <td>{{ student.user_id }}</td>
-        <td>{{ student.fname }} {{ student.lname }}</td>
-        <td>{{ student.email }}</td>
-        <td>{{ student.unit_name }}</td>
-        <td>{{ student.unit_code }}</td>
         <td>
-          <input
-            type="text"
-            name="cat_marks_{{ student.user_id }}"
-            value="{{ form['cat_marks_' + student.user_id].value }}"
-          />
+          <input type="text" value="{{ student.enrollment_id }}" readonly />
+        </td>
+        <td>{{ student.student_name }}</td>
+        <td>{{ student.student_reg }}</td>
+        <td>{{ student.course_name }}</td>
+        <td>{{ student.course_code }}</td>
+        <td>{{ student.academicYear }}</td>
+
+        <td>
+          <input type="text" name="cat_marks[]" />
         </td>
         <td>
-          <input
-            type="text"
-            name="assignment_marks_{{ student.user_id }}"
-            value="{{ form['assignment_marks_' + student.user_id].value }}"
-          />
+          <input type="text" name="assignment_marks[]" />
         </td>
         <td>
-          <input
-            type="text"
-            name="practical_marks_{{ student.user_id }}"
-            value="{{ form['practical_marks_' + student.user_id].value }}"
-          />
+          <input type="text" name="practical_marks[]" />
         </td>
         <td>
-          <input
-            type="text"
-            name="exam_marks_{{ student.user_id }}"
-            value="{{ form['exam_marks_' + student.user_id].value }}"
-          />
+          <input type="text" name="exam_marks[]" />
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
-  <button type="submit" class="btn btn-primary">Submit Marks</button>
+  <input type="submit" class="btn btn-primary" value="Submit Marks" />
 </form>
 {% endblock %}
