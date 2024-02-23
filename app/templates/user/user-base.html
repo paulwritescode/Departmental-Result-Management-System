@@ -1,9 +1,38 @@
 {% extends 'layout.html' %}
 
-{% title %}
-    <!-- TODO add the title of the page here. pass it from the views.py -->
-{% title%}
+{% block title %}
+   <title>{{title}}</title>
+{% endblock %}
 
 {% block body %}
+
+<!-- User Profile -->
+<div class="bg-white p-1 w-full flex justify-end items-center space-x-1 rounded-md">
+    <div>
+        dgk
+    </div>
+
+    <!-- this is the user profile details -->
+    <button class="flex space-x-1  bg-sky-200 hover:bg-sky-500 hover:text-white p-1 px-2 rounded-md" >
+        <div class=" "><i class="fa-solid fa-lg fa-circle-user"></i></div>
+        <div>
+            {% if current_user.is_authenticated %} {{ current_user.username }} {%
+                else %} Stranger {% endif %}
+        </div>
+    </button>
+
+
+
+
+</div>
+
+    <div class="bg-white rounded-md m-40">
     <h1>This is the Lecture landing page</h1>
+
+
+
+
+
+    </div>
+
 {% endblock %}

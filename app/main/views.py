@@ -29,7 +29,6 @@ def home():
     if assigned_units:
         print("There exists permission for",current_user.username)
         enrolled_students = []
-
         for assigned_unit in assigned_units:
             academic_year = assigned_unit.academic_year
             unit_id = assigned_unit.unit_id
@@ -53,11 +52,9 @@ def home():
             enrolledStudents=query.filter(Units.id == unit_id,
                     StudentEnrollment.academic_year == academic_year)
             students=enrolledStudents.all()
-
             InMyUnit=[]
             for student_data in students:
                 print(student_data)
-
 
             # for student_fname,student_lname,unit_name,unit_code,unitenrollment_id,academicYear,student_regNo in students:
             #      InMyUnit.append({
@@ -68,8 +65,6 @@ def home():
             #         "student_reg": student_regNo,
             #         "academicYear":academicYear
             #                  })
-
-
             # students = (
             #     User.query
             #     .join(StudentEnrollment)
@@ -95,7 +90,7 @@ def home():
             # for student in enrolled_students:
             #     print(f"Student ID: {student.user_id}, Name: {student.fname} {student.lname}, Email: {student.email}, Unit: {student.unit_name}, Code: {student.unit_code}")
 
-    return render_template("user/index.html" title= )
+    return render_template("user/user-base.html" ,title = 'Lecture Landing page ' )
 
 
 
