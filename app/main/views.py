@@ -65,7 +65,7 @@ def home():
                     "student_reg": student_regNo,
                     "academicYear":academicYear
                              })
-            return render_template('user/add_marks.html',students=InMyUnit, title = 'Lecture Adding Marks')
+            return render_template('user/add_marks.html',students=InMyUnit)
     elif request.method=='POST':
         print("Currently in post Method 😂🥳🥳")
         enrollment_id=request.form.getlist('enrollment_id[]')
