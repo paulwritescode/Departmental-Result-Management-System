@@ -10,7 +10,7 @@ from . import main
 from .forms import *
 
 
-@main.route('/',methods=['GET','POST'])
+@main.route('/',methods=['GET','POST','PUT'])
 @login_required
 @permission_required(Permission.VIEW)
 def home():
@@ -88,36 +88,165 @@ def home():
         db.session.commit()
 
         return("added Successfully")
-            # students = (
-            #     User.query
-            #     .join(StudentEnrollment)
-            #     .join(EnrollmentUnits)
-            #     .join(Units)
-            #     .add_columns(
-            #         User.id.label('user_id'),
-            #         User.fname,
-            #         User.lname,
-            #         User.email,
-            #         Units.name.label('unit_name'),
-            #         Units.code.label('unit_code')
-            #     )
-            #     .filter(
-            #         Units.id == unit_id,
-            #         StudentEnrollment.academic_year == academic_year
-            #     )
-            #     .all()
-            # )
+    elif request.method == 'PUT':
+    # Fetch all data from the Marks table
+        all_marks_data = Marks.query.all()
 
-            # enrolled_students.extend(students)
+    # Process data and create a dictionary for easier lookup
+        marks_dict = {}
+        for mark_data in all_marks_data:
+            marks_dict[mark_data.enrollment_id] = {
+            'cat_marks': mark_data.cat_marks,
+            'assignment_marks': mark_data.assignment_marks,
+            'practical_marks': mark_data.practical_marks,
+            'exam_marks': mark_data.exam_marks,
+            'overall_marks': mark_data.overall_marks,
+            'status': mark_data.status,
+        }
 
-            # for student in enrolled_students:
-            #     print(f"Student ID: {student.user_id}, Name: {student.fname} {student.lname}, Email: {student.email}, Unit: {student.unit_name}, Code: {student.unit_code}")
+    # Fetch existing data where marks are null
+        null_marks_data = Marks.query.filter(Marks.overall_marks.is_(None)).all()
 
+    # Create a list to store data for rendering in the template
+        marks_for_template = []
+
+        for null_mark_data in null_marks_data:
+            enrollment_id = null_mark_data.enrollment_id
+
+        # Check if data exists in the marks_dict
+            if enrollment_id in marks_dict:
+                 marks_data = marks_dict[enrollment_id]
+            else:
+            # If data doesn't exist, create empty data
+                marks_data = {
+                    'cat_marks': '',
+                    'assignment_marks': '',
+                    'practical_marks': '',
+                    'exam_marks': '',
+                    'overall_marks': '',
+                    'status': '',
+                }
+
+        marks_for_template.append({
+            'enrollment_id': enrollment_id,
+            'cat_marks': marks_data['cat_marks'],
+            'assignment_marks': marks_data['assignment_marks'],
+            'practical_marks': marks_data['practical_marks'],
+            'exam_marks': marks_data['exam_marks'],
+            'overall_marks': marks_data['overall_marks'],
+            'status': marks_data['status'],
+        })
+
+        return render_template('user/update_marks.html', marks=marks_for_template)
     return render_template("user/user-base.html" ,title = 'Lecture Landing page ' )
 
 
+@main.route("/editprofile",methods=['GET','PUT','POST'])
+@login_required
+def editprofile():
+     if current_user.is_authenticated and current_user.role.name == 'Lecturer':
+        user_id = current_user.id
+        if request.method=='GET':
+            user_profile = (
+                User.query
+                    .filter_by(id=user_id)
+                    .with_entities(User.fname, User.lname, User.email, User.phone, User.current_module, User.Reg_no, User.role_id, User.status, User.Year_of_Registration, User.username)
+                        .first()
+                            )
+
+    # Check if the user profile is found
+            if user_profile:
+                 fname, lname, email, phone, currentmodule, regno, roleid, status, yor, username = user_profile
+
+                 return render_template('user/edit_profile.html', 
+                               fname=fname,
+                               lname=lname,
+                               email=email,
+                               phone=phone,
+                               currentmodule=currentmodule,
+                               regno=regno,
+                               roleid=roleid,
+                               status=status,
+                               yor=yor,
+                               username=username,
+                               uid=user_id
+                               )
+            else:
+        # Handle the case where the user profile is not found
+                  return render_template('error.html', message='User profile not found')
+        elif request.method=='POST':
+            user=User.query.filter_by(id=user_id).all()
+            if user:
+                fname=request.form.get('fname')
+                lname=request.form.get('lname')
+                email=request.form.get('email')
+                phone=request.form.get('phone')
+                currentmodule=request.form.get('currentmodule')
+                regno=request.form.get('regno')
+                roleid=request.form.get('roleid')
+                status=request.form.get('status')
+                yor=request.form.get('yor')
+                username=request.form.get('username')
+                uid=request.form.get('uid')
+                print(fname, lname, email, phone, currentmodule, regno, roleid, status, yor, username,uid)
+                new_data = {
+                    'fname': fname,
+                    'lname': lname,
+                    'email': email,
+                    'phone': phone,
+                    'current_module': currentmodule,
+                    'Reg_no': regno,
+                    'role_id':roleid,  # Replace with the new role id
+                    'status': status,
+                    'Year_of_Registration': yor,  # Replace with the new year of registration
+                    'username': username
+}
+                db.session.query(User).filter_by(id=user_id).update(new_data)
+
+            db.session.commit()
+
+# Use the update method to update the user profile
+
+            
+            return("success")
+@main.route("/profile",methods=['GET'])
+@login_required
+def profile():
+        if current_user.is_authenticated and current_user.role.name == 'Lecturer':
+            user_id = current_user.id
+            if request.method=='GET':
+                user_profile = (
+                User.query
+                    .filter_by(id=user_id)
+                    .with_entities(User.fname, User.lname, User.email, User.phone, User.current_module, User.Reg_no, User.role_id, User.status, User.Year_of_Registration, User.username)
+                        .first()
+                            )
+
+    # Check if the user profile is found
+                if user_profile:
+                 fname, lname, email, phone, currentmodule, regno, roleid, status, yor, username = user_profile
+
+                 return render_template('user/viewprofile.html', 
+                               fname=fname,
+                               lname=lname,
+                               email=email,
+                               phone=phone,
+                               currentmodule=currentmodule,
+                               regno=regno,
+                               roleid=roleid,
+                               status=status,
+                               yor=yor,
+                               username=username,
+                               uid=user_id
+                               )
+            else:
+                  return redirect(url_for("main.home"))
+        # Handle the case where the user profile is not found
+                  return render_template('error.html', message='User profile not found')
+       
 
 
+        
 # TODO Move to admin under templates (this is the admin enrolling students)
 @main.route('/enroll_student', methods=['GET', 'POST'])
 def enroll_student():
@@ -150,8 +279,6 @@ def enroll_student():
 
     return render_template('user/enroll_student.html', form=form)
 
-
-
 # TODO move it to admin under templates (this is the admin assigning units)
 @main.route('/assign_unit', methods=['GET', 'POST'])
 def assign_unit():
@@ -175,131 +302,6 @@ def assign_unit():
             flash('Unit assigned to lecturer successfully.', 'success')
 
     return render_template('user/assign_unit.html', form=form)
-
-# @main.route('/addmarks',methods=['GET','POST'])
-# def addmarks():
-#     if request.method == 'POST':
-#         enrollment_id = request.form.get('enrollment_id')
-#         # Retrieve other form data as needed
-
-#         # Perform validation and save marks to the database
-#         # Example: Create a new Marks object and add it to the database
-#         new_marks = Marks(
-#             enrollment_id=enrollment_id,
-#             cat_marks=request.form.get('cat_marks'),
-#             assignment_marks=request.form.get('assignment_marks'),
-#             practical_marks=request.form.get('practical_marks'),
-#             exam_marks=request.form.get('exam_marks'),
-#             overall_marks=request.form.get('overall_marks'),
-#             status=request.form.get('status')
-#         )
-
-#         db.session.add(new_marks)
-#         db.session.commit()
-
-#         flash('Marks submitted successfully.', 'success')
-#         return redirect(url_for('main.addmarks'))
-
-#     return render_template('user/addmarks.html')
-
-# @main.route('/addmarks', methods=['GET', 'POST'])
-# @login_required
-# def addmarks():
-#     if current_user.is_authenticated and current_user.role.name == 'Lecturer':
-#         lecturer_id = current_user.id
-
-#         # Fetch assigned units for the lecturer
-#         assigned_units = (
-#             LecturerAssignment.query
-#             .filter_by(lecturer_id=lecturer_id)
-#             .with_entities(LecturerAssignment.unit_id, LecturerAssignment.academic_year)
-#             .all()
-#         )
-
-#         if assigned_units:
-#             print("There exists permission for", current_user.username)
-#             enrolled_students = []
-
-#             # Fetch enrolled students for each assigned unit
-#             for assigned_unit in assigned_units:
-#                 academic_year = assigned_unit.academic_year
-#                 unit_id = assigned_unit.unit_id
-
-#                 students = (
-#                     User.query
-#                     .join(StudentEnrollment)
-#                     .join(EnrollmentUnits)
-#                     .join(Units)
-#                     .add_columns(
-#                         User.id.label('user_id'),
-#                         User.fname,
-#                         User.lname,
-#                         User.email,
-#                         Units.name.label('unit_name'),
-#                         Units.code.label('unit_code'),
-#                         EnrollmentUnits.id.label('enrollment_id')
-#                     )
-#                     .filter(
-#                         Units.id == unit_id,
-#                         StudentEnrollment.academic_year == academic_year
-#                     )
-#                     .all()
-#                 )
-
-#                 enrolled_students.extend(students)
-
-#             # Create a list of dictionaries to hold student data
-#             student_data = [
-#                 {
-#                     'user_id': student.user_id,
-#                     'fname': student.fname,
-#                     'lname': student.lname,
-#                     'email': student.email,
-#                     'unit_name': student.unit_name,
-#                     'unit_code': student.unit_code,
-#                     'enrollment_id':student.enrollment_id
-#                 }
-#                 for student in enrolled_students
-#             ]
-
-#             form = MarksInputForm()
-
-#             if form.validate_on_submit():
-#                 # Process the form data and add marks to the database
-#                 for student in enrolled_students:
-#                     # Assuming you have a Marks model
-#                     marks = Marks(
-#                         enrollment_id=form.enrollment_id,  # Replace with the actual enrollment_id for the student
-#                         cat_marks=form.cat_marks.data,
-#                         assignment_marks=form.assignment_marks.data,
-#                         practical_marks=form.practical_marks.data,
-#                         exam_marks=form.exam_marks.data,
-#                         overall_marks=calculate_overall_marks(
-#                             form.cat_marks.data,
-#                             form.assignment_marks.data,
-#                             form.practical_marks.data,
-#                             form.exam_marks.data
-#                         ),
-#                         status=calculate_status(
-#                             calculate_overall_marks(
-#                                 form.cat_marks.data,
-#                                 form.assignment_marks.data,
-#                                 form.practical_marks.data,
-#                                 form.exam_marks.data
-#                             )
-#                         )
-#                     )
-
-#                     db.session.add(marks)
-#                     db.session.commit()
-
-#                 flash('Marks added successfully!', 'success')
-#                 return redirect(url_for('dashboard'))  # Redirect to your dashboard route after adding marks
-
-#             return render_template('add_marks.html', student_data=student_data, form=form)
-
-#     return redirect(url_for('user.login'))  # Redirect to login if not authenticated or not a lecturer
-
 
 
 # lecture adding marks
@@ -377,3 +379,159 @@ def calculate_overall_marks(cat_marks, assignment_marks, practical_marks, exam_m
     # Customize this logic based on your weighting system
     overall_marks = (cat_marks * 0.2) + (assignment_marks * 0.3) + (practical_marks * 0.2) + (exam_marks * 0.3)
     return overall_marks
+@main.route('/update_marks', methods=['POST','GET'])
+def update_marks():
+    if current_user.is_authenticated and current_user.role.name == 'Lecturer':
+        lecturer_id = current_user.id
+    # Ensure the request is a POST request
+        if request.method == 'POST':
+            print('post received')
+            # Get data from the form
+            enrollment_ids = request.form.getlist('enrollment_id[]')
+            cat_marks = request.form.getlist('cat_marks[]')
+            assignment_marks = request.form.getlist('assignment_marks[]')
+            practical_marks = request.form.getlist('practical_marks[]')
+            exam_marks = request.form.getlist('exam_marks[]')
+
+            print(enrollment_id,cat_marks,assignment_marks)
+
+            # Loop through the data and update marks
+            for enrollment_id, cat_mark, assignment_mark, practical_mark, exam_mark in zip(
+                    enrollment_ids, cat_marks, assignment_marks, practical_marks, exam_marks):
+
+                # Retrieve the existing mark record for the student
+                existing_mark = Marks.query.filter_by(enrollment_id=enrollment_id).first()
+
+                # Check if the mark record exists
+                if existing_mark:
+                    # Update the marks if they are null
+                    if existing_mark.cat_marks is None:
+                        existing_mark.cat_marks = float(cat_mark)
+                    if existing_mark.assignment_marks is None:
+                        existing_mark.assignment_marks = float(assignment_mark)
+                    if existing_mark.practical_marks is None:
+                        existing_mark.practical_marks = float(practical_mark)
+                    if existing_mark.exam_marks is None:
+                        existing_mark.exam_marks = float(exam_mark)
+
+                    # Calculate overall marks
+                    overall_marks = (
+                            0.2 * float(existing_mark.cat_marks) +
+                            0.1 * float(existing_mark.assignment_marks) +
+                            0.1 * float(existing_mark.practical_marks) +
+                            0.6 * float(existing_mark.exam_marks)
+                    )
+
+                    existing_mark.overall_marks = overall_marks
+                    print(existing_mark,)
+
+                    # Commit the changes to the database
+                    db.session.commit()
+
+            # Redirect to the home page or another appropriate page
+            return redirect(url_for('main.home'))
+        
+
+        # elif request.method=='GET':
+
+        # # Now you can use the lecturer_id in your queries or any other logic
+        # # For example, querying for units assigned to the lecturer
+        #     assigned_units = (
+        #         LecturerAssignment.query
+        #         .filter_by(lecturer_id=lecturer_id)
+        #         .with_entities(LecturerAssignment.unit_id, LecturerAssignment.academic_year)
+        #         .all()
+        #     )
+
+        #     if assigned_units:
+        #         print("There exists permission for",current_user.username)
+        #         enrolled_students = []
+        #         for assigned_unit in assigned_units:
+        #             academic_year = assigned_unit.academic_year
+        #             unit_id = assigned_unit.unit_id
+        #             query=db.session.query(
+
+        #                 User.fname.label('student_fname'),
+        #                 User.lname.label("student_lname"),
+        #                 User.Reg_no.label("student_regNo"),
+        #                 Units.name.label("unit_name"),
+        #                 Units.code.label("unit_code"),
+        #                 EnrollmentUnits.id.label("unitenrollment_id"),
+        #                 StudentEnrollment.academic_year.label("academicYear")
+        #                 ).join(
+        #                     StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
+        #                 ).join(
+        #                     User,StudentEnrollment.student_id==User.id
+        #                 ).join(
+        #                     Units, EnrollmentUnits.unit_id==Units.id
+        #                 )
+        #             enrolledStudents=query.filter(Units.id == unit_id,
+        #                 StudentEnrollment.academic_year == academic_year)
+        #         students=enrolledStudents.all()
+        #         InMyUnit=[]
+        #         for student_data in students:
+        #             print(student_data)
+        #         for student_fname,student_lname,student_regNo,unit_name,unit_code,unitenrollment_id,academicYear in students:
+        #             InMyUnit.append({
+        #                 "enrollment_id":unitenrollment_id,
+        #                 "student_name": student_fname + student_lname,
+        #                 "course_name": unit_name,
+        #                 "course_code": unit_code,
+        #                 "student_reg": student_regNo,
+        #                 "academicYear":academicYear
+        #                         })
+        #         return render_template('user/update_marks.html',students=InMyUnit)
+       
+        elif request.method == 'PUT':
+    # Fetch all data from the Marks table
+            all_marks_data = Marks.query.all()
+
+    # Process data and create a dictionary for easier lookup
+            marks_dict = {}
+            for mark_data in all_marks_data:
+                marks_dict[mark_data.enrollment_id] = {
+                'cat_marks': mark_data.cat_marks,
+                'assignment_marks': mark_data.assignment_marks,
+                'practical_marks': mark_data.practical_marks,
+                'exam_marks': mark_data.exam_marks,
+                'overall_marks': mark_data.overall_marks,
+                'status': mark_data.status,
+                    }
+
+    # Fetch existing data where marks are null
+            null_marks_data = Marks.query.filter(Marks.overall_marks.is_(None)).all()
+
+    # Create a list to store data for rendering in the template
+            marks_for_template = []
+
+            for null_mark_data in null_marks_data:
+                enrollment_id = null_mark_data.enrollment_id
+
+        # Check if data exists in the marks_dict
+            if enrollment_id in marks_dict:
+                 marks_data = marks_dict[enrollment_id]
+            else:
+            # If data doesn't exist, create empty data
+                marks_data = {
+                    'cat_marks': '',
+                    'assignment_marks': '',
+                    'practical_marks': '',
+                    'exam_marks': '',
+                    'overall_marks': '',
+                    'status': '',
+                }
+
+            marks_for_template.append({
+                'enrollment_id': enrollment_id,
+                'cat_marks': marks_data['cat_marks'],
+                'assignment_marks': marks_data['assignment_marks'],
+                'practical_marks': marks_data['practical_marks'],
+                'exam_marks': marks_data['exam_marks'],
+                'overall_marks': marks_data['overall_marks'],
+                'status': marks_data['status'],
+            })
+
+        return render_template('user/update_marks.html', marks=marks_for_template)
+   
+    # If the request method is not POST, redirect to the home page
+    return redirect(url_for('main.home'))

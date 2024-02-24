@@ -1,0 +1,124 @@
+{% extends 'user/user-base.html' %} {% block title %}
+<title>Edit Profile</title>
+{% endblock %} {% block content %}
+<div class="bg-white p-3 rounded-md">
+  <h2 class="text-sky-600 font-bold text-xl">Edit Profile</h2>
+
+  <div class="mb-3">
+    <label for="fname" class="form-label">First Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="fname"
+      name="fname"
+      value="{{ fname }}"
+      readonly
+    />
+  </div>
+  <div class="mb-3">
+    <label for="lname" class="form-label">Last Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="lname"
+      name="lname"
+      value="{{ lname }}"
+      readonly
+    />
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input
+      type="email"
+      class="form-control"
+      id="email"
+      name="email"
+      value="{{ email }}"
+      readonly
+    />
+  </div>
+  <div class="mb-3">
+    <label for="currentmodule" class="form-label">Current Module</label>
+    <input
+      type="tel"
+      class="form-control"
+      id="currentmodule"
+      name="currentmodule"
+      value="{{ currentmodule }}"
+      readonly
+    />
+  </div>
+  <div class="mb-3">
+    <label for="phone" class="form-label">Phone</label>
+    <input
+      type="tel"
+      class="form-control"
+      id="phone"
+      name="phone"
+      value="{{ phone }}"
+      readonly
+    />
+  </div>
+  <div class="mb-3">
+    <label for="regno" class="form-label">Reg No</label>
+    <input
+      type="tel"
+      class="form-control"
+      id="regno"
+      name="regno"
+      value="{{ regno }}"
+      readonly
+    />
+  </div>
+  <div class="mb-3">
+    <label for="roleid" class="form-label">RoleId</label>
+    <input
+      type="tel"
+      class="form-control"
+      id="roleid"
+      name="roleid"
+      value="{{ roleid }}"
+      readonly
+    />
+  </div>
+  <div class="mb-3">
+    <label for="status" class="form-label">Status</label>
+    <input
+      type="tel"
+      class="form-control"
+      id="status"
+      name="status"
+      value="{{ status }}"
+      readonly
+    />
+  </div>
+  <div class="mb-3">
+    <label for="yor" class="form-label">year Of Registration</label>
+    <input
+      type="tel"
+      class="form-control"
+      id="yor"
+      name="yor"
+      value="{{ yor }}"
+      readonly
+    />
+  </div>
+  <div class="mb-3">
+    <label for="username" class="form-label">Username</label>
+    <input
+      type="tel"
+      class="form-control"
+      id="username"
+      name="username"
+      value="{{ username }}"
+      readonly
+    />
+  </div>
+
+  <!-- Add other fields as needed -->
+
+  <button class="btn btn-primary">
+    <a href="{{url_for('main.editprofile')}}">Edit Profile</a>
+  </button>
+</div>
+{% endblock %}

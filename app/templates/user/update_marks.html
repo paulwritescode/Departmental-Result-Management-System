@@ -1,7 +1,5 @@
-<!-- Your add_marks.html template -->
-
 {% extends 'user/user-base.html' %} {% block title %}
-<title>{{title}}</title>
+<title>Update Marks</title>
 {% endblock %} {% block content %}
 
 <form
@@ -10,27 +8,12 @@
   action="{{ url_for('main.home') }}"
   id="marksForm"
 >
-  <h2 class="text-sky-600 font-bold text-xl">Marks Recording</h2>
+  <h2 class="text-sky-600 font-bold text-xl">Update Marks</h2>
   <table class="table">
     <thead>
       <tr class="">
         <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
           Unit Enroll Id
-        </th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-          Name
-        </th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-          Reg-No
-        </th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-          Unit-Name
-        </th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-          Unit-Code
-        </th>
-        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-          Academic-Year
         </th>
         <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
           CAT
@@ -47,23 +30,17 @@
       </tr>
     </thead>
     <tbody>
-      {% for student in students %}
+      {% for mark in marks %}
       <tr class="border-b-2">
         <td>
           <input
             type="hidden"
-            value="{{ student.enrollment_id }}"
+            value="{{ mark.enrollment_id }}"
             readonly
             name="enrollment_id[]"
           />
-          {{loop.index}}
+          {{ mark.enrollment_id }}
         </td>
-        <td class="border-r-2">{{ student.student_name }}</td>
-        <td class="border-r-2">{{ student.student_reg }}</td>
-        <td class="border-r-2">{{ student.course_name }}</td>
-        <td class="border-r-2">{{ student.course_code }}</td>
-        <td class="border-r-2">{{ student.academicYear }}</td>
-
         <td>
           <input
             placeholder="Enter marks"
@@ -71,6 +48,13 @@
             type="number"
             name="cat_marks[]"
             step="0.1"
+            value="{{ mark.cat_marks }}"
+            {%
+            if
+            mark.cat_marks
+            %}readonly{%
+            endif
+            %}
           />
         </td>
         <td>
@@ -80,6 +64,13 @@
             type="number"
             name="assignment_marks[]"
             step="0.1"
+            value="{{ mark.assignment_marks }}"
+            {%
+            if
+            mark.assignment_marks
+            %}readonly{%
+            endif
+            %}
           />
         </td>
         <td>
@@ -89,6 +80,13 @@
             type="number"
             name="practical_marks[]"
             step="0.1"
+            value="{{ mark.practical_marks }}"
+            {%
+            if
+            mark.practical_marks
+            %}readonly{%
+            endif
+            %}
           />
         </td>
         <td>
@@ -98,6 +96,13 @@
             type="number"
             name="exam_marks[]"
             step="0.1"
+            value="{{ mark.exam_marks }}"
+            {%
+            if
+            mark.exam_marks
+            %}readonly{%
+            endif
+            %}
           />
         </td>
       </tr>
@@ -111,4 +116,5 @@
     value="Submit Marks"
   />
 </form>
+
 {% endblock %}
