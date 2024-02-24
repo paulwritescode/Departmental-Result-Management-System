@@ -18,7 +18,6 @@ def home():
     lecturer_id = current_user.id
 
     if request.method=='GET':
-
     # Now you can use the lecturer_id in your queries or any other logic
     # For example, querying for units assigned to the lecturer
         assigned_units = (
@@ -27,6 +26,7 @@ def home():
             .with_entities(LecturerAssignment.unit_id, LecturerAssignment.academic_year)
             .all()
         )
+        lectureRepo = [{'unit_id': unit.unit_id, 'academic_year': unit.academic_year} for unit in assigned_units]
 
         if assigned_units:
             print("There exists permission for",current_user.username)
@@ -65,7 +65,8 @@ def home():
                     "student_reg": student_regNo,
                     "academicYear":academicYear
                              })
-            return render_template('user/add_marks.html',students=InMyUnit, title = 'Lecture Adding Marks ')
+
+            return render_template('user/add_marks.html',students=InMyUnit, units = lectureRepo,  title = 'Lecture Adding Marks ')
     elif request.method=='POST':
         print("Currently in post Method 😂🥳🥳")
         enrollment_id=request.form.getlist('enrollment_id[]')
@@ -78,7 +79,6 @@ def home():
             new_mark=Marks(enrollment_id=enrollment_id,cat_marks=catmarks,assignment_marks=assignmentmarks,practical_marks=practicalmarks,exam_marks=exammarks,overall_marks=overallmarks,status=1)
             db.session.add(new_mark)
         db.session.commit()
-
 
         return("Student Marks Added Successfully")
 
