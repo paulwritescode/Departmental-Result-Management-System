@@ -6,7 +6,7 @@
 {% endblock %}
 {% block content %}
 
-<form class="bg-white  p-3 rounded-md" method="POST" action="{{ url_for('main.home') }}" id="marksForm">
+<form class="bg-white flex flex-col p-3 rounded-md" method="POST" action="{{ url_for('main.home') }}" id="marksForm">
 <h2 class="text-sky-600 font-bold text-xl">Marks Recording</h2>
 <table class="table">
     <thead>
@@ -72,4 +72,6 @@
 
   <input  type="submit" class="p-2 mt-3 bg-sky-600 hover:bg-sky-700 hover:text-white rounded-md shadow-md" value="Submit Marks" />
 </form>
+
+
 {% endblock %}

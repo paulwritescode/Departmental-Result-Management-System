@@ -65,7 +65,7 @@ def home():
                     "student_reg": student_regNo,
                     "academicYear":academicYear
                              })
-            return render_template('user/add_marks.html',students=InMyUnit)
+            return render_template('user/add_marks.html',students=InMyUnit, title = 'Lecture Adding Marks ')
     elif request.method=='POST':
         print("Currently in post Method 😂🥳🥳")
         enrollment_id=request.form.getlist('enrollment_id[]')
@@ -75,44 +75,19 @@ def home():
         exammarks=request.form.getlist('exam_marks[]')
         for enrollment_id,catmarks,assignmentmarks,practicalmarks,exammarks in zip(enrollment_id,catmarks,assignmentmarks,practicalmarks,exammarks):
             overallmarks = 0.2 * float(catmarks) + 0.1 * float(assignmentmarks) + 0.1 * float(practicalmarks) + 0.6 * float(exammarks)
-
-
             new_mark=Marks(enrollment_id=enrollment_id,cat_marks=catmarks,assignment_marks=assignmentmarks,practical_marks=practicalmarks,exam_marks=exammarks,overall_marks=overallmarks,status=1)
             db.session.add(new_mark)
         db.session.commit()
 
-        return("added Successfully")
-            # students = (
-            #     User.query
-            #     .join(StudentEnrollment)
-            #     .join(EnrollmentUnits)
-            #     .join(Units)
-            #     .add_columns(
-            #         User.id.label('user_id'),
-            #         User.fname,
-            #         User.lname,
-            #         User.email,
-            #         Units.name.label('unit_name'),
-            #         Units.code.label('unit_code')
-            #     )
-            #     .filter(
-            #         Units.id == unit_id,
-            #         StudentEnrollment.academic_year == academic_year
-            #     )
-            #     .all()
-            # )
 
-            # enrolled_students.extend(students)
-
-            # for student in enrolled_students:
-            #     print(f"Student ID: {student.user_id}, Name: {student.fname} {student.lname}, Email: {student.email}, Unit: {student.unit_name}, Code: {student.unit_code}")
+        return("Student Marks Added Successfully")
 
     return render_template("user/user-base.html" ,title = 'Lecture Landing page ' )
 
 
 
 
-# TODO Move to admin under templates (this is the admin enrolling students)
+# TODO Move to admin under templates (this is the admin enrolling students) Moved
 @main.route('/enroll_student', methods=['GET', 'POST'])
 def enroll_student():
     form = EnrollStudentForm()
@@ -142,11 +117,11 @@ def enroll_student():
             db.session.commit()
             flash('Student enrolled successfully.', 'success')
 
-    return render_template('user/enroll_student.html', form=form)
+    return render_template('admin/enroll_student.html', form=form, title = 'Admin Enroll New Users')
 
 
 
-# TODO move it to admin under templates (this is the admin assigning units)
+# TODO move it to admin under templates (this is the admin assigning units) moved
 @main.route('/assign_unit', methods=['GET', 'POST'])
 def assign_unit():
     form = AssignUnitForm()
@@ -168,7 +143,7 @@ def assign_unit():
             db.session.commit()
             flash('Unit assigned to lecturer successfully.', 'success')
 
-    return render_template('user/assign_unit.html', form=form)
+    return render_template('admin/assign_unit.html', form=form, title = 'Admin Assign Units')
 
 # @main.route('/addmarks',methods=['GET','POST'])
 # def addmarks():

@@ -1,6 +1,13 @@
 <!-- templates/enroll_student.html -->
+{% extends "user/index.html" %}
 
-{% extends "user/index.html" %} {% block content %}
+
+{% block title %}
+<title> {{title}} </title>
+{% endblock %}
+
+{% block content %}
+
 <h2>Enroll Student</h2>
 <form method="post" action="{{ url_for('main.enroll_student') }}">
   {{ form.hidden_tag() }}
