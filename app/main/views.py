@@ -144,7 +144,7 @@ def home():
 @main.route("/editprofile",methods=['GET','PUT','POST'])
 @login_required
 def editprofile():
-     if current_user.is_authenticated and current_user.role.name == 'Lecturer':
+     if current_user.is_authenticated:
         user_id = current_user.id
         if request.method=='GET':
             user_profile = (
@@ -209,10 +209,15 @@ def editprofile():
 
             
             return("success")
+     else:
+         return ('User profile not found')
+
+
+
 @main.route("/profile",methods=['GET'])
 @login_required
 def profile():
-        if current_user.is_authenticated and current_user.role.name == 'Lecturer':
+        if current_user.is_authenticated:
             user_id = current_user.id
             if request.method=='GET':
                 user_profile = (
@@ -242,7 +247,8 @@ def profile():
             else:
                   return redirect(url_for("main.home"))
         # Handle the case where the user profile is not found
-                  return render_template('error.html', message='User profile not found')
+        else:    
+            return ('User profile not found')
        
 
 
