@@ -280,6 +280,12 @@ def enroll_student():
                 new_unit_enrollment=EnrollmentUnits(enrollment_id=new_enrollment_id,unit_id=unit.id)
                 print(new_unit_enrollment)
                 db.session.add(new_unit_enrollment)
+                db.session.commit()
+                newmarkenrollmentid=new_unit_enrollment.id
+                print(newmarkenrollmentid)
+                new_unit_mark=(Marks(enrollment_id=new_unit_enrollment.id))
+                db.session.add(new_unit_mark)
+                print(new_enrollment_id)
             db.session.commit()
             flash('Student enrolled successfully.', 'success')
 

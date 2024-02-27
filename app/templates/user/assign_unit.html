@@ -1,6 +1,6 @@
 <!-- templates/assign_unit.html -->
 
-{% extends "user/index.html" %} {% block content %} {{super()}}
+{% extends "user/user-base.html" %} {% block content %} {{super()}}
 <h2>Assign Unit</h2>
 <form method="post" action="{{ url_for('main.assign_unit') }}">
   {{ form.hidden_tag() }}
