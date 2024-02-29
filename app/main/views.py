@@ -274,8 +274,8 @@ def enroll_student():
             db.session.commit()
             new_enrollment_id = new_enrollment.id
             enroll_units=Units.query.filter_by(module_id=module_id).all()
-            print(enroll_units[0].id)
-            y=2
+          
+            
             for unit in enroll_units:
                 new_unit_enrollment=EnrollmentUnits(enrollment_id=new_enrollment_id,unit_id=unit.id)
                 print(new_unit_enrollment)
@@ -472,15 +472,14 @@ def update_marks():
             )
 
             if assigned_units:
-                print("There exists permission for",current_user.username)
+                
                 enrolled_students = []
                 for assigned_unit in assigned_units:
                     academic_year = assigned_unit.academic_year
                     unit_id = assigned_unit.unit_id
                     markis=marrks.filter(User.id==2)
                     makrs=markis.all()
-                    print("this right here")
-                    print(makrs,"this")
+                    
                     query=db.session.query(
 
                         User.fname.label('student_fname'),
@@ -529,12 +528,12 @@ def update_marks():
                         "overall":overall,
                         "markid":mark_id,
                                 })
-                print(InMyUnit)
+               
                     
                 return render_template('user/update_marks.html',students=InMyUnit)
        
         elif request.method == 'POST':
-            print("🥳🥳 in put method")
+          
             enrollment_id=request.form.getlist('enrollment_id[]')
             catmarks=request.form.getlist('cat_marks[]')
             assignmentmarks=request.form.getlist('assignment_marks[]')
@@ -542,32 +541,46 @@ def update_marks():
             exammarks=request.form.getlist('exam_marks[]')
             mark_id=request.form.getlist('mark_id[]')
 
-            print(enrollment_id)
-            print(catmarks)
-            print(assignmentmarks)
-            print(practicalmarks)
-            print(exammarks)
-            print(mark_id)
+           
             for enrollment_id,catmarks,assignmentmarks,practicalmarks,exammarks,mark_id in zip(enrollment_id,catmarks,assignmentmarks,practicalmarks,   exammarks,mark_id):
         
              mark_record = Marks.query.filter_by(id=mark_id).first()
+            #  mark_record.change_status()
            
              
              if mark_record:
-                mark_record.cat_marks = float(catmarks) if catmarks else None
-                mark_record.assignment_marks = float(assignmentmarks) if assignmentmarks else None
-                mark_record.practical_marks = float(practicalmarks) if practicalmarks else None
-                mark_record.exam_marks = float(exammarks) if exammarks else None
-                if exammarks:
+                catMarks=  mark_record.cat_marks
+                if catMarks is  None or catMarks=="":
+                    mark_record.cat_marks = float(catmarks) if catmarks else None
+                assignmentsMarks=mark_record.assignment_marks
+                if assignmentsMarks is None or assignmentsMarks=="":
+                    mark_record.assignment_marks = float(assignmentmarks) if assignmentmarks else None
+                practicalMarks=mark_record.practical_marks
+                if practicalMarks is  None or practicalMarks=="":
+                    mark_record.practical_marks = float(practicalmarks) if practicalmarks else None
+                examMarks=mark_record.exam_marks
+             
+                
+             
+                status=mark_record.status
+                if exammarks and examMarks is  None or exammarks and examMarks!=exammarks or exammarks and examMarks=="":
+                    mark_record.exam_marks = float(exammarks) if exammarks else None
+                if (exammarks is not None and examMarks is None and exammarks!="" and examMarks!=exammarks)or (examMarks!="" and exammarks is not None and exammarks!="" and examMarks!=exammarks ):
+                 
                     catmarks=float(catmarks) if catmarks else  0
                     assignmentmarks=float(assignmentmarks) if assignmentmarks else 0
                     practicalmarks=float(practicalmarks)if practicalmarks else 0
-                    exammarks=float(exammarks)
-                    ov_all=(0.66*catmarks)+(assignmentmarks)+(0.5*practicalmarks)+(exammarks)
+                    exammark=float(exammarks)
+                    ov_all=(0.66*catmarks)+(assignmentmarks)+(0.5*practicalmarks)+(exammark)
                     mark_record.overall_marks=float(ov_all)
+                    input=float(exammarks)
+                    record=float(examMarks)
+                    if ov_all > 39:
+                        Marks.query.filter_by(id=mark_id).update({Marks.status:1})
+                    elif ov_all<40 and record!=input:
+                        Marks.query.filter_by(id=mark_id).update({Marks.status: Marks.status + 2})
 
-               
-            
+
 
 
               
@@ -578,6 +591,6 @@ def update_marks():
             return redirect(url_for('main.update_marks'))
         
         else:
-            return jsonify({"error": "Record not found"}), 404
+            return jsonify({Invalid method }), 404
     
     return redirect(url_for('main.home'))

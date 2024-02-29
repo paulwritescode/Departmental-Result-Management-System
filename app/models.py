@@ -12,6 +12,7 @@ from flask import current_app
 from sqlalchemy import event
 from sqlalchemy.event import listens_for
 from flask_login import UserMixin,AnonymousUserMixin
+from sqlalchemy.schema import UniqueConstraint
 
 class User(db.Model,UserMixin):
     __tablename__="users"
@@ -196,7 +197,9 @@ class EnrollmentUnits(db.Model):
     enrollment_id = db.Column(db.Integer, db.ForeignKey('student_enrollment.id'))
     unit_id = db.Column(db.Integer, db.ForeignKey('units.id'))
     unit_marks=db.relationship("Marks",backref="unit_marks",lazy="dynamic")
-    nonsense=db.Column(db.String,nullable=True)
+    __table_args__ = (
+        UniqueConstraint('enrollment_id', 'unit_id', name='uq_enrollment_unit'),
+    )
    
 
 # ... (existing code)
@@ -212,12 +215,32 @@ class LecturerAssignment(db.Model):
 class Marks(db.Model):
     __tablename__="marks"
     id = db.Column(db.Integer, primary_key=True)
-    enrollment_id = db.Column(db.Integer, db.ForeignKey('enrollment_units.id'), nullable=False)
+    enrollment_id = db.Column(db.Integer, db.ForeignKey('enrollment_units.id'), nullable=False,unique=True)
     cat_marks = db.Column(db.Float)
     assignment_marks = db.Column(db.Float)
     practical_marks = db.Column(db.Float)
     exam_marks = db.Column(db.Float)
     overall_marks = db.Column(db.Float)
     status = db.Column(db.String(20))  
+
+    # def change_status(self):
+
+    #     status_dict = {
+    #         1: "pass",
+    #         2: "supp",
+    #         3: "carry_forward",
+    #         4: "supp_on_external_repeat",
+    #         5: "discontinuation"
+    #     }
+
+    #     self.status += 1
+
+    #     return self.status
+class Status(db.Model):
+    __tablename__="status"
+    id = db.Column(db.Integer, primary_key=True)
+    attempt=db.Column(db.String(10))
+    status=db.Column(db.String(4))
+    Recommendation=db.Column(db.String(10))
 
  
