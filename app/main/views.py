@@ -14,6 +14,36 @@ from .forms import *
 @login_required
 @permission_required(Permission.VIEW)
 def home():
+      if current_user.is_authenticated and current_user.role.name == 'Lecturer':
+        lecturer_id = current_user.id
+
+        if request.method=='GET':
+
+        # Now you can use the lecturer_id in your queries or any other logic
+        # For example, querying for units assigned to the lecturer
+            assigned_units = (
+                    db.session.query(
+                        LecturerAssignment.unit_id,
+                        LecturerAssignment.academic_year,
+                        Units.name
+                    )
+                    .join(Units, Units.id == LecturerAssignment.unit_id)
+                    .filter(LecturerAssignment.lecturer_id == lecturer_id)
+                    .all()
+                )
+
+
+            lecturers_units=[]
+            for unit in assigned_units:
+                print("There exists permission for",current_user.username)
+                print(assigned_units)
+                print(unit)
+              
+                
+            return render_template('user/lecturerlandingpage.html',lecturerunits=assigned_units)
+ 
+
+def addmarksfirsttime():
   if current_user.is_authenticated and current_user.role.name == 'Lecturer':
     lecturer_id = current_user.id
 
@@ -283,7 +313,7 @@ def enroll_student():
                 db.session.commit()
                 newmarkenrollmentid=new_unit_enrollment.id
                 print(newmarkenrollmentid)
-                new_unit_mark=(Marks(enrollment_id=new_unit_enrollment.id))
+                new_unit_mark=(Marks(unitenrollment_id=new_unit_enrollment.id))
                 db.session.add(new_unit_mark)
                 print(new_enrollment_id)
             db.session.commit()
@@ -393,6 +423,7 @@ def calculate_overall_marks(cat_marks, assignment_marks, practical_marks, exam_m
     return overall_marks
 @main.route('/update_marks', methods=['POST','GET','PUT'])
 def update_marks():
+   
     if current_user.is_authenticated and current_user.role.name == 'Lecturer':
         lecturer_id = current_user.id
     # Ensure the request is a POST request
@@ -445,6 +476,10 @@ def update_marks():
         
 
         elif request.method=='GET':
+            acyear = request.args.get('acyear')
+            unit = request.args.get('unit')
+            print(acyear,unit)
+            
 
             marrks=db.session.query(
                 Marks,
@@ -456,7 +491,7 @@ def update_marks():
                 StudentEnrollment.id.label("SUid"),
                 EnrollmentUnits.id.label("EUid"), 
                 Marks.id.label("markid")
-            ).join(EnrollmentUnits,Marks.enrollment_id==EnrollmentUnits.id
+            ).join(EnrollmentUnits,Marks.unitenrollment_id==EnrollmentUnits.id
                    ).join(StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
                           ).join(Units,EnrollmentUnits.unit_id==Units.id
                                  ).join(User,StudentEnrollment.student_id==User.id)
@@ -504,10 +539,10 @@ def update_marks():
                             User,StudentEnrollment.student_id==User.id
                         ).join(
                             Units, EnrollmentUnits.unit_id==Units.id
-                        ).join(Marks,EnrollmentUnits.id==Marks.enrollment_id
+                        ).join(Marks,EnrollmentUnits.id==Marks.unitenrollment_id
                         )
-                    enrolledStudents=query.filter(Units.id == unit_id,
-                        StudentEnrollment.academic_year == academic_year)
+                    enrolledStudents=query.filter(Units.id == unit,
+                        StudentEnrollment.academic_year == acyear)
                 students=enrolledStudents.all()
                 InMyUnit=[]
              
@@ -591,6 +626,148 @@ def update_marks():
             return redirect(url_for('main.update_marks'))
         
         else:
-            return jsonify({Invalid method }), 404
+            return jsonify({"Invalid method" }), 404
     
     return redirect(url_for('main.home'))
+
+@main.route('/consolidatedSS',methods=['POST','GET'])
+
+def consosheet(acyear=20222023):
+    if request.method=='GET':
+        
+        query1=db.session.query(
+
+                        User.fname.label("userfname"),
+                        User.lname.label("userlname") ,
+                        User.Reg_no.label("regno"),
+                        StudentEnrollment.id.label("StudentId"),
+                        Modules.year.label("modyear"), 
+                        Modules.semester.label("modsem")
+
+
+                        ).join(
+                            StudentEnrollment,User.id==StudentEnrollment.student_id
+                        ).join(
+                            Modules,StudentEnrollment.module_id==Modules.id
+                        )
+        enrolledStuents=query1.filter(
+                        StudentEnrollment.academic_year == acyear)
+        student=enrolledStuents.all()
+        
+        tester=[]
+        def func2(): 
+            
+            result=[]
+           
+            for unit_name,unit_code,unit_id,overall,markstatus,uniten,acayea in students :
+                            
+                result.append({"unit":unit_name,
+                            "unit_mark":overall,
+                            "unit_id":unit_id,
+                            "markstatus":markstatus})
+            return(result)
+        student_data_dict = {}
+        for fname,lname,regno,studid,modyear,modsem in student:
+            query=db.session.query(
+
+                      
+                        Units.name.label("unit_name"),
+                        Units.code.label("unit_code"),
+                        Units.id.label("unit_id"),
+                        
+                        Marks.overall_marks.label("overall"),
+                        Marks.status.label("markstatus"),
+
+                       
+
+
+                        EnrollmentUnits.id.label("unitenrollment_id"),
+                        StudentEnrollment.academic_year.label("academicYear")
+                        ).join(
+                            StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
+                        ).join(
+                            User,StudentEnrollment.student_id==User.id
+                        ).join(
+                            Units, EnrollmentUnits.unit_id==Units.id
+                        ).join(Marks,EnrollmentUnits.id==Marks.unitenrollment_id
+                        )
+            enrolledStudents=query.filter(StudentEnrollment.student_id==studid,
+                        StudentEnrollment.academic_year == acyear,)
+            students=enrolledStudents.all()
+            
+            resulting=func2()
+            
+           
+         
+            
+            tester.append({
+                "names":fname + " " + lname,
+                "reg":regno,
+                "module":f"{modyear}.{modsem}",
+                "values":resulting
+            })
+            
+            # print(resulting)
+        for student_data in tester:
+            total_marks = 0
+            num_units = 0
+            status = "pass"  # Assume pass, change to fail if any unit fails
+            for unit_data in student_data["values"]:
+                total_marks += unit_data["unit_mark"]
+                num_units += 1
+                if int(unit_data["markstatus"]) == 2:
+                    status = "fail"
+                    break  # Break the loop if any unit fails
+            
+            average_mark = round(total_marks / num_units,2)if num_units > 0 else 0
+            student_data["status"] = status
+            student_data["average_mark"] = average_mark
+           
+            print(f"here goes {tester[0]['values']}"
+                  )
+
+
+
+    length=len(tester)
+    
+    ln=length
+   
+    return render_template('admin/consolidated.html',data=tester,length=ln)
+   
+   
+    return(tester)
+@main.route("/test",methods=['GET'])
+def test():
+    query=db.session.query(
+
+                        User.fname.label("fname"),
+                        User.lname.label("lname"),
+                        User.Reg_no.label("reg"),
+                        Modules.year.label("year"),
+                        Modules.semester.label("sem"),
+                        Units.name.label("unit_name"),
+                        Units.code.label("unit_code"),
+                        
+                        Marks.overall_marks.label("overall"),
+                        
+                       
+
+
+                        EnrollmentUnits.id.label("unitenrollment_id"),
+                        StudentEnrollment.academic_year.label("academicYear")
+                        ).join(
+                            StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
+                        ).join(
+                            User,StudentEnrollment.student_id==User.id
+                        ).join(
+                            Units, EnrollmentUnits.unit_id==Units.id
+                        ).join(Marks,EnrollmentUnits.id==Marks.unitenrollment_id
+                        )
+    enrolledStudents=query.filter(StudentEnrollment.module_id==2,
+                        StudentEnrollment.academic_year == 20222023,
+                        User.Reg_no==1255).group_by(Units.name)
+    students=enrolledStudents.all()
+   
+    print(f"query returns {students} while list inyear")
+    return ("OLLA")
+    

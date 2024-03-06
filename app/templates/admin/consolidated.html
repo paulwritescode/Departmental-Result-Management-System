@@ -1,0 +1,52 @@
+{% extends 'user/user-base.html'%} {% block content %}
+<div class="bg-white p-3 rounded-md">
+  <table>
+  <theader>
+      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+        Index
+      </th>
+    <theader>
+      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+        Student name
+      </th>
+
+      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+        Student Reg
+      </th>
+
+      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+        Module
+      </th>
+      {% set marks_data = data[0]["values"] %} {% for mark in marks_data %}
+      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+        {{ mark["unit"] }}
+      </th>
+      {% endfor %}
+
+      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+        Aggregate
+      </th>
+      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+        Overall
+      </th>
+    </theader>
+    <tbody>
+      {% set length = length %} {% for i in range(length) %} {% set marks_data =
+      data[i]["values"] %}
+      <tr class="border-b-2">
+      <td class="border-r-2">{{loop.index }}</td>
+        <td class="border-r-2">{{ data[i]["names"] }}</td>
+        <td class="border-r-2">{{ data[i]["reg"] }}</td>
+        <td class="border-r-2">{{ data[i]["module"] }}</td>
+        {% for mark in marks_data %}
+        <td class="border-r-2">{{ mark["unit_mark"]|round(2) }}</td>
+
+        {%endfor%}
+        <td class="border-r-2">{{data[i]['status']}}</td>
+        <td class="border-r-2">{{data[i]["average_mark"]|round(2) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
