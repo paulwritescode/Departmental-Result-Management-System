@@ -209,12 +209,12 @@ class LecturerAssignment(db.Model):
 class Marks(db.Model):
     __tablename__="marks"
     id = db.Column(db.Integer, primary_key=True)
-    enrollment_id = db.Column(db.Integer, db.ForeignKey('enrollment_units.id'), nullable=False,unique=True)
+    unitenrollment_id = db.Column(db.Integer, db.ForeignKey('enrollment_units.id'), nullable=False,unique=True)
     cat_marks = db.Column(db.Float)
     assignment_marks = db.Column(db.Float)
     practical_marks = db.Column(db.Float)
     exam_marks = db.Column(db.Float)
-    overall_marks = db.Column(db.Float)
+    overall_marks = db.Column(db.Float,default=0)
     status = db.Column(db.String(20))
 
     # def change_status(self):
