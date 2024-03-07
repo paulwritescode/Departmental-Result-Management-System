@@ -1,21 +1,15 @@
 
 from datetime import datetime
 
-from flask_sqlalchemy import SQLAlchemy
-
-from . import db
-
-from flask_sqlalchemy import SQLAlchemy
-from . import db,login_manager
-from datetime import datetime
 from flask import current_app
+from flask_login import AnonymousUserMixin, UserMixin
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
 from sqlalchemy.event import listens_for
-from flask_login import UserMixin,AnonymousUserMixin
 from sqlalchemy.schema import UniqueConstraint
 
-class User(db.Model,UserMixin):
-    __tablename__="users"
+from . import db, login_manager
+
     id = db.Column(db.Integer, primary_key = True)
     fname = db.Column(db.String(255), nullable = False)
     lname = db.Column(db.String(255), nullable = False)
@@ -32,14 +26,14 @@ class User(db.Model,UserMixin):
     lecturer_unit_assignment = db.relationship('LecturerAssignment', backref='lecturer', lazy='dynamic')
 
 
-    
+
     def __init__(self,**kwargs):
         super(User,self).__init__(**kwargs)
         if self.role is None:
             if self.email==current_app.config['FLASKY_ADMIN']:
                 self.role=Role.query.filter_by(name="Administartor").first()
                 if self.role is None:
-                    self.role=Role.query.filter_by(default=True).first() 
+                    self.role=Role.query.filter_by(default=True).first()
     def __repr__(self):
         return f'User("{self.id}","{self.fname}","{self.lname}","{self.email}","{self.edu}","{self.username}","{self.status}")'
     def can(self, perm):
@@ -48,30 +42,30 @@ class User(db.Model,UserMixin):
         return self.can(Permission.Admin)
 @login_manager.user_loader
 def load_user(user_id):
-   return User.query.get(int(user_id))   
+   return User.query.get(int(user_id))
 
-    
-            
-  
-    
+
+
+
+
 class AnonymousUser(AnonymousUserMixin):
     def can (self,permissions):
         return False
     def is_administartor(self):
         return False
 login_manager.anonymous_user=AnonymousUser
-    
 
 
-# Permissions class defination 
+
+# Permissions class defination
 class Permission:
     VIEW=1
     COMMENT=2
     WRITE=4
     EDIT=8
-    ADMIN=16 
+    ADMIN=16
 
-# Roles Table defined Here 
+# Roles Table defined Here
 class Role(db.Model):
     __tablename__="roles"
     id=db.Column(db.Integer,primary_key=True)
@@ -96,10 +90,10 @@ class Role(db.Model):
     def has_permission(self, perm):
      return self.permissions & perm == perm
 
-    
+
 # Assigning Permissions to Roles
     @staticmethod
-    def insert_roles():        
+    def insert_roles():
         roles={
             'User': [Permission.VIEW,Permission.COMMENT],
             'Lecturer':[Permission.VIEW,Permission.COMMENT,Permission.WRITE],
@@ -126,7 +120,7 @@ class Units (db.Model):
     module_id=db.Column(db.Integer,db.ForeignKey('modules.id'))
     student_enrollments = db.relationship('EnrollmentUnits', backref='student_units', lazy='dynamic', overlaps="student_enrollments,student_units")
     unit_lecturer = db.relationship('LecturerAssignment', backref='lecs', lazy='dynamic')
-   
+
 
     @staticmethod
     def insert_units():
@@ -168,7 +162,7 @@ class Units (db.Model):
 
 class Modules(db.Model):
     __table__name="modules"
-    
+
     id =db.Column(db.Integer,unique=True,primary_key=True)
     name=db.Column(db.String(20),nullable=False)
     year=db.Column(db.Integer,nullable=False)
@@ -189,7 +183,7 @@ class StudentEnrollment(db.Model):
     academic_year = db.Column(db.Integer,nullable=False)
     # enrollment = db.relationship('StudentEnrollment', backref='marks', lazy=True)
     units = db.relationship('Units', secondary='enrollment_units', backref='enrollments', lazy='dynamic', overlaps="student_enrollments,student_units")
-    
+
 
 class EnrollmentUnits(db.Model):
     __tablename__ = 'enrollment_units'
@@ -200,7 +194,7 @@ class EnrollmentUnits(db.Model):
     __table_args__ = (
         UniqueConstraint('enrollment_id', 'unit_id', name='uq_enrollment_unit'),
     )
-   
+
 
 # ... (existing code)
 class LecturerAssignment(db.Model):
@@ -221,7 +215,7 @@ class Marks(db.Model):
     practical_marks = db.Column(db.Float)
     exam_marks = db.Column(db.Float)
     overall_marks = db.Column(db.Float,default=0)
-    status = db.Column(db.String(20))  
+    status = db.Column(db.String(20))
 
     # def change_status(self):
 
@@ -243,4 +237,4 @@ class Status(db.Model):
     status=db.Column(db.String(4))
     Recommendation=db.Column(db.String(10))
 
- 
+
