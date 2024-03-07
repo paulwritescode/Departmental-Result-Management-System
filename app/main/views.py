@@ -643,6 +643,9 @@ def consosheet(acyear=20222023):
                         StudentEnrollment.id.label("StudentId"),
                         Modules.year.label("modyear"), 
                         Modules.semester.label("modsem")
+                        # ,
+                        # StudentEnrollment.module_id.label("modid"),
+                        # StudentEnrollment.academic_year.label("acyea")
 
 
                         ).join(
@@ -666,7 +669,8 @@ def consosheet(acyear=20222023):
                             "unit_id":unit_id,
                             "markstatus":markstatus})
             return(result)
-        student_data_dict = {}
+        student_data_dict = []
+        
         for fname,lname,regno,studid,modyear,modsem in student:
             query=db.session.query(
 
@@ -697,18 +701,42 @@ def consosheet(acyear=20222023):
             
             resulting=func2()
             
-           
-         
+            found = False
+
+            for stud in student_data_dict:
+                if regno == stud["reg"]:
+                    if "module1" not in stud:
+                        stud["module1"] = f"{modyear}.{modsem}"
+                    else:
+                        stud["module2"] = f"{modyear}.{modsem}"
+                    found = True
+                    break
+
+            if not found:
+                student_data_dict.append({
+                    "names": fname + " " + lname,
+                    "reg": regno,
+                    "module1": f"{modyear}.{modsem}",
+                    "values":resulting
+                })
+
+
             
+           
+
+
+            # print(student_data_dict)            
             tester.append({
                 "names":fname + " " + lname,
                 "reg":regno,
                 "module":f"{modyear}.{modsem}",
                 "values":resulting
             })
+
+        print(f"the entire list {student_data_dict} +{len(student_data_dict)}")
             
             # print(resulting)
-        for student_data in tester:
+        for student_data in student_data_dict:
             total_marks = 0
             num_units = 0
             status = "pass"  # Assume pass, change to fail if any unit fails
@@ -717,22 +745,57 @@ def consosheet(acyear=20222023):
                 num_units += 1
                 if int(unit_data["markstatus"]) == 2:
                     status = "fail"
-                    break  # Break the loop if any unit fails
-            
+                    break # Break the loop if any unit fails
+                elif int(unit_data["markstatus"]) == 0:
+                    status="pending"
+                    break
+                # else:
+                #     student_id=int(studid)+1
+                #     module_id=int(modid)+1
+                #     academic_year=int(acyea)+1
+                #     print(student_id,academic_year,module_id)
+                #      # Check if the student is not already enrolled in the module
+                #     enrollment_exists = StudentEnrollment.query.filter_by(student_id=student_id, module_id=module_id,academic_year=academic_year).first()
+                #     if enrollment_exists:
+                #         flash('Student is already enrolled in the module.', 'warning')
+                #     else:
+                #         # Create a new enrollment
+                #         new_enrollment = StudentEnrollment(student_id=student_id, module_id=module_id, academic_year=academic_year)
+
+                #         db.session.add(new_enrollment)
+                #         db.session.commit()
+                #         new_enrollment_id = new_enrollment.id
+                #         enroll_units=Units.query.filter_by(module_id=module_id).all()
+                    
+                        
+                #         for unit in enroll_units:
+                #             new_unit_enrollment=EnrollmentUnits(enrollment_id=new_enrollment_id,unit_id=unit.id)
+                #             print(new_unit_enrollment)
+                #             db.session.add(new_unit_enrollment)
+                #             db.session.commit()
+                #             newmarkenrollmentid=new_unit_enrollment.id
+                #             print(newmarkenrollmentid)
+                #             new_unit_mark=(Marks(unitenrollment_id=new_unit_enrollment.id))
+                #             db.session.add(new_unit_mark)
+                #             print(new_enrollment_id)
+                #         db.session.commit()
+                #     flash('Student enrolled successfully.', 'success')
+                    
             average_mark = round(total_marks / num_units,2)if num_units > 0 else 0
             student_data["status"] = status
             student_data["average_mark"] = average_mark
            
-            print(f"here goes {tester[0]['values']}"
-                  )
+            # print(f"here goes {tester[0]['values']}"
+            #       )
 
 
 
     length=len(tester)
     
-    ln=length
+    ln=len(student_data_dict)
+    print(student_data_dict)
    
-    return render_template('admin/consolidated.html',data=tester,length=ln)
+    return render_template('admin/consolidated.html',data=student_data_dict,length=ln)
    
    
     return(tester)
