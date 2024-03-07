@@ -1,15 +1,21 @@
 
 from datetime import datetime
 
-from flask import current_app
-from flask_login import AnonymousUserMixin, UserMixin
 from flask_sqlalchemy import SQLAlchemy
+
+from . import db
+
+from flask_sqlalchemy import SQLAlchemy
+from . import db,login_manager
+from datetime import datetime
+from flask import current_app
 from sqlalchemy import event
 from sqlalchemy.event import listens_for
+from flask_login import UserMixin,AnonymousUserMixin
 from sqlalchemy.schema import UniqueConstraint
 
-from . import db, login_manager
-
+class User(db.Model,UserMixin):
+    __tablename__="users"
     id = db.Column(db.Integer, primary_key = True)
     fname = db.Column(db.String(255), nullable = False)
     lname = db.Column(db.String(255), nullable = False)
