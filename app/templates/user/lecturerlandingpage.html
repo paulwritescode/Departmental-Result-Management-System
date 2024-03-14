@@ -2,7 +2,7 @@
 <div style="background: #ffffff; size: 25%">
   {%for unit,year,name in lecturerunits%}
   <a
-    href="{{ url_for('main.update_marks', acyear=year, unit=unit) }}"
+    href="{{ url_for('lecturer.update_marks', acyear=year, unit=unit) }}"
     class="flex space-x-1 bg-sky-400 hover:bg-sky-500 hover:text-white p-1 px-2 rounded-md"
     >{{name}} {{year}}</a
   >

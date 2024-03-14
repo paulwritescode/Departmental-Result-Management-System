@@ -2,7 +2,7 @@
 
 {% extends "user/user-base.html" %} {% block content %}
 <h2>Enroll Student</h2>
-<form method="post" action="{{ url_for('main.enroll_student') }}">
+<form method="post" action="{{ url_for('admin.enroll_student') }}">
   {{ form.hidden_tag() }}
   <label for="student_id">Student ID:</label>
   {{ form.student_id(size=10, placeholder="Enter student ID", required=true) }}

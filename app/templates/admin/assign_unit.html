@@ -2,7 +2,7 @@
 
 {% extends "user/user-base.html" %} {% block content %} {{super()}}
 <h2>Assign Unit</h2>
-<form method="post" action="{{ url_for('main.assign_unit') }}">
+<form method="post" action="{{ url_for('admin.assign_unit') }}">
   {{ form.hidden_tag() }}
   <label for="lecturer_id">Lecturer ID:</label>
   {{ form.lecturer_id(size=10, placeholder="Enter lecturer ID", required=true)

@@ -19,9 +19,18 @@
       </th>
       {% set marks_data = data[0]["values"] %} {% for mark in marks_data %}
       <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+       {{data[0]["module1"]}}
         {{ mark["unit"] }}
       </th>
       {% endfor %}
+         
+      {% set marks_data2 = data[1]["valuesmod2"] %} {% for mark2 in marks_data2 %}
+      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+      {{data[0]["module2"]}}
+        {{ mark2["unit"] }}
+      </th>
+      {% endfor %}
+
 
       <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
         Aggregate
@@ -31,19 +40,23 @@
       </th>
     </theader>
     <tbody>
-      {% set length = length %} {% for i in range(length) %} {% set marks_data =
-      data[i]["values"] %}
+      {% set length = length %} {% for i in range(length) %}
       <tr class="border-b-2">
       <td class="border-r-2">{{loop.index }}</td>
         <td class="border-r-2">{{ data[i]["names"] }}</td>
         <td class="border-r-2">{{ data[i]["reg"] }}</td>
-        <td class="border-r-2">{{ data[i]["module"] }}</td>
-        {% for mark in marks_data %}
+        <td class="border-r-2">{{ data[i]["module1"] }}{{ data[i]["module2"] }}</td>
+         {% set marks_data =
+      data[i]["values"] %}{% for mark in marks_data %}
         <td class="border-r-2">{{ mark["unit_mark"]|round(2) }}</td>
 
         {%endfor%}
+        {% set marks_data2 = data[i]["valuesmod2"] %} {% for mark2 in marks_data2 %}
+        <td class="border-r-2">{{ mark2["unit_mark"]|round(2) }}</td>
+
+        {%endfor%}
         <td class="border-r-2">{{data[i]['status']}}</td>
-        <td class="border-r-2">{{data[i]["average_mark"]|round(2) }}</td>
+        <td class="border-r-2">{{data[i]["average_mark"]}}</td>
       </tr>
       {% endfor %}
     </tbody>
