@@ -609,7 +609,7 @@ def update_marks():
                     ov_all=(0.66*catmarks)+(assignmentmarks)+(0.5*practicalmarks)+(exammark)
                     mark_record.overall_marks=float(ov_all)
                     input=float(exammarks)
-                    record=float(examMarks)
+                    record=float(examMarks)if examMarks else 0
                     if ov_all > 39:
                         Marks.query.filter_by(id=mark_id).update({Marks.status:1})
                     elif ov_all<40 and record!=input:
@@ -640,9 +640,12 @@ def consosheet(acyear=20222023):
                         User.fname.label("userfname"),
                         User.lname.label("userlname") ,
                         User.Reg_no.label("regno"),
-                        StudentEnrollment.id.label("StudentId"),
+                        StudentEnrollment.student_id.label("StudentId"),
                         Modules.year.label("modyear"), 
-                        Modules.semester.label("modsem")
+                        Modules.semester.label("modsem"),
+                        StudentEnrollment.id.label("seid")
+                        # ,
+                        # StudentEnrollment.academic_year.label("acyea")
 
 
                         ).join(
@@ -654,20 +657,34 @@ def consosheet(acyear=20222023):
                         StudentEnrollment.academic_year == acyear)
         student=enrolledStuents.all()
         
+        
         tester=[]
-        def func2(): 
+        def func2(regno): 
             
             result=[]
            
-            for unit_name,unit_code,unit_id,overall,markstatus,uniten,acayea in students :
+            for unit_name,unit_code,unit_id,overall,markstatus,uniten,acayea,reg in students :
+                if reg==regno:                         
+                    result.append({"unit":unit_name,
+                                "unit_mark":overall,
+                                "unit_id":unit_id,
+                                "markstatus":markstatus})
+            return(result)
+        def func1(): 
+            
+            result=[]
+           
+            for unit_name,unit_code,unit_id,overall,markstatus,uniten,acayea,reg in studentes :
+
                             
                 result.append({"unit":unit_name,
                             "unit_mark":overall,
                             "unit_id":unit_id,
                             "markstatus":markstatus})
             return(result)
-        student_data_dict = {}
-        for fname,lname,regno,studid,modyear,modsem in student:
+        student_data_dict = []
+        test=[]
+        for fname,lname,regno,studid,modyear,modsem,seid in student:
             query=db.session.query(
 
                       
@@ -682,7 +699,8 @@ def consosheet(acyear=20222023):
 
 
                         EnrollmentUnits.id.label("unitenrollment_id"),
-                        StudentEnrollment.academic_year.label("academicYear")
+                        StudentEnrollment.academic_year.label("academicYear"),
+                        User.Reg_no.label('regno')
                         ).join(
                             StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
                         ).join(
@@ -691,48 +709,137 @@ def consosheet(acyear=20222023):
                             Units, EnrollmentUnits.unit_id==Units.id
                         ).join(Marks,EnrollmentUnits.id==Marks.unitenrollment_id
                         )
-            enrolledStudents=query.filter(StudentEnrollment.student_id==studid,
+            enrolledStudents=query.filter(EnrollmentUnits.enrollment_id==seid,
+                        StudentEnrollment.academic_year == acyear,)
+            enrolledStudentes=query.filter(StudentEnrollment.id==studid,
                         StudentEnrollment.academic_year == acyear,)
             students=enrolledStudents.all()
+            studentes=enrolledStudentes.all()
             
-            resulting=func2()
+            
+            
+            
+            found = False
+
+            for stud in student_data_dict:
+                # print(stud['names'])
+                
+                if regno == stud["reg"]:
+                    if "module1" not in stud:
+                        stud["module1"] = f"{modyear}.{modsem}"
+                       
+                    elif "module1" in stud:
+                        stud["module2"] = f"{modyear}.{modsem}"
+                        print(stud,'123456')
+                        stud["valuesmod2"]=func2(regno)
+                        test.append({"names"
+                            "module :"  f"{modyear}.{modsem}",
+                                     'values :'f"{func2(regno)}" })
+                        
+                        # print("after adding", stud)
+
+                        
+                       
+                     
+                     
+                    
+                    found = True
+                    break
+            # print('this is me testing ',test)
+            print('trial and error ',student_data_dict)
+
+            if not found:
+                student_data_dict.append({
+                    "names": fname + " " + lname,
+                    "reg": regno,
+                    "module1": f"{modyear}.{modsem}",
+                    "values":func2(regno)
+                })
+
+
             
            
-         
-            
+
+
+            # print(student_data_dict)            
             tester.append({
                 "names":fname + " " + lname,
                 "reg":regno,
                 "module":f"{modyear}.{modsem}",
-                "values":resulting
+                "values":func2(regno)
             })
+
+        # print(f"the entire list {student_data_dict[0]} +{len(student_data_dict)}")
+        # print(f"Here it goes {student_data_dict[1]}🙏🙏")
             
             # print(resulting)
-        for student_data in tester:
+        for student_data in student_data_dict:
             total_marks = 0
             num_units = 0
+        
             status = "pass"  # Assume pass, change to fail if any unit fails
             for unit_data in student_data["values"]:
+                print('🙏🤣🥳',student_data["valuesmod2"],num_units)
                 total_marks += unit_data["unit_mark"]
                 num_units += 1
                 if int(unit_data["markstatus"]) == 2:
                     status = "fail"
-                    break  # Break the loop if any unit fails
-            
+                    break # Break the loop if any unit fails
+                elif int(unit_data["markstatus"]) == 0:
+                    status="pending"
+                    break
+                # else:
+                #     student_id=int(studid)+1
+                #     module_id=int(modid)+1
+                #     academic_year=int(acyea)+1
+                #     print(student_id,academic_year,module_id)
+                #      # Check if the student is not already enrolled in the module
+                #     enrollment_exists = StudentEnrollment.query.filter_by(student_id=student_id, module_id=module_id,academic_year=academic_year).first()
+                #     if enrollment_exists:
+                #         flash('Student is already enrolled in the module.', 'warning')
+                #     else:
+                #         # Create a new enrollment
+                #         new_enrollment = StudentEnrollment(student_id=student_id, module_id=module_id, academic_year=academic_year)
+
+                #         db.session.add(new_enrollment)
+                #         db.session.commit()
+                #         new_enrollment_id = new_enrollment.id
+                #         enroll_units=Units.query.filter_by(module_id=module_id).all()
+                    
+                        
+                #         for unit in enroll_units:
+                #             new_unit_enrollment=EnrollmentUnits(enrollment_id=new_enrollment_id,unit_id=unit.id)
+                #             print(new_unit_enrollment)
+                #             db.session.add(new_unit_enrollment)
+                #             db.session.commit()
+                #             newmarkenrollmentid=new_unit_enrollment.id
+                #             print(newmarkenrollmentid)
+                #             new_unit_mark=(Marks(unitenrollment_id=new_unit_enrollment.id))
+                #             db.session.add(new_unit_mark)
+                #             print(new_enrollment_id)
+                #         db.session.commit()
+                #     flas
+                ('Student enrolled successfully.', 'success')
+                    
             average_mark = round(total_marks / num_units,2)if num_units > 0 else 0
             student_data["status"] = status
             student_data["average_mark"] = average_mark
-           
-            print(f"here goes {tester[0]['values']}"
-                  )
+            
+            # print(f"here goes {tester[0]['values']}"
+            #       )
 
 
 
     length=len(tester)
     
-    ln=length
+    ln=len(student_data_dict)
+
+    # print(tester)
+    print(student_data_dict[2])
+    print(student_data_dict[3])
+    print(ln)
    
-    return render_template('admin/consolidated.html',data=tester,length=ln)
+    return render_template('admin/consolidated.html',data=student_data_dict,length=ln)
    
    
     return(tester)
@@ -770,4 +877,28 @@ def test():
    
     print(f"query returns {students} while list inyear")
     return ("OLLA")
+@main.route('/getmarks',methods=['GET','POST'])
+def getmarks():
+    get_student_results(3,20222023)
+    get_students_in_academic_year(20222023)
+    return ('something')
+def get_student_results(student_id, academic_year):
+    results = db.session.query(StudentEnrollment, Modules, Marks).\
+        join(Modules, StudentEnrollment.module_id == Modules.id).\
+        join(EnrollmentUnits, EnrollmentUnits.enrollment_id == StudentEnrollment.id).\
+        join(Marks, Marks.unitenrollment_id == EnrollmentUnits.id).\
+        filter(StudentEnrollment.student_id == student_id,
+               StudentEnrollment.academic_year == academic_year).all()
+    print(results)
     
+    return results
+
+# Query to fetch all students enrolled in a certain academic year
+def get_students_in_academic_year(academic_year):
+    students = db.session.query(EnrollmentUnits).\
+        join(StudentEnrollment, User.id == StudentEnrollment.student_id).\
+        join(EnrollmentUnits,StudentEnrollment.id==EnrollmentUnits.enrollment_id).\
+        filter(StudentEnrollment.academic_year == academic_year).all()
+    print(students)
+    
+    return students
