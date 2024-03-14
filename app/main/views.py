@@ -38,10 +38,10 @@ def home():
                 print("There exists permission for",current_user.username)
                 print(assigned_units)
                 print(unit)
-              
-                
+
+
             return render_template('user/lecturerlandingpage.html',lecturerunits=assigned_units)
- 
+
 
 def addmarksfirsttime():
   if current_user.is_authenticated and current_user.role.name == 'Lecturer':
@@ -188,7 +188,7 @@ def editprofile():
             if user_profile:
                  fname, lname, email, phone, currentmodule, regno, roleid, status, yor, username = user_profile
 
-                 return render_template('user/edit_profile.html', 
+                 return render_template('user/edit_profile.html',
                                fname=fname,
                                lname=lname,
                                email=email,
@@ -237,7 +237,7 @@ def editprofile():
 
 # Use the update method to update the user profile
 
-            
+
             return("success")
      else:
          return ('User profile not found')
@@ -261,7 +261,7 @@ def profile():
                 if user_profile:
                  fname, lname, email, phone, currentmodule, regno, roleid, status, yor, username = user_profile
 
-                 return render_template('user/viewprofile.html', 
+                 return render_template('user/viewprofile.html',
                                fname=fname,
                                lname=lname,
                                email=email,
@@ -277,12 +277,12 @@ def profile():
             else:
                   return redirect(url_for("main.home"))
         # Handle the case where the user profile is not found
-        else:    
+        else:
             return ('User profile not found')
-       
 
 
-        
+
+
 # TODO Move to admin under templates (this is the admin enrolling students)
 @main.route('/enroll_student', methods=['GET', 'POST'])
 def enroll_student():
@@ -304,8 +304,8 @@ def enroll_student():
             db.session.commit()
             new_enrollment_id = new_enrollment.id
             enroll_units=Units.query.filter_by(module_id=module_id).all()
-          
-            
+
+
             for unit in enroll_units:
                 new_unit_enrollment=EnrollmentUnits(enrollment_id=new_enrollment_id,unit_id=unit.id)
                 print(new_unit_enrollment)
@@ -423,7 +423,7 @@ def calculate_overall_marks(cat_marks, assignment_marks, practical_marks, exam_m
     return overall_marks
 @main.route('/update_marks', methods=['POST','GET','PUT'])
 def update_marks():
-   
+
     if current_user.is_authenticated and current_user.role.name == 'Lecturer':
         lecturer_id = current_user.id
     # Ensure the request is a POST request
@@ -473,13 +473,13 @@ def update_marks():
 
             # Redirect to the home page or another appropriate page
             return redirect(url_for('main.home'))
-        
+
 
         elif request.method=='GET':
             acyear = request.args.get('acyear')
             unit = request.args.get('unit')
             print(acyear,unit)
-            
+
 
             marrks=db.session.query(
                 Marks,
@@ -489,14 +489,14 @@ def update_marks():
                 Units.code.label("unitcode"),
                 Units.name.label("unitname"),
                 StudentEnrollment.id.label("SUid"),
-                EnrollmentUnits.id.label("EUid"), 
+                EnrollmentUnits.id.label("EUid"),
                 Marks.id.label("markid")
             ).join(EnrollmentUnits,Marks.unitenrollment_id==EnrollmentUnits.id
                    ).join(StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
                           ).join(Units,EnrollmentUnits.unit_id==Units.id
                                  ).join(User,StudentEnrollment.student_id==User.id)
-            
-                          
+
+
         # Now you can use the lecturer_id in your queries or any other logic
         # For example, querying for units assigned to the lecturer
             assigned_units = (
@@ -507,14 +507,14 @@ def update_marks():
             )
 
             if assigned_units:
-                
+
                 enrolled_students = []
                 for assigned_unit in assigned_units:
                     academic_year = assigned_unit.academic_year
                     unit_id = assigned_unit.unit_id
                     markis=marrks.filter(User.id==2)
                     makrs=markis.all()
-                    
+
                     query=db.session.query(
 
                         User.fname.label('student_fname'),
@@ -528,7 +528,7 @@ def update_marks():
                         Marks.practical_marks.label("practicals"),
                         Marks.exam_marks.label("exam"),
                         Marks.overall_marks.label("overall"),
-                       
+
 
 
                         EnrollmentUnits.id.label("unitenrollment_id"),
@@ -545,11 +545,11 @@ def update_marks():
                         StudentEnrollment.academic_year == acyear)
                 students=enrolledStudents.all()
                 InMyUnit=[]
-             
-                 
+
+
                 for student_fname,student_lname,student_regNo,unit_name,unit_code,mark_id ,cats,assignments,practicals,exam,overall,unitenrollment_id,academicYear in students:
                     InMyUnit.append({
-                       
+
                         "student_name": student_fname + student_lname,
                         "course_name": unit_name,
                         "course_code": unit_code,
@@ -563,12 +563,12 @@ def update_marks():
                         "overall":overall,
                         "markid":mark_id,
                                 })
-               
-                    
+
+
                 return render_template('user/update_marks.html',students=InMyUnit)
-       
+
         elif request.method == 'POST':
-          
+
             enrollment_id=request.form.getlist('enrollment_id[]')
             catmarks=request.form.getlist('cat_marks[]')
             assignmentmarks=request.form.getlist('assignment_marks[]')
@@ -576,13 +576,13 @@ def update_marks():
             exammarks=request.form.getlist('exam_marks[]')
             mark_id=request.form.getlist('mark_id[]')
 
-           
+
             for enrollment_id,catmarks,assignmentmarks,practicalmarks,exammarks,mark_id in zip(enrollment_id,catmarks,assignmentmarks,practicalmarks,   exammarks,mark_id):
-        
+
              mark_record = Marks.query.filter_by(id=mark_id).first()
             #  mark_record.change_status()
-           
-             
+
+
              if mark_record:
                 catMarks=  mark_record.cat_marks
                 if catMarks is  None or catMarks=="":
@@ -594,14 +594,14 @@ def update_marks():
                 if practicalMarks is  None or practicalMarks=="":
                     mark_record.practical_marks = float(practicalmarks) if practicalmarks else None
                 examMarks=mark_record.exam_marks
-             
-                
-             
+
+
+
                 status=mark_record.status
                 if exammarks and examMarks is  None or exammarks and examMarks!=exammarks or exammarks and examMarks=="":
                     mark_record.exam_marks = float(exammarks) if exammarks else None
                 if (exammarks is not None and examMarks is None and exammarks!="" and examMarks!=exammarks)or (examMarks!="" and exammarks is not None and exammarks!="" and examMarks!=exammarks ):
-                 
+
                     catmarks=float(catmarks) if catmarks else  0
                     assignmentmarks=float(assignmentmarks) if assignmentmarks else 0
                     practicalmarks=float(practicalmarks)if practicalmarks else 0
@@ -618,23 +618,23 @@ def update_marks():
 
 
 
-              
+
              db.session.commit()
 
 
 
             return redirect(url_for('main.update_marks'))
-        
+
         else:
             return jsonify({"Invalid method" }), 404
-    
+
     return redirect(url_for('main.home'))
 
 @main.route('/consolidatedSS',methods=['POST','GET'])
 
 def consosheet(acyear=20222023):
     if request.method=='GET':
-        
+
         query1=db.session.query(
 
                         User.fname.label("userfname"),
@@ -687,15 +687,15 @@ def consosheet(acyear=20222023):
         for fname,lname,regno,studid,modyear,modsem,seid in student:
             query=db.session.query(
 
-                      
+
                         Units.name.label("unit_name"),
                         Units.code.label("unit_code"),
                         Units.id.label("unit_id"),
-                        
+
                         Marks.overall_marks.label("overall"),
                         Marks.status.label("markstatus"),
 
-                       
+
 
 
                         EnrollmentUnits.id.label("unitenrollment_id"),
@@ -773,6 +773,7 @@ def consosheet(acyear=20222023):
         # print(f"Here it goes {student_data_dict[1]}🙏🙏")
             
             # print(resulting)
+        
         for student_data in student_data_dict:
             total_marks = 0
             num_units = 0
@@ -854,10 +855,10 @@ def test():
                         Modules.semester.label("sem"),
                         Units.name.label("unit_name"),
                         Units.code.label("unit_code"),
-                        
+
                         Marks.overall_marks.label("overall"),
-                        
-                       
+
+
 
 
                         EnrollmentUnits.id.label("unitenrollment_id"),
@@ -874,7 +875,7 @@ def test():
                         StudentEnrollment.academic_year == 20222023,
                         User.Reg_no==1255).group_by(Units.name)
     students=enrolledStudents.all()
-   
+
     print(f"query returns {students} while list inyear")
     return ("OLLA")
 @main.route('/getmarks',methods=['GET','POST'])
