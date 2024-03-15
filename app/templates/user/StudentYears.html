@@ -1,0 +1,8 @@
+{% extends 'user/user-base.html' %} {% block content %} {% for year in Years %}
+<button>
+  <a
+    href="{{ url_for('main.get_student_results', student_id=year.studid, academic_year=year.StudentYears) }}"
+    >academic year:{{ year.StudentYears }} year:{{year.moduleyear}}
+  </a>
+</button>
+{% endfor %} {% endblock %}

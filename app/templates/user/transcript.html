@@ -45,6 +45,8 @@
         {% set grade = 'C' %}
     {% elif mark > 39 %}
         {% set grade = 'D' %}
+    {% elif mark==0 %}
+        {% set grade = 'Pending' %}
     {% else %}
         {% set grade = 'E' %}
     {% endif %}

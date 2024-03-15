@@ -408,66 +408,9 @@ def getmarks():
     marks={}
     studmarks=[]
     result = get_student_results(5, 20222023)
-    # print(result)
-    # # if result:
-    # for x,y,z,q,w,e,r,t in result:
-    #     # print( x,y,q,w)
-    #     studmarks.append({
-    #         "name":x+y,
-    #         "reg":q,
-    #         "module":w
-    #     })
 
-    # for firstname,mname,unimportant,studentreg,modnme,unitname,unitcode,unitmark in result:
-    
-    #     stud.append({
-            
-    #         "unitname":unitname,
-    #         "unitcode":unitcode,
-    #         "unitmark":unitmark
-            
-
-    #     })
-        # print(stud)
-    # else:
-    #     print("no results for specified criteria")
-    # marks=studmarks[0],stud
-    # print("marks",stud,'stud')
-    new=get_students_in_academic_year(20222023)
-    print(new)
-    length=len(result)
-    meanscore=0
-    recommendation=""
-
-    for i in range(length):
-        if result[i][6]<40:
-            recommendation="Fail"
-        meanscore=meanscore + result[i][6]
-        print(meanscore)
-    score=meanscore/length
-    print(score)
-    if score > 70 and recommendation is not "Fail": 
-      Meangrade="A"
-      recommendation = 'Excellent' 
-    elif score > 59 and recommendation is not "Fail":
-      Meangrade="B"
-      recommendation = 'Good' 
-    elif score > 49 and recommendation is not "Fail":
-      Meangrade="C"
-      recommendation = 'Satisfactory' 
-    elif score > 39 and recommendation is not "Fail":
-      Meangrade="D"
-      
-      recommendation = 'Pass' 
-    else: 
-      Meangrade="E"
-      recommendation = 'Fail' 
- 
-
-
-   
-        
-    return render_template('user/transcript.html',data=result,length=length,meangrade=Meangrade,recommendation=recommendation,meanscore=score)
+    return(result)
+@main.route('/results/<int:student_id>/<string:academic_year>', methods=['GET'])
 def get_student_results(student_id, academic_year):
     results=db.session.query(
         User.fname.label('fname'),
@@ -483,9 +426,46 @@ def get_student_results(student_id, academic_year):
                       ).join(Units,EnrollmentUnits.unit_id==Units.id
                       ).filter(and_(StudentEnrollment.student_id == student_id , StudentEnrollment.academic_year == academic_year)
                                ).all()
-    print('here',results[3][1],'here')
-    
-    return results
+    length=len(results)
+    meanscore=0
+    recommendation=""
+
+    for i in range(length):
+        if results[i][6]<40:
+            recommendation="Fail"
+        elif results[i][6]==0:
+            recommendation="pending"
+        meanscore=meanscore + results[i][6]
+        print(meanscore)
+    score=meanscore/length
+    print(score)
+    if score > 70 and recommendation is not "Fail" and recommendation is not "pending": 
+      Meangrade="A"
+      recommendation = 'Excellent' 
+    elif score > 59 and recommendation is not "Fail" and recommendation is not "pending":
+      Meangrade="B"
+      recommendation = 'Good' 
+    elif score > 49 and recommendation is not "Fail" and recommendation is not "pending":
+      Meangrade="C"
+      recommendation = 'Satisfactory' 
+    elif score > 39 and recommendation is not "Fail" and recommendation is not "pending":
+      Meangrade="D"
+      
+      recommendation = 'Pass' 
+    elif score==0 :
+        recommendation="pending"
+        Meangrade='X'
+      
+    else: 
+      Meangrade="E"
+      recommendation = recommendation
+ 
+
+
+   
+        
+    return render_template('user/transcript.html',data=results,length=length,meangrade=Meangrade,recommendation=recommendation,meanscore=score)
+   
 
 # Query to fetch all students enrolled in a certain academic year
 def get_students_in_academic_year(academic_year):
@@ -509,3 +489,19 @@ def get_students_in_academic_year(academic_year):
                                ).all()
     
     return results
+@main.route('/studentYears')
+def student_academic_year():
+     print(current_user.role.name)
+     if current_user.is_authenticated and current_user.role.name == 'Student':
+        student_id = current_user.id
+
+        Years=db.session.query(
+        StudentEnrollment.academic_year.label('StudentYears'),
+        StudentEnrollment.student_id.label("studid"),
+        Modules.year.label('moduleyear')
+        ).join(Modules, StudentEnrollment.module_id==Modules.id
+    ).filter(StudentEnrollment.student_id==student_id).distinct().all()
+
+        print(Years)
+        return render_template('user/StudentYears.html',Years=Years)
+     return("unauthorized user",current_user.role.name)
