@@ -10,9 +10,6 @@ from . import admin
 from .forms import *
 
 
-
-
-
 @admin.route('/enroll_student', methods=['GET', 'POST'])
 @admin_required
 def enroll_student():
@@ -76,7 +73,7 @@ def assign_unit():
 
     return render_template('admin/assign_unit.html', form=form)
 
-@admin.route('/consolidatedSS',methods=['POST','GET'])
+@admin.route('/consolidated_stylesheet',methods=['POST','GET'])
 @admin_required
 def consosheet(acyear=20222023):
     if request.method=='GET':
@@ -87,13 +84,13 @@ def consosheet(acyear=20222023):
                         User.lname.label("userlname") ,
                         User.Reg_no.label("regno"),
                         StudentEnrollment.student_id.label("StudentId"),
-                        Modules.year.label("modyear"), 
+                        Modules.year.label("modyear"),
                         Modules.semester.label("modsem"),
                         StudentEnrollment.id.label("seid"),
                         StudentEnrollment.academic_year.label("academiyear"),
                         StudentEnrollment.module_id.label("modid"),
                         StudentEnrollment.student_id.label("studedid")
-                      
+
 
                         ).join(
                             StudentEnrollment,User.id==StudentEnrollment.student_id
@@ -103,27 +100,27 @@ def consosheet(acyear=20222023):
         enrolledStuents=query1.filter(
                         StudentEnrollment.academic_year == acyear)
         student=enrolledStuents.all()
-        
-        
+
+
         tester=[]
-        def func2(regno): 
-            
+        def func2(regno):
+
             result=[]
-           
+
             for unit_name,unit_code,unit_id,overall,markstatus,uniten,acayea,reg in students :
-                if reg==regno:                         
+                if reg==regno:
                     result.append({"unit":unit_name,
                                 "unit_mark":overall,
                                 "unit_id":unit_id,
                                 "markstatus":markstatus})
             return(result)
-        def func1(): 
-            
+        def func1():
+
             result=[]
-           
+
             for unit_name,unit_code,unit_id,overall,markstatus,uniten,acayea,reg in studentes :
 
-                            
+
                 result.append({"unit":unit_name,
                             "unit_mark":overall,
                             "unit_id":unit_id,
@@ -162,36 +159,36 @@ def consosheet(acyear=20222023):
                         StudentEnrollment.academic_year == acyear,)
             students=enrolledStudents.all()
             studentes=enrolledStudentes.all()
-            
-            
-            
-            
+
+
+
+
             found = False
 
             for stud in student_data_dict:
-                
-                
+
+
                 if regno == stud["reg"]:
                     if "module1" not in stud:
                         stud["module1"] = f"{modyear}.{modsem}"
-                       
+
                     elif "module1" in stud:
                         stud["module2"] = f"{modyear}.{modsem}"
-                        
+
                         stud["valuesmod2"]=func2(regno)
                         test.append({"names"
                             "module :"  f"{modyear}.{modsem}",
                                      'values :'f"{func2(regno)}" })
-                        
-                     
-                        
-                       
-                     
-                     
-                    
+
+
+
+
+
+
+
                     found = True
                     break
-           
+
             if not found:
                 student_data_dict.append({
                     "names": fname + " " + lname,
@@ -202,11 +199,11 @@ def consosheet(acyear=20222023):
                 })
 
 
-            
-           
 
 
-              
+
+
+
             tester.append({
                 "names":fname + " " + lname,
                 "reg":regno,
@@ -215,17 +212,17 @@ def consosheet(acyear=20222023):
                 "values":func2(regno)
             })
 
-        
-            
-         
-        
+
+
+
+
         for student_data in student_data_dict:
             total_marks = 0
             num_units = 0
-        
+
             status = "pass"  # Assume pass, change to fail if any unit fails
             for unit_data in student_data["values"] + student_data["valuesmod2"]:
-                
+
                 total_marks += unit_data["unit_mark"]
                 num_units += 1
                 if int(unit_data["markstatus"]) == 2:
@@ -233,19 +230,19 @@ def consosheet(acyear=20222023):
                     break # Break the loop if any unit fails
                 elif int(unit_data["markstatus"]) == 0:
                     status="pending"
-                    break 
-                
+                    break
 
-                    
+
+
             average_mark = round(total_marks / num_units,2)if num_units > 0 else 0
             student_data["status"] = status
             student_data["average_mark"] = average_mark
-            
-        status1 = "pass" 
+
+        status1 = "pass"
         i=0
         for student_data in student_data_dict:
             if student_data["status"]!=status1:
-                print(student_data["student_id"],"fail")   
+                print(student_data["student_id"],"fail")
             else:
                 print(student_data["student_id"],'pass')
                 student_id=int(student_data["student_id"])
@@ -269,8 +266,8 @@ def consosheet(acyear=20222023):
                     new_enrollment_id2 = new_enrollment2.id
                     enroll_units=Units.query.filter_by(module_id=module_id).all()
                     enroll_units2=Units.query.filter_by(module_id=module_id2).all()
-                
-                    
+
+
                     for unit in enroll_units + enroll_units2:
                         new_unit_enrollment=EnrollmentUnits(enrollment_id=new_enrollment_id,unit_id=unit.id)
                         print(new_unit_enrollment)
@@ -287,13 +284,18 @@ def consosheet(acyear=20222023):
 
 
     length=len(tester)
-    
+
     ln=len(student_data_dict)
 
-    
-    
-   
+
+
+
     return render_template('admin/consolidated.html',data=student_data_dict,length=ln)
-   
-   
-    
+
+
+# Admin Dashboard
+@admin.route('/admin_dashboard')
+def adminDashboard():
+    return render_template('admin/dashboard.html',title= 'Admin Dashboard')
+
+

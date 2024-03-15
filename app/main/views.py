@@ -14,7 +14,7 @@ from .forms import *
 @login_required
 @permission_required(Permission.VIEW)
 def home():
-      
+
       return render_template('user/user-base.html')
       if current_user.is_authenticated and current_user.role.name == 'Lecturer':
         lecturer_id = current_user.id
@@ -414,7 +414,7 @@ def get_student_results(student_id, academic_year):
         filter(StudentEnrollment.student_id == student_id,
                StudentEnrollment.academic_year == academic_year).all()
     print(results)
-    
+
     return results
 
 # Query to fetch all students enrolled in a certain academic year
@@ -424,5 +424,5 @@ def get_students_in_academic_year(academic_year):
         join(EnrollmentUnits,StudentEnrollment.id==EnrollmentUnits.enrollment_id).\
         filter(StudentEnrollment.academic_year == academic_year).all()
     print(students)
-    
+
     return students
