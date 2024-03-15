@@ -8,6 +8,7 @@ from ..models import (EnrollmentUnits, LecturerAssignment, Marks, Modules,
                       Permission, StudentEnrollment, Units, User)
 from . import main
 from .forms import *
+from sqlalchemy import and_
 
 
 @main.route('/',methods=['GET','POST','PUT'])
@@ -403,26 +404,108 @@ def test():
     return ("OLLA")
 @main.route('/getmarks',methods=['GET','POST'])
 def getmarks():
-    get_student_results(3,20222023)
-    get_students_in_academic_year(20222023)
-    return ('something')
+    stud = []
+    marks={}
+    studmarks=[]
+    result = get_student_results(5, 20222023)
+    # print(result)
+    # # if result:
+    # for x,y,z,q,w,e,r,t in result:
+    #     # print( x,y,q,w)
+    #     studmarks.append({
+    #         "name":x+y,
+    #         "reg":q,
+    #         "module":w
+    #     })
+
+    # for firstname,mname,unimportant,studentreg,modnme,unitname,unitcode,unitmark in result:
+    
+    #     stud.append({
+            
+    #         "unitname":unitname,
+    #         "unitcode":unitcode,
+    #         "unitmark":unitmark
+            
+
+    #     })
+        # print(stud)
+    # else:
+    #     print("no results for specified criteria")
+    # marks=studmarks[0],stud
+    # print("marks",stud,'stud')
+    new=get_students_in_academic_year(20222023)
+    print(new)
+    length=len(result)
+    meanscore=0
+    recommendation=""
+
+    for i in range(length):
+        if result[i][6]<40:
+            recommendation="Fail"
+        meanscore=meanscore + result[i][6]
+        print(meanscore)
+    score=meanscore/length
+    print(score)
+    if score > 70 and recommendation is not "Fail": 
+      Meangrade="A"
+      recommendation = 'Excellent' 
+    elif score > 59 and recommendation is not "Fail":
+      Meangrade="B"
+      recommendation = 'Good' 
+    elif score > 49 and recommendation is not "Fail":
+      Meangrade="C"
+      recommendation = 'Satisfactory' 
+    elif score > 39 and recommendation is not "Fail":
+      Meangrade="D"
+      
+      recommendation = 'Pass' 
+    else: 
+      Meangrade="E"
+      recommendation = 'Fail' 
+ 
+
+
+   
+        
+    return render_template('user/transcript.html',data=result,length=length,meangrade=Meangrade,recommendation=recommendation,meanscore=score)
 def get_student_results(student_id, academic_year):
-    results = db.session.query(StudentEnrollment, Modules, Marks).\
-        join(Modules, StudentEnrollment.module_id == Modules.id).\
-        join(EnrollmentUnits, EnrollmentUnits.enrollment_id == StudentEnrollment.id).\
-        join(Marks, Marks.unitenrollment_id == EnrollmentUnits.id).\
-        filter(StudentEnrollment.student_id == student_id,
-               StudentEnrollment.academic_year == academic_year).all()
-    print(results)
+    results=db.session.query(
+        User.fname.label('fname'),
+        User.lname.label('lname'),
+        User.Reg_no.label('reg'),
+        StudentEnrollment.id.label('studid'),
+        Units.name.label('unitname'),
+        Units.code.label('unitcode'),
+        Marks.overall_marks.label('unitmark')
+        ).join(EnrollmentUnits,Marks.unitenrollment_id==EnrollmentUnits.id
+               ).join(StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
+               ).join(User,StudentEnrollment.student_id==User.id
+                      ).join(Units,EnrollmentUnits.unit_id==Units.id
+                      ).filter(and_(StudentEnrollment.student_id == student_id , StudentEnrollment.academic_year == academic_year)
+                               ).all()
+    print('here',results[3][1],'here')
     
     return results
 
 # Query to fetch all students enrolled in a certain academic year
 def get_students_in_academic_year(academic_year):
-    students = db.session.query(EnrollmentUnits).\
-        join(StudentEnrollment, User.id == StudentEnrollment.student_id).\
-        join(EnrollmentUnits,StudentEnrollment.id==EnrollmentUnits.enrollment_id).\
-        filter(StudentEnrollment.academic_year == academic_year).all()
-    print(students)
+    results=db.session.query(
+        User.fname.label('fname'),
+        User.lname.label('lname'),
+        User.Reg_no.label('reg'),
+        StudentEnrollment.id.label('studid'),
+        Units.name.label('unitname'),
+        Units.code.label('unitcode'),
+        Marks.cat_marks.label("marks"),
+        Marks.practical_marks.label("practicals"),
+        Marks.assignment_marks.label("assignmarks"),
+        Marks.exam_marks.label("exammarks"),
+        Marks.overall_marks.label('unitmark')
+        ).join(EnrollmentUnits,Marks.unitenrollment_id==EnrollmentUnits.id
+               ).join(StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
+               ).join(User,StudentEnrollment.student_id==User.id
+                      ).join(Units,EnrollmentUnits.unit_id==Units.id
+                      ).filter( StudentEnrollment.academic_year == academic_year
+                               ).all()
     
-    return students
+    return results

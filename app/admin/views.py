@@ -77,6 +77,7 @@ def assign_unit():
     return render_template('admin/assign_unit.html', form=form)
 
 @admin.route('/consolidatedSS',methods=['POST','GET'])
+@permission_required(Permission.ADMIN )
 @admin_required
 def consosheet(acyear=20222023):
     if request.method=='GET':
