@@ -56,7 +56,7 @@ def userSignUp():
 
 
 # Landing page User login
-@auth.route("/user/login", methods=['GET','POST'])
+@auth.route("/login", methods=['GET','POST'])
 def userLogin():
     log_form=LoginForm()
     if request.method == 'POST' and log_form.validate_on_submit():
@@ -70,14 +70,15 @@ def userLogin():
                 return redirect(url_for("main.home"))
             elif current_user.is_authenticated and current_user.role.name == 'User':
                 return("welcome Student")
-            elif current_user.is_authenticated and current_user.role.name == 'Admin':
-                return("welcome Admin")
+            elif current_user.is_authenticated and current_user.role.name == 'ADMIN':
+                return redirect(url_for('admin.adminDashboard'))
+
             else:
                 return("invalid role")
         else:
               print("Error ocurred")
               print(check_password_hash(user.password, password))
-    return render_template('login/login.html', form=log_form, title = 'System User Login')
+    return render_template('login/login.html', form=log_form, title = 'System Login')
 
 
 

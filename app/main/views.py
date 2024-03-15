@@ -15,7 +15,7 @@ from sqlalchemy import and_
 @login_required
 @permission_required(Permission.VIEW)
 def home():
-      
+
       return render_template('user/user-base.html')
       if current_user.is_authenticated and current_user.role.name == 'Lecturer':
         lecturer_id = current_user.id
