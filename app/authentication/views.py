@@ -69,8 +69,9 @@ def userLogin():
             if current_user.is_authenticated and current_user.role.name == 'Lecturer':
                 return redirect(url_for("main.home"))
             elif current_user.is_authenticated and current_user.role.name == 'Student':
+                return render_template('user/studentdashboard.html')
                 return("welcome Student")
-            elif current_user.is_authenticated and current_user.role.name == 'ADMIN':
+            elif current_user.is_authenticated and current_user.role.name == 'Admin':
                 return redirect(url_for('admin.adminDashboard'))
 
             else:

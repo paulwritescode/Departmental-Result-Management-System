@@ -402,14 +402,41 @@ def test():
 
     print(f"query returns {students} while list inyear")
     return ("OLLA")
-@main.route('/getmarks',methods=['GET','POST'])
-def getmarks():
-    stud = []
-    marks={}
-    studmarks=[]
-    result = get_student_results(5, 20222023)
+@main.route('/getmarks//<int:student_id>/<string:academic_year>/<int:module_id>',methods=['GET','POST'])
+def getmarks(student_id, academic_year,module_id):
+    results=db.session.query(
+        User.fname.label('fname'),
+        User.lname.label('lname'),
+        User.Reg_no.label('reg'),
+        StudentEnrollment.id.label('studid'),
+        Units.name.label('unitname'),
+        Units.code.label('unitcode'),
+        Marks.cat_marks.label("cats"),
+        Marks.assignment_marks.label("assignments"),
+        Marks.practical_marks.label("practicals"),
+        Marks.exam_marks.label("exam"),
 
-    return(result)
+        Marks.overall_marks.label('unitmark')
+        ).join(EnrollmentUnits,Marks.unitenrollment_id==EnrollmentUnits.id
+               ).join(StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
+               ).join(Modules,StudentEnrollment.module_id==Modules.id
+               ).join(User,StudentEnrollment.student_id==User.id
+                      ).join(Units,EnrollmentUnits.unit_id==Units.id
+                      ).filter(and_(StudentEnrollment.student_id == student_id , StudentEnrollment.academic_year == academic_year,StudentEnrollment.module_id==module_id)
+                               ).all()
+    length=len(results)
+
+    print('criteria','id',student_id,'academicyear',academic_year,'module',module_id)
+    print(results)
+  
+
+ 
+
+
+   
+        
+    return render_template('user/Studentmarks.html',data=results,length=length)
+   
 @main.route('/results/<int:student_id>/<string:academic_year>', methods=['GET'])
 def get_student_results(student_id, academic_year):
     results=db.session.query(
@@ -468,27 +495,7 @@ def get_student_results(student_id, academic_year):
    
 
 # Query to fetch all students enrolled in a certain academic year
-def get_students_in_academic_year(academic_year):
-    results=db.session.query(
-        User.fname.label('fname'),
-        User.lname.label('lname'),
-        User.Reg_no.label('reg'),
-        StudentEnrollment.id.label('studid'),
-        Units.name.label('unitname'),
-        Units.code.label('unitcode'),
-        Marks.cat_marks.label("marks"),
-        Marks.practical_marks.label("practicals"),
-        Marks.assignment_marks.label("assignmarks"),
-        Marks.exam_marks.label("exammarks"),
-        Marks.overall_marks.label('unitmark')
-        ).join(EnrollmentUnits,Marks.unitenrollment_id==EnrollmentUnits.id
-               ).join(StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
-               ).join(User,StudentEnrollment.student_id==User.id
-                      ).join(Units,EnrollmentUnits.unit_id==Units.id
-                      ).filter( StudentEnrollment.academic_year == academic_year
-                               ).all()
-    
-    return results
+
 @main.route('/studentYears')
 def student_academic_year():
      print(current_user.role.name)
@@ -504,4 +511,23 @@ def student_academic_year():
 
         print(Years)
         return render_template('user/StudentYears.html',Years=Years)
+     return("unauthorized user",current_user.role.name)
+
+@main.route('/modulemarks')
+def student_modules():
+     print(current_user.role.name)
+     if current_user.is_authenticated and current_user.role.name == 'Student':
+        student_id = current_user.id
+
+        Years=db.session.query(
+        StudentEnrollment.academic_year.label('StudentYears'),
+        StudentEnrollment.student_id.label("studid"),
+        Modules.year.label('moduleyear'),
+        Modules.semester.label("module"),
+        StudentEnrollment.module_id.label('moduleid')
+        ).join(Modules, StudentEnrollment.module_id==Modules.id
+    ).filter(StudentEnrollment.student_id==student_id).all()
+
+        print(Years)
+        return render_template('user/StudentSemesters.html',Years=Years)
      return("unauthorized user",current_user.role.name)

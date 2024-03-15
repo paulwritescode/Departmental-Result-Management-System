@@ -269,8 +269,18 @@ def consosheet(acyear=20222023):
                     enroll_units2=Units.query.filter_by(module_id=module_id2).all()
 
 
-                    for unit in enroll_units + enroll_units2:
+                    for unit in enroll_units:
                         new_unit_enrollment=EnrollmentUnits(enrollment_id=new_enrollment_id,unit_id=unit.id)
+                        print(new_unit_enrollment)
+                        db.session.add(new_unit_enrollment)
+                        db.session.commit()
+                        newmarkenrollmentid=new_unit_enrollment.id
+                        print(newmarkenrollmentid)
+                        new_unit_mark=(Marks(unitenrollment_id=new_unit_enrollment.id))
+                        db.session.add(new_unit_mark)
+                        print(new_enrollment_id)
+                    for unit in  enroll_units2:
+                        new_unit_enrollment=EnrollmentUnits(enrollment_id=new_enrollment_id2,unit_id=unit.id)
                         print(new_unit_enrollment)
                         db.session.add(new_unit_enrollment)
                         db.session.commit()

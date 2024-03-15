@@ -1,0 +1,6 @@
+{% extends 'user/user-base.html' %} {% block content %}
+<button><a href="{{ url_for('main.student_modules') }}">My Modules</a></button>
+<button>
+  <a href="{{ url_for('main.student_academic_year') }}">My Transcripts</a>
+</button>
+{% endblock %}
