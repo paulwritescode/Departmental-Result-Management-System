@@ -10,7 +10,7 @@ from . import lecturer
 from .forms import *
 
 
-@lecturer.route('/updatemarks',methods=['GET','POST','PUT'])
+@lecturer.route('/lecturerdashboard',methods=['GET','POST','PUT'])
 @login_required
 @permission_required(Permission.VIEW)
 def home():

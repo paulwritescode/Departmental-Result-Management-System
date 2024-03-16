@@ -1,9 +1,12 @@
 {% extends 'user/user-base.html' %} {% block content %} {% for year in Years %}
-<button>
+<button
+  class="flex space-x-1 bg-sky-400 hover:bg-sky-500 hover:text-white p-1 px-2 rounded-md"
+>
   <a
     href="{{ url_for('main.getmarks', student_id=year.studid, academic_year=year.StudentYears,module_id=year.moduleid) }}"
     >academic year:{{ year.StudentYears }} year:{{year.moduleyear}}
     semester:{{year.module}}
   </a>
 </button>
+</br>
 {% endfor %} {% endblock %}

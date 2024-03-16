@@ -67,7 +67,7 @@ def userLogin():
         if user is not None and check_password_hash(user.password, password ):
             login_user(user)
             if current_user.is_authenticated and current_user.role.name == 'Lecturer':
-                return redirect(url_for("main.home"))
+                return redirect(url_for("lecturer.home"))
             elif current_user.is_authenticated and current_user.role.name == 'Student':
                 return render_template('user/studentdashboard.html')
                 return("welcome Student")

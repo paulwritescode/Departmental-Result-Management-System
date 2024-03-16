@@ -1,6 +1,6 @@
 {% extends 'admin/index.html' %} {% block dashboard %} {% for i in AcademicYears
 %}
-<button>
+<button class="flex space-x-1 bg-sky-400 hover:bg-sky-500 hover:text-white p-1 px-2 rounded-md">
   <a
     href="{{ url_for('admin.consosheet', acyear=i.academicyears,
   yos=i.yearofstudy) }}"
