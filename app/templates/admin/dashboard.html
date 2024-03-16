@@ -1,5 +1,17 @@
-{% extends 'admin/index.html' %}
-{% block dashboard %}
-    <p>this is it</p>
-    <p>this is where the admin dashboard is mainly, place all the other ones here</p>
+{% extends 'admin/index.html' %} {% block dashboard %} {% for i in AcademicYears
+%}
+<button>
+  <a
+    href="{{ url_for('admin.consosheet', acyear=i.academicyears,
+  yos=i.yearofstudy) }}"
+  >
+    Academic Year:{{i.academicyears}} Year of study :{{i.yearofstudy}}
+  </a>
+</button>
+</br> {% endfor %}
+
+<p>this is it</p>
+<p>
+  this is where the admin dashboard is mainly, place all the other ones here
+</p>
 {% endblock %}

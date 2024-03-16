@@ -73,10 +73,11 @@ def assign_unit():
 
     return render_template('admin/assign_unit.html', form=form)
 
-@admin.route('/consolidated_stylesheet',methods=['POST','GET'])
+@admin.route('/consolidated_stylesheet/<string:acyear>/<int:yos>',methods=['POST','GET'])
 @permission_required(Permission.ADMIN )
 @admin_required
-def consosheet(acyear=20222023):
+
+def consosheet(acyear,yos):
     if request.method=='GET':
 
         query1=db.session.query(
@@ -99,7 +100,7 @@ def consosheet(acyear=20222023):
                             Modules,StudentEnrollment.module_id==Modules.id
                         )
         enrolledStuents=query1.filter(
-                        StudentEnrollment.academic_year == acyear)
+                        StudentEnrollment.academic_year == acyear, Modules.year==yos)
         student=enrolledStuents.all()
 
 
@@ -226,12 +227,15 @@ def consosheet(acyear=20222023):
 
                 total_marks += unit_data["unit_mark"]
                 num_units += 1
-                if int(unit_data["markstatus"]) == 2:
-                    status = "fail"
-                    break # Break the loop if any unit fails
-                elif int(unit_data["markstatus"]) == 0:
+                if unit_data["markstatus"] != None:
+                    if int(unit_data["markstatus"]) == 2:
+                        status = "fail"
+                        break # Break the loop if any unit fails
+                    elif int(unit_data["markstatus"]) == 0:
+                        status="pending"
+                        break
+                else:
                     status="pending"
-                    break
 
 
 
@@ -307,6 +311,14 @@ def consosheet(acyear=20222023):
 # Admin Dashboard
 @admin.route('/admin_dashboard')
 def adminDashboard():
-    return render_template('admin/dashboard.html',title= 'Admin Dashboard')
+    AcademicYears=db.session.query(
+        StudentEnrollment.academic_year.label("academicyears"),
+        Modules.year.label('yearofstudy')
+    ).join(Modules,StudentEnrollment.module_id==Modules.id
+           ).distinct().all()
+    print(AcademicYears)
+    return render_template('admin/dashboard.html',title= 'Admin Dashboard',AcademicYears=AcademicYears)
+
+
 
 

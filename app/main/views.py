@@ -402,7 +402,7 @@ def test():
 
     print(f"query returns {students} while list inyear")
     return ("OLLA")
-@main.route('/getmarks//<int:student_id>/<string:academic_year>/<int:module_id>',methods=['GET','POST'])
+@main.route('/getmarks/<int:student_id>/<string:academic_year>/<int:module_id>',methods=['GET','POST'])
 def getmarks(student_id, academic_year,module_id):
     results=db.session.query(
         User.fname.label('fname'),
