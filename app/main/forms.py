@@ -1,8 +1,9 @@
 # forms.py
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SubmitField,FloatField
-from wtforms.validators import DataRequired,NumberRange
+from wtforms import FloatField, IntegerField, StringField, SubmitField
+from wtforms.validators import DataRequired, NumberRange
+
 
 class EnrollStudentForm(FlaskForm):
     student_id = IntegerField('Student ID', validators=[DataRequired()])

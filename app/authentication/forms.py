@@ -1,15 +1,13 @@
 from flask_wtf import FlaskForm
+from wtforms import (EmailField, IntegerField, PasswordField, SelectField,
+                     StringField, SubmitField, validators)
+from wtforms.validators import (DataRequired, Email, InputRequired, Length,
+                                NumberRange, ValidationError)
+
 from ..models import User
-from wtforms import StringField,SubmitField,PasswordField,validators,EmailField,SelectField,IntegerField
-from wtforms.validators import InputRequired,Email,Length,ValidationError,DataRequired,NumberRange
 
 
     # id=db.Column(db.Integer,primary_key=True)
-  
-   
-  
-   
-  
     # Eyear=db.Column(db.Integer,nulable=True)
     # Module=db.Column(db.String(length=3),nullable=True)
 class RegisterForm(FlaskForm):
@@ -45,10 +43,10 @@ class RegisterForm(FlaskForm):
              )
 
 class LoginForm(FlaskForm):
-    email=EmailField(validators=[Email(),InputRequired()],render_kw={"placeholder":"abcd@gmail.com"})
-    password=PasswordField(validators=[InputRequired(), Length(max=10,min=5)],render_kw={"placeholder": "password"})
+    email=EmailField(validators=[Email(),InputRequired()],render_kw={"placeholder":"Enter usermail"})
+    password=PasswordField(validators=[InputRequired(), Length(max=10,min=5)],render_kw={"placeholder": "Enter password"})
     submit=SubmitField("Submit")
-   
+
 
 
 

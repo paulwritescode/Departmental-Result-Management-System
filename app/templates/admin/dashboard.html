@@ -1,17 +1,40 @@
-{% extends 'admin/index.html' %} {% block dashboard %} {% for i in AcademicYears
-%}
-<button class="flex space-x-1 bg-sky-400 hover:bg-sky-500 hover:text-white p-1 px-2 rounded-md">
-  <a
-    href="{{ url_for('admin.consosheet', acyear=i.academicyears,
-  yos=i.yearofstudy) }}"
-  >
-    Academic Year:{{i.academicyears}} Year of study :{{i.yearofstudy}}
-  </a>
-</button>
-</br> {% endfor %}
+{% extends 'admin/index.html' %} {% block dashboard %}
 
-<p>this is it</p>
-<p>
-  this is where the admin dashboard is mainly, place all the other ones here
-</p>
+
+<div class="flex space-x-2">
+
+  <!-- TODO the contents of the sidebar will go here -->
+  <div class="bg-white p-5">
+    this is side bar
+  </div>
+
+
+  <!-- Right of the Sidebar -->
+  <div>
+
+  <!-- SECTION 1 START -->
+  <!-- Houses the display for Academic Years -->
+  <h1  class="text-sky-500 font-bold text-2xl " >Avademic Years</h1>
+
+  <div class="flex space-x-1">
+    {% for i in AcademicYears%}
+      <!-- Display contents -->
+      <button class=" flex  bg-white shadow-md hover:shadow-lg  p-1 px-2 rounded-md">
+        <a
+          href="{{ url_for('admin.consosheet', acyear=i.academicyears,
+          yos=i.yearofstudy) }}"
+        >
+          <div class="flex ">Academic Year: <div class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div> </div>
+          <div class="flex ">Year of study: <div class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div> </div>
+        </a>
+      </button>
+      {% endfor %}
+    <!-- SECTION 1 END -->
+
+  </div>
+
+
+  </div>
+
+</div>
 {% endblock %}

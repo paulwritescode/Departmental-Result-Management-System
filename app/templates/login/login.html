@@ -3,14 +3,15 @@
   <title> {{title}} </title>
 {% endblock %}
 {% block body %}
+
 <div class="h-screen bg-slate-100 flex justify-center items-center ">
   <div
-    class=" flex justify-between items-center "
+    class=" flex justify-between  "
   >
 
   <!-- image -->
-  <div class="flex  flex-col items-center space-y-3">
-    <h1 class="text-sky-700 font-bold text-xl">Melick Ognee International school</h1>
+  <div class="flex  flex-col items-center  space-y-3">
+
 
       <img
         class="w-96"
@@ -28,26 +29,29 @@
       <!-- one -->
 
       <div class="flex flex-col">
-        <label value="name">Username</label>
-        {{form.email(class="rounded-md border-none bg-slate-100")}}
+        <label value="name">Usermail</label>
+        {{form.email(class=" hover:shadow-md rounded-md border-none bg-slate-50")}}
       </div>
       {{form.hidden_tag()}}
       <!-- two -->
       <div class="flex flex-col">
         <label for="">Password</label>
-        {{form.password(class="rounded-md border-none bg-slate-100")}}
+        {{form.password(class="hover:shadow-md rounded-md border-none bg-slate-50")}}
       </div>
       <div class="space-y-2">
         {{form.submit( class="bg-sky-600 text-white px-2 py-1 rounded-md
-        hover:shadow-md")}}
-        <p>
+        hover:shadow-md hover:bg-sky-700")}}
+
+        <!-- TODO remove this from here and place it under the admin dashboard shortcuts -->
+        <!-- <p>
           Don't have an account ?
-          <a href="{{ url_for('auth.userSignUp') }}"> SignUp</a>
+          <a class="text-sky-600 text-sky-700" href="{{ url_for('auth.userSignUp') }}"> SignUp</a>
         </p>
-        <div class="flex space-x-2">
-          <i class="fa-brands fa-linkedin"></i>
-          <i class="fa-brands fa-medium"></i>
-        </div>
+        <div class="flex text-sky-600 space-x-2">
+          <i class="fa-brands hover:text-sky-700 fa-linkedin"></i>
+          <i class="fa-brands hover:text-sky-700 fa-medium"></i>
+          <i class="fa-brands hover:text-sky-700 fa-youtube"></i>
+        </div> -->
 
         <!-- TODO Figure our where this is supposed to be used -->
   <!--
