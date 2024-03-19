@@ -49,6 +49,7 @@ def enroll_student():
     return render_template('admin/enroll_student.html', form=form)
 
 
+
 @admin.route('/assign_unit', methods=['GET', 'POST'])
 @admin_required
 def assign_unit():
@@ -73,10 +74,11 @@ def assign_unit():
 
     return render_template('admin/assign_unit.html', form=form)
 
+
+
 @admin.route('/consolidated_stylesheet/<string:acyear>/<int:yos>',methods=['POST','GET'])
 @permission_required(Permission.ADMIN )
 @admin_required
-
 def consosheet(acyear,yos):
     if request.method=='GET':
 
@@ -305,9 +307,12 @@ def consosheet(acyear,yos):
 
 
 
-    return render_template('admin/consolidated.html',data=student_data_dict,length=ln)
+    return render_template('admin/consolidated.html',data=student_data_dict,length=ln, title = "Consolidated StyleSheet")
 
 
+
+
+# shortcuts for admin dashboard
 # Admin Dashboard
 @admin.route('/admin_dashboard')
 def adminDashboard():
@@ -321,4 +326,5 @@ def adminDashboard():
 
 
 
-
+# Enroll Students
+# Assign Units

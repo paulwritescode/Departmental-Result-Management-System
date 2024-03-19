@@ -1,13 +1,33 @@
-{% extends 'user/user-base.html'%} {% block content %}
-<div class="bg-white p-3 rounded-md">
-  <table>
+{% extends 'admin/index.html'%} {% block content %}
+
+
+{% block title %}
+<title>{{title}}</title>
+{% endblock %}
+
+
+
+<!-- BreadCrumbs Navigation -->
+<div class="flex bg-red-500 w-auto p-1">
+  <div>one</div> /
+  <div>two</div>
+</div>
+
+
+
+<div class="bg-white p-3 border shadow-md rounded-md">
+  <div class="flex bg-red-500 w-auto p-1">
+    <div>one</div> /
+    <div>two</div>
+  </div>
+  <table >
   <theader>
       <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-        Index
+        Serial
       </th>
     <theader>
-      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-        Student name
+      <th class="text-left bg-sky-600 text-white w-32 px-1  border-r-2">
+        Student Name
       </th>
 
       <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
@@ -15,7 +35,7 @@
       </th>
 
       <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-        Module
+        Semester
       </th>
       {% set marks_data = data[0]["values"] %} {% for mark in marks_data %}
       <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
@@ -23,7 +43,7 @@
         {{ mark["unit"] }}
       </th>
       {% endfor %}
-         
+
       {% set marks_data2 = data[1]["valuesmod2"] %} {% for mark2 in marks_data2 %}
       <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
       {{data[0]["module2"]}}
@@ -40,24 +60,50 @@
       </th>
     </theader>
     <tbody>
+
       {% set length = length %} {% for i in range(length) %}
+
       <tr class="border-b-2">
       <td class="border-r-2">{{loop.index }}</td>
         <td class="border-r-2">{{ data[i]["names"] }}</td>
         <td class="border-r-2">{{ data[i]["reg"] }}</td>
-        <td class="border-r-2">{{ data[i]["module1"] }}{{ data[i]["module2"] }}</td>
-         {% set marks_data =
-      data[i]["values"] %}{% for mark in marks_data %}
+        <td class="border-r-2">{{ data[i]["module1"] }} / {{ data[i]["module2"] }}</td>
+
+
+
+         {% set marks_data = data[i]["values"] %}{% for mark in marks_data %}
         <td class="border-r-2">{{ mark["unit_mark"]|round(2) }}</td>
 
         {%endfor%}
         {% set marks_data2 = data[i]["valuesmod2"] %} {% for mark2 in marks_data2 %}
+
         <td class="border-r-2">{{ mark2["unit_mark"]|round(2) }}</td>
 
         {%endfor%}
-        <td class="border-r-2">{{data[i]['status']}}</td>
-        <td class="border-r-2">{{data[i]["average_mark"]}}</td>
+
+          {% if data[i]['status'] =='fail' %}
+
+            <td class="border-r-2 bg-red-200">{{data[i]['status']}}</td>
+
+          {% elif data[i]['status'] =='pass' %}
+
+            <td class="border-r-2 bg-sky-200">{{data[i]['status']}}</td>
+
+          {% elif data[i]['status'] =='pending' %}
+
+            <td class="border-r-2 bg-yellow-200">{{data[i]['status']}}</td>
+
+          {% else %}
+
+            <td class="border-r-2">{{data[i]['status']}}</td>
+
+          {% endif %}
+
+            <td class="border-r-2">{{data[i]["average_mark"]}}</td>
+
       </tr>
+
+
       {% endfor %}
     </tbody>
   </table>
