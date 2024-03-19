@@ -76,10 +76,11 @@ def assign_unit():
 
 
 
-@admin.route('/consolidated_stylesheet/<string:acyear>/<int:yos>',methods=['POST','GET'])
+@admin.route('/consolidated_stylesheet/<string:acyear>/<int:yos>/<string:type>',methods=['POST','GET'])
 @permission_required(Permission.ADMIN )
 @admin_required
-def consosheet(acyear,yos):
+
+def consosheet(acyear,yos,type):
     if request.method=='GET':
 
         query1=db.session.query(
@@ -223,44 +224,52 @@ def consosheet(acyear,yos):
         for student_data in student_data_dict:
             total_marks = 0
             num_units = 0
+            failed_units=0
+            Passlist=[]
+            Suppllementarylist=[]
+            Repeatyearlist=[]
+            Discontinuationlist=[]
 
             status = "pass"  # Assume pass, change to fail if any unit fails
             for unit_data in student_data["values"] + student_data["valuesmod2"]:
 
                 total_marks += unit_data["unit_mark"]
                 num_units += 1
+               
+                 
+                
                 if unit_data["markstatus"] != None:
                     if int(unit_data["markstatus"]) == 2:
                         status = "fail"
+                        failed_units+=1
                         break # Break the loop if any unit fails
                     elif int(unit_data["markstatus"]) == 0:
                         status="pending"
                         break
                 else:
                     status="pending"
-
-
-
             average_mark = round(total_marks / num_units,2)if num_units > 0 else 0
             student_data["status"] = status
             student_data["average_mark"] = average_mark
+            
 
         status1 = "pass"
         i=0
         for student_data in student_data_dict:
             if student_data["status"]!=status1:
-                print(student_data["student_id"],"fail")
+                pass
+                # print(student_data["student_id"],"fail")
             else:
-                print(student_data["student_id"],'pass')
+                
                 student_id=int(student_data["student_id"])
                 module_id=int(modid)+1
                 module_id2=int(modid)+2
                 academic_year=int(academiyear)+1
-                print(student_id,academic_year,module_id)
+               
                     # Check if the student is not already enrolled in the module
                 enrollment_exists = StudentEnrollment.query.filter_by(student_id=student_id, module_id=module_id,academic_year=academic_year).first()
                 if enrollment_exists:
-                    print('Student is already enrolled in the module.', 'warning')
+                    flash('Student is already enrolled in the module.', 'warning')
                 else:
                     # Create a new enrollment
                     new_enrollment = StudentEnrollment(student_id=student_id, module_id=module_id, academic_year=academic_year)
@@ -296,7 +305,115 @@ def consosheet(acyear,yos):
                         db.session.add(new_unit_mark)
                         print(new_enrollment_id)
                     db.session.commit()
-                    print('Student enrolled successfully.', 'success')
+                    flash('Student enrolled successfully.', 'success')
+   
+        for student_data in student_data_dict:
+                #  print(student_data['names'])
+                 failed_units=0
+                 units=[]
+                 for unit_data in student_data["values"] + student_data["valuesmod2"]:
+
+                    total_marks += unit_data["unit_mark"]
+                    num_units += 1                               
+                    if unit_data["markstatus"] != None:
+                        if int(unit_data["markstatus"]) == 2:
+                            status = "fail"
+                            failed_units+=1
+                            print(unit_data['unit'])
+                            # units="there there"
+                            units.append(unit_data['unit'])
+                            
+                            # print((unit_data["markstatus"]))
+                            # Break the loop if any unit fails
+                        elif int(unit_data["markstatus"]) == 0:
+                            status="pending"
+                            # print((unit_data["markstatus"]))
+                            break
+                        # print((unit_data["markstatus"]))
+                        # print(failed_units,"failed_units")
+                    else:
+                        status="pending"
+                
+                 if failed_units < 1:
+                    recommendation="Pass"
+                    Passlist.append({"regno":student_data['reg'],
+                                "name":student_data['names'],"recommendation":recommendation})
+                 elif failed_units < 4:
+                    recommendation="Supplementary"
+                    Suppllementarylist.append({"regno":student_data['reg'],
+                                "name":student_data['names'],"recommendation":recommendation,"units":list(units)})
+                 elif failed_units ==4:
+                    recommendation="Repeat Year"
+                    Repeatyearlist.append({"regno":student_data['reg'],
+                                "name":student_data['names'],"recommendation":recommendation,"units":list(units)})
+                 elif failed_units > 4:
+                    recommendation="Discontinuation"
+                    Discontinuationlist.append({"regno":student_data['reg'],
+                                "name":student_data['names'],"recommendation":recommendation,"units":units})
+                 print(Passlist,'paslist',Suppllementarylist,'supps')
+
+                    
+
+
+              
+        #     average_mark = round(total_marks / num_units,2)if num_units > 0 else 0
+        #     student_data["status"] = status
+        #     print(Passlist,'paslist')
+        #     student_data["average_mark"] = average_mark
+
+        # status1 = "pass"
+        # i=0
+        # for student_data in student_data_dict:
+        #     if student_data["status"]!=status1:
+        #         pass
+        #         # print(student_data["student_id"],"fail")
+        #     else:
+                
+        #         student_id=int(student_data["student_id"])
+        #         module_id=int(modid)+1
+        #         module_id2=int(modid)+2
+        #         academic_year=int(academiyear)+1
+               
+        #             # Check if the student is not already enrolled in the module
+        #         enrollment_exists = StudentEnrollment.query.filter_by(student_id=student_id, module_id=module_id,academic_year=academic_year).first()
+        #         if enrollment_exists:
+        #             flash('Student is already enrolled in the module.', 'warning')
+        #         else:
+        #             # Create a new enrollment
+        #             new_enrollment = StudentEnrollment(student_id=student_id, module_id=module_id, academic_year=academic_year)
+        #             new_enrollment2 = StudentEnrollment(student_id=student_id, module_id=module_id2, academic_year=academic_year)
+
+        #             db.session.add(new_enrollment)
+        #             db.session.add(new_enrollment2)
+        #             db.session.commit()
+        #             new_enrollment_id = new_enrollment.id
+        #             new_enrollment_id2 = new_enrollment2.id
+        #             enroll_units=Units.query.filter_by(module_id=module_id).all()
+        #             enroll_units2=Units.query.filter_by(module_id=module_id2).all()
+
+
+        #             for unit in enroll_units:
+        #                 new_unit_enrollment=EnrollmentUnits(enrollment_id=new_enrollment_id,unit_id=unit.id)
+        #                 print(new_unit_enrollment)
+        #                 db.session.add(new_unit_enrollment)
+        #                 db.session.commit()
+        #                 newmarkenrollmentid=new_unit_enrollment.id
+        #                 print(newmarkenrollmentid)
+        #                 new_unit_mark=(Marks(unitenrollment_id=new_unit_enrollment.id))
+        #                 db.session.add(new_unit_mark)
+        #                 print(new_enrollment_id)
+        #             for unit in  enroll_units2:
+        #                 new_unit_enrollment=EnrollmentUnits(enrollment_id=new_enrollment_id2,unit_id=unit.id)
+        #                 print(new_unit_enrollment)
+        #                 db.session.add(new_unit_enrollment)
+        #                 db.session.commit()
+        #                 newmarkenrollmentid=new_unit_enrollment.id
+        #                 print(newmarkenrollmentid)
+        #                 new_unit_mark=(Marks(unitenrollment_id=new_unit_enrollment.id))
+        #                 db.session.add(new_unit_mark)
+        #                 print(new_enrollment_id)
+        #             db.session.commit()
+        #             flash('Student enrolled successfully.', 'success')
 
 
 
@@ -304,15 +421,22 @@ def consosheet(acyear,yos):
 
     ln=len(student_data_dict)
 
+    if type=="consosheet":
+           return render_template('admin/consolidated.html',data=student_data_dict,length=ln)
+    elif type=="passlist":
+           return render_template('admin/list.html',list=Passlist)
+    elif type=="supplementary":
+           return render_template('admin/list.html',list=Suppllementarylist,)
+    elif type=="repeatyear":
+           return render_template('admin/list.html',list=Repeatyearlist)
+    elif type=="discontinuation":
+       return render_template('admin/list.html',list=Discontinuationlist)
 
 
 
-    return render_template('admin/consolidated.html',data=student_data_dict,length=ln, title = "Consolidated StyleSheet")
 
+    return render_template('admin/consolidated.html',data=student_data_dict,length=ln)
 
-
-
-# shortcuts for admin dashboard
 
 # Admin Dashboard
 @admin.route('/admin_dashboard')
@@ -326,14 +450,3 @@ def adminDashboard():
     return render_template('admin/dashboard.html',title= 'Admin Dashboard',AcademicYears=AcademicYears)
 
 
-# Consolidated Style Sheets
-# @admin.route('/consolidated_stylesheet')
-# def consolidatedStyleSheet():
-#     return render_template('admin/consolidated.html', title = 'Consolidated StyleSheet')
-
-
-
-
-
-
-# Assign Units

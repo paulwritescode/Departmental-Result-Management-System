@@ -89,7 +89,114 @@ def day3():
     print(f"My name is {name.capitalize()}, born in and my hobbies are {hobby1} and {hobby2}")
 
 
-day3()
+# day3()
+
+
+
+def day4():
+
+    # LISTS OR ARRAYS IN PYTHON
+    names=['Simon',"Ann","Alison","TEST"]
+    Movies=['Rick and Morty','Inside Job','Originals']
+    name=input("Enete your name")
+    names= names + [name]
+
+    movie=input("enter your favourite movie")
+    Movies.append(movie)
+    print(Movies)
+    numbers=[1,2,4,5,6]
+    numbers.insert(2,3)
+    print(numbers)
+    print(names)
+    names.remove(name)
+    print(names)
+    del numbers[5]
+    print(numbers)
+
+    names.pop()
+    print(names)
+    numbers.pop(4)
+    print(numbers)
+
+    names.clear()
+    print(names)
+    names.append(input("ENTER A NAME "))
+    print(names)
+
+
+
+    # TUPLES IN PYTHON
+    names1=('Simon','JAmes','ANN',"DUALITY")
+    # Immutable and non immutable data types
+    # what the above means is that there exists data such that ince saved they cant be edited  only read
+    # the following will not work  
+    # { 
+   
+    # names2="PAULINE"}
+    # names1=names1+(names2)
+    numbers=(1,2,3,4,1,2,4,6,7,8,9,1,1,4)
+    print(numbers.count(1))
+    print(numbers.index(3))
+    print(names1)
+    Loans=[
+        ("Simon","Muriiithi",20000,3-18-2024),
+        ("ANN","Wanja",10000,31-1-2344)
+    ]
+    print(Loans[0][0])
+    movy=[("Originals","Julie Plec",2013,35000000)]
+    print(movy)
+    movy.append((input("Title"),input("Director"),input("release_year"),input("Budget")))
+    print(movy)
+    movy.pop(0)
+    print(movy)
+
+# day4()
+    
+def day5():
+    # Boolen values
+
+    a=5
+    b=6
+    if a<b:
+        print(a> b)
+
+    # i.e an empty list ,an empty tuple empty string and integer 0 returns a False where checked for boolean
+    print(bool(0))
+    list=[]
+    print(bool(list))
+    name=""
+    print(bool(name))
+    print(bool(1))
+
+    # i,e
+    name1="Simon"
+    if a>b:
+        print(bool(name1))
+    else:
+        print(bool(name))
+
+    age=(int(input("Enter age in numerals")))
+    if 18<age<60:
+        print("You ara ana Adult.")
+    elif 18<age>60 and age<100:
+        print("You are a Veteran.")
+    elif age>18 and age>99 :
+        print("Prove you are not a robot.")
+    
+    else:
+        print("You are still a Minor.")
+    name=input("Enter your name")
+    if name:
+        print("Hello ",name)
+    else:
+        print("Didn't get your name")
+
+
+    
+
+day5()
+
+
 
 
 
