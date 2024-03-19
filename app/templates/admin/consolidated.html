@@ -1,65 +1,117 @@
-{% extends 'user/user-base.html'%} {% block content %}
-<div class="bg-white p-3 rounded-md">
-  <table>
-  <theader>
-      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-        Index
-      </th>
+{% extends 'admin/index.html'%} {% block content %}
+
+
+{% block title %}
+<title>{{title}}</title>
+{% endblock %}
+
+
+
+<div class="space-y-1">
+
+
+  <!-- BreadCrumbs Navigation -->
+  <div class="flex text-lg border bg-white w-auto p-1 ">
+    <a href="{{ url_for('admin.adminDashboard') }}" class="hover:bg-sky-200 px-3   ">Dashboard</a>
+
+    <div href="" class=" text-purple-700 border px-3 bg-zinc-100 ">Consolidated StyleSheets</div>
+  </div>
+
+
+  <!-- Table -->
+  <div class="bg-white p-3 border shadow-md rounded-md">
+
+    <table >
     <theader>
-      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-        Student name
-      </th>
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+          Serial
+        </th>
+      <theader>
+        <th class="text-left bg-sky-600 text-white w-32 px-1  border-r-2">
+          Student Name
+        </th>
 
-      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-        Student Reg
-      </th>
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+          Student Reg
+        </th>
 
-      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-        Module
-      </th>
-      {% set marks_data = data[0]["values"] %} {% for mark in marks_data %}
-      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-       {{data[0]["module1"]}}
-        {{ mark["unit"] }}
-      </th>
-      {% endfor %}
-         
-      {% set marks_data2 = data[1]["valuesmod2"] %} {% for mark2 in marks_data2 %}
-      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-      {{data[0]["module2"]}}
-        {{ mark2["unit"] }}
-      </th>
-      {% endfor %}
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+          Semester
+        </th>
+        {% set marks_data = data[0]["values"] %} {% for mark in marks_data %}
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+         {{data[0]["module1"]}}
+          {{ mark["unit"] }}
+        </th>
+        {% endfor %}
+
+        {% set marks_data2 = data[1]["valuesmod2"] %} {% for mark2 in marks_data2 %}
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+        {{data[0]["module2"]}}
+          {{ mark2["unit"] }}
+        </th>
+        {% endfor %}
 
 
-      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-        Aggregate
-      </th>
-      <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
-        Overall
-      </th>
-    </theader>
-    <tbody>
-      {% set length = length %} {% for i in range(length) %}
-      <tr class="border-b-2">
-      <td class="border-r-2">{{loop.index }}</td>
-        <td class="border-r-2">{{ data[i]["names"] }}</td>
-        <td class="border-r-2">{{ data[i]["reg"] }}</td>
-        <td class="border-r-2">{{ data[i]["module1"] }}{{ data[i]["module2"] }}</td>
-         {% set marks_data =
-      data[i]["values"] %}{% for mark in marks_data %}
-        <td class="border-r-2">{{ mark["unit_mark"]|round(2) }}</td>
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+          Reccomendation
+        </th>
+        <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+          Overall
+        </th>
+      </theader>
+      <tbody>
 
-        {%endfor%}
-        {% set marks_data2 = data[i]["valuesmod2"] %} {% for mark2 in marks_data2 %}
-        <td class="border-r-2">{{ mark2["unit_mark"]|round(2) }}</td>
+        {% set length = length %} {% for i in range(length) %}
 
-        {%endfor%}
-        <td class="border-r-2">{{data[i]['status']}}</td>
-        <td class="border-r-2">{{data[i]["average_mark"]}}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        <tr class="border-b-2">
+        <td class="border-r-2">{{loop.index }}</td>
+          <td class="border-r-2">{{ data[i]["names"] }}</td>
+          <td class="border-r-2">{{ data[i]["reg"] }}</td>
+          <td class="border-r-2">{{ data[i]["module1"] }} / {{ data[i]["module2"] }}</td>
+
+
+
+           {% set marks_data = data[i]["values"] %}{% for mark in marks_data %}
+          <td class="border-r-2">{{ mark["unit_mark"]|round(2) }}</td>
+
+          {%endfor%}
+          {% set marks_data2 = data[i]["valuesmod2"] %} {% for mark2 in marks_data2 %}
+
+          <td class="border-r-2">{{ mark2["unit_mark"]|round(2) }}</td>
+
+          {%endfor%}
+
+            {% if data[i]['status'] =='fail' %}
+
+              <td class="border-r-2 bg-rose-400">{{data[i]['status']}}</td>
+
+            {% elif data[i]['status'] =='pass' %}
+
+              <td class="border-r-2 bg-sky-400">{{data[i]['status']}}</td>
+
+            {% elif data[i]['status'] =='pending' %}
+
+              <td class="border-r-2 bg-slate-400">{{data[i]['status']}}</td>
+
+            {% else %}
+
+              <td class="border-r-2">{{data[i]['status']}}</td>
+
+            {% endif %}
+
+              <td class="border-r-2">{{data[i]["average_mark"]}}</td>
+
+        </tr>
+
+
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
 </div>
+
+
 {% endblock %}

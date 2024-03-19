@@ -10,10 +10,7 @@
     <!-- TODO the contents of the sidebar will go here -->
     <div class="bg-white border p-5">
 
-      <div class="p-2 px-10 bg-zinc-100 flex items-center space-x-4 rounded-md"><i class="fa-solid fa-database"></i><div>Views</div></div>
-
-
-
+      <div class="p-2 px-10 bg-zinc-100 flex border items-center space-x-4 rounded-md"><i class="fa-solid fa-database"></i><div>Views</div></div>
 
     </div>
 
@@ -81,8 +78,23 @@
 
 
       <!-- SECTION START SHORCUTS -->
-      <div class="p-3 bg-white border">
+      <div class="p-3 bg-white border space-y-2">
         <div class="font-bold text-lg  flex items-center space-x-1 text-sky-600"><i class="fa-solid fa-link"></i> <div>Shortcuts</div> </div>
+        <!-- Container -->
+        <div class="space-y-1">
+
+          <a href="{{ url_for('admin.enroll_student') }} "  class="space-x-3 flex items-center border px-2 p-1 rounded-md bg-white  hover:shadow-md">
+            <i class="fa-solid fa-user-plus"></i>
+            <div>Enroll Students</div>
+          </a>
+
+          <a href="{{ url_for('admin.assign_unit') }}"  class="space-x-3 flex items-center border px-2 p-1 rounded-md bg-white  hover:shadow-md">
+            <i class="fa-solid fa-address-book"></i>
+            <div>Assign Units</div>
+          </a>
+
+
+        </div>
 
 
       </div>

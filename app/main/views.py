@@ -1,6 +1,7 @@
 from flask import flash, jsonify, redirect, render_template, request, url_for
 from flask_login import (LoginManager, current_user, login_required,
                          login_user, logout_user)
+from sqlalchemy import and_
 
 from .. import db
 from ..decorators import admin_required, permission_required
@@ -8,7 +9,6 @@ from ..models import (EnrollmentUnits, LecturerAssignment, Marks, Modules,
                       Permission, StudentEnrollment, Units, User)
 from . import main
 from .forms import *
-from sqlalchemy import and_
 
 
 @main.route('/',methods=['GET','POST','PUT'])
@@ -44,6 +44,7 @@ def home():
 
 
             return render_template('user/lecturerlandingpage.html',lecturerunits=assigned_units)
+
 
 
 def addmarksfirsttime():
@@ -174,6 +175,7 @@ def addmarksfirsttime():
     return render_template("user/user-base.html" ,title = 'Lecture Landing page ' )
 
 
+
 @main.route("/editprofile",methods=['GET','PUT','POST'])
 @login_required
 def editprofile():
@@ -285,8 +287,6 @@ def profile():
 
 
 
-
-
 # lecture adding marks
 @main.route('/addmarks', methods=['GET', 'POST'])
 @login_required
@@ -345,6 +345,9 @@ def addmarks():
     # Handle the case where the user is not a lecturer
     flash('Permission denied. You must be a lecturer to access this page.', 'danger')
     return redirect(url_for('main.index'))
+
+
+
 def calculate_status(cat_marks, assignment_marks, practical_marks, exam_marks):
     # Customize this logic based on your grading system
     total_marks = cat_marks + assignment_marks + practical_marks + exam_marks
@@ -358,13 +361,12 @@ def calculate_status(cat_marks, assignment_marks, practical_marks, exam_marks):
     else:
         return 'Fail'
 
+
+
 def calculate_overall_marks(cat_marks, assignment_marks, practical_marks, exam_marks):
     # Customize this logic based on your weighting system
     overall_marks = (cat_marks * 0.2) + (assignment_marks * 0.3) + (practical_marks * 0.2) + (exam_marks * 0.3)
     return overall_marks
-
-
-
 
 
 
@@ -403,6 +405,9 @@ def test():
     print(f"query returns {students} while list inyear")
     return ("OLLA")
 @main.route('/getmarks/<int:student_id>/<string:academic_year>/<int:module_id>',methods=['GET','POST'])
+
+
+
 def getmarks(student_id, academic_year,module_id):
     results=db.session.query(
         User.fname.label('fname'),
@@ -428,15 +433,17 @@ def getmarks(student_id, academic_year,module_id):
 
     print('criteria','id',student_id,'academicyear',academic_year,'module',module_id)
     print(results)
-  
-
- 
 
 
-   
-        
+
+
+
+
+
     return render_template('user/Studentmarks.html',data=results,length=length)
-   
+
+
+
 @main.route('/results/<int:student_id>/<string:academic_year>', methods=['GET'])
 def get_student_results(student_id, academic_year):
     results=db.session.query(
@@ -466,36 +473,36 @@ def get_student_results(student_id, academic_year):
         print(meanscore)
     score=meanscore/length
     print(score)
-    if score > 70 and recommendation is not "Fail" and recommendation is not "pending": 
+    if score > 70 and recommendation is not "Fail" and recommendation is not "pending":
       Meangrade="A"
-      recommendation = 'Excellent' 
+      recommendation = 'Excellent'
     elif score > 59 and recommendation is not "Fail" and recommendation is not "pending":
       Meangrade="B"
-      recommendation = 'Good' 
+      recommendation = 'Good'
     elif score > 49 and recommendation is not "Fail" and recommendation is not "pending":
       Meangrade="C"
-      recommendation = 'Satisfactory' 
+      recommendation = 'Satisfactory'
     elif score > 39 and recommendation is not "Fail" and recommendation is not "pending":
       Meangrade="D"
-      
-      recommendation = 'Pass' 
+
+      recommendation = 'Pass'
     elif score==0 :
         recommendation="pending"
         Meangrade='X'
-      
-    else: 
+
+    else:
       Meangrade="E"
       recommendation = recommendation
- 
 
 
-   
-        
+
+
+
     return render_template('user/transcript.html',data=results,length=length,meangrade=Meangrade,recommendation=recommendation,meanscore=score)
-   
+
+
 
 # Query to fetch all students enrolled in a certain academic year
-
 @main.route('/studentYears')
 def student_academic_year():
      print(current_user.role.name)
@@ -512,6 +519,8 @@ def student_academic_year():
         print(Years)
         return render_template('user/StudentYears.html',Years=Years)
      return("unauthorized user",current_user.role.name)
+
+
 
 @main.route('/modulemarks')
 def student_modules():
