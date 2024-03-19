@@ -72,7 +72,7 @@ def assign_unit():
             db.session.commit()
             flash('Unit assigned to lecturer successfully.', 'success')
 
-    return render_template('admin/assign_unit.html', form=form)
+    return render_template('admin/assign_unit.html', form=form, title = 'Assign Units')
 
 
 
@@ -333,10 +333,6 @@ def adminDashboard():
 
 
 
-# Enroll Students
-@admin.route('/enroll_student')
-def studentEnroll():
-    return render_template('admin/enroll_student.html', title = 'Enroll Students')
 
 
 
