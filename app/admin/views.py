@@ -310,6 +310,7 @@ def consosheet(acyear,yos,type):
         for student_data in student_data_dict:
                 #  print(student_data['names'])
                  failed_units=0
+                 missingmark=0
                  units=[]
                  for unit_data in student_data["values"] + student_data["valuesmod2"]:
 
@@ -327,14 +328,18 @@ def consosheet(acyear,yos,type):
                             # Break the loop if any unit fails
                         elif int(unit_data["markstatus"]) == 0:
                             status="pending"
+                            missingmark+=1
                             # print((unit_data["markstatus"]))
                             break
+                        
+                           
                         # print((unit_data["markstatus"]))
                         # print(failed_units,"failed_units")
                     else:
                         status="pending"
+                        missingmark+=1
 
-                 if failed_units < 1:
+                 if failed_units < 1 and missingmark<1:
                     recommendation="Pass"
                     Passlist.append({"regno":student_data['reg'],
                                 "name":student_data['names'],"recommendation":recommendation})
@@ -356,66 +361,6 @@ def consosheet(acyear,yos,type):
 
 
 
-        #     average_mark = round(total_marks / num_units,2)if num_units > 0 else 0
-        #     student_data["status"] = status
-        #     print(Passlist,'paslist')
-        #     student_data["average_mark"] = average_mark
-
-        # status1 = "pass"
-        # i=0
-        # for student_data in student_data_dict:
-        #     if student_data["status"]!=status1:
-        #         pass
-        #         # print(student_data["student_id"],"fail")
-        #     else:
-
-        #         student_id=int(student_data["student_id"])
-        #         module_id=int(modid)+1
-        #         module_id2=int(modid)+2
-        #         academic_year=int(academiyear)+1
-
-        #             # Check if the student is not already enrolled in the module
-        #         enrollment_exists = StudentEnrollment.query.filter_by(student_id=student_id, module_id=module_id,academic_year=academic_year).first()
-        #         if enrollment_exists:
-        #             flash('Student is already enrolled in the module.', 'warning')
-        #         else:
-        #             # Create a new enrollment
-        #             new_enrollment = StudentEnrollment(student_id=student_id, module_id=module_id, academic_year=academic_year)
-        #             new_enrollment2 = StudentEnrollment(student_id=student_id, module_id=module_id2, academic_year=academic_year)
-
-        #             db.session.add(new_enrollment)
-        #             db.session.add(new_enrollment2)
-        #             db.session.commit()
-        #             new_enrollment_id = new_enrollment.id
-        #             new_enrollment_id2 = new_enrollment2.id
-        #             enroll_units=Units.query.filter_by(module_id=module_id).all()
-        #             enroll_units2=Units.query.filter_by(module_id=module_id2).all()
-
-
-        #             for unit in enroll_units:
-        #                 new_unit_enrollment=EnrollmentUnits(enrollment_id=new_enrollment_id,unit_id=unit.id)
-        #                 print(new_unit_enrollment)
-        #                 db.session.add(new_unit_enrollment)
-        #                 db.session.commit()
-        #                 newmarkenrollmentid=new_unit_enrollment.id
-        #                 print(newmarkenrollmentid)
-        #                 new_unit_mark=(Marks(unitenrollment_id=new_unit_enrollment.id))
-        #                 db.session.add(new_unit_mark)
-        #                 print(new_enrollment_id)
-        #             for unit in  enroll_units2:
-        #                 new_unit_enrollment=EnrollmentUnits(enrollment_id=new_enrollment_id2,unit_id=unit.id)
-        #                 print(new_unit_enrollment)
-        #                 db.session.add(new_unit_enrollment)
-        #                 db.session.commit()
-        #                 newmarkenrollmentid=new_unit_enrollment.id
-        #                 print(newmarkenrollmentid)
-        #                 new_unit_mark=(Marks(unitenrollment_id=new_unit_enrollment.id))
-        #                 db.session.add(new_unit_mark)
-        #                 print(new_enrollment_id)
-        #             db.session.commit()
-        #             flash('Student enrolled successfully.', 'success')
-
-
 
     length=len(tester)
 
@@ -426,13 +371,32 @@ def consosheet(acyear,yos,type):
            return render_template('admin/consolidated.html',data=student_data_dict,length=ln)
 
     elif type=="passlist":
-           return render_template('admin/list.html',list=Passlist)
+           if Passlist:
+            return render_template('admin/list.html',list=Passlist)
+           else:
+               flash("No marks have been submitted yet")
+               return redirect(url_for("admin.adminDashboard"))
     elif type=="supplementary":
-           return render_template('admin/list.html',list=Suppllementarylist,)
+           if Suppllementarylist:
+           
+            return render_template('admin/list.html',list=Suppllementarylist,)
+           else:
+               flash("No marks have been submitted yet")
+               return redirect(url_for("admin.adminDashboard"))
     elif type=="repeatyear":
-           return render_template('admin/list.html',list=Repeatyearlist)
+           if Repeatyearlist:
+            return render_template('admin/list.html',list=Repeatyearlist)
+            
+           else:
+               flash("No marks have been submitted yet")
+               return redirect(url_for("admin.adminDashboard"))
     elif type=="discontinuation":
-       return render_template('admin/list.html',list=Discontinuationlist)
+        if Discontinuationlist:
+            return render_template('admin/list.html',list=Discontinuationlist)
+            
+        else:
+            flash("No marks have been submitted yet")
+            return redirect(url_for("admin.adminDashboard"))
     print(student_data_dict)
 
 
