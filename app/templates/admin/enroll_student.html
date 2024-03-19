@@ -1,8 +1,21 @@
-<!-- templates/enroll_student.html -->
+{% extends "admin/index.html" %}
 
-{% extends "user/user-base.html" %} {% block content %}
+
+{% block title %}
+
+  <title> {{title}}</title>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
 <h2>Enroll Student</h2>
-<form method="post" action="{{ url_for('admin.enroll_student') }}">
+
+
+<form  class="p-1 bg-red-300" method="post" action="{{ url_for('admin.enroll_student') }}">
   {{ form.hidden_tag() }}
   <label for="student_id">Student ID:</label>
   {{ form.student_id(size=10, placeholder="Enter student ID", required=true) }}
@@ -16,4 +29,6 @@
   <br />
   <input type="submit" value="Enroll" />
 </form>
+
+
 {% endblock %}

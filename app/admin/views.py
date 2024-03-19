@@ -46,7 +46,7 @@ def enroll_student():
             db.session.commit()
             flash('Student enrolled successfully.', 'success')
 
-    return render_template('admin/enroll_student.html', form=form)
+    return render_template('admin/enroll_student.html', form=form , title = 'Enroll Students')
 
 
 
@@ -313,6 +313,7 @@ def consosheet(acyear,yos):
 
 
 # shortcuts for admin dashboard
+
 # Admin Dashboard
 @admin.route('/admin_dashboard')
 def adminDashboard():
@@ -325,6 +326,18 @@ def adminDashboard():
     return render_template('admin/dashboard.html',title= 'Admin Dashboard',AcademicYears=AcademicYears)
 
 
+# Consolidated Style Sheets
+# @admin.route('/consolidated_stylesheet')
+# def consolidatedStyleSheet():
+#     return render_template('admin/consolidated.html', title = 'Consolidated StyleSheet')
+
+
 
 # Enroll Students
+@admin.route('/enroll_student')
+def studentEnroll():
+    return render_template('admin/enroll_student.html', title = 'Enroll Students')
+
+
+
 # Assign Units
