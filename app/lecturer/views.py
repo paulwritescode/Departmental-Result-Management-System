@@ -47,6 +47,9 @@ def home():
 
 @lecturer.route('/update_marks', methods=['POST','GET','PUT'])
 def update_marks():
+    acadyear=""
+    yunit=0
+
 
     if current_user.is_authenticated and current_user.role.name == 'Lecturer':
         lecturer_id = current_user.id
@@ -99,10 +102,14 @@ def update_marks():
             return redirect(url_for('main.home'))
 
 
+
+
         elif request.method=='GET':
             acyear = request.args.get('acyear')
             unit = request.args.get('unit')
             print(acyear,unit)
+            acadyear=acyear
+            yunit=unit
 
 
             marrks=db.session.query(
@@ -234,10 +241,13 @@ def update_marks():
                     mark_record.overall_marks=float(ov_all)
                     input=float(exammarks)
                     record=float(examMarks)if examMarks else 0
-                    if ov_all > 39:
+                    if catmarks==0 or assignmentmarks==0 or practicalmarks==0 or exammark==0:
+                        Marks.query.filter_by(id=mark_id).update({Marks.status: -1})
+                    elif ov_all > 39 and assignmentmarks is not None and practicalmarks is not None and catmarks is not None:
                         Marks.query.filter_by(id=mark_id).update({Marks.status:1})
-                    elif ov_all<40 and record!=input:
+                    elif ov_all<40 and record!=input and assignmentmarks is not None and practicalmarks is not None and catmarks is not None:
                         Marks.query.filter_by(id=mark_id).update({Marks.status: Marks.status + 2})
+
 
 
 
@@ -247,7 +257,7 @@ def update_marks():
 
 
 
-            return redirect(url_for('lecturer.update_marks'))
+            return redirect(url_for('lecturer.home' ))
 
         else:
             return jsonify({"Invalid method" }), 404

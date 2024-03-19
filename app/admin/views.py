@@ -235,9 +235,9 @@ def consosheet(acyear,yos,type):
 
                 total_marks += unit_data["unit_mark"]
                 num_units += 1
-               
-                 
-                
+
+
+
                 if unit_data["markstatus"] != None:
                     if int(unit_data["markstatus"]) == 2:
                         status = "fail"
@@ -251,7 +251,7 @@ def consosheet(acyear,yos,type):
             average_mark = round(total_marks / num_units,2)if num_units > 0 else 0
             student_data["status"] = status
             student_data["average_mark"] = average_mark
-            
+
 
         status1 = "pass"
         i=0
@@ -260,12 +260,12 @@ def consosheet(acyear,yos,type):
                 pass
                 # print(student_data["student_id"],"fail")
             else:
-                
+
                 student_id=int(student_data["student_id"])
                 module_id=int(modid)+1
                 module_id2=int(modid)+2
                 academic_year=int(academiyear)+1
-               
+
                     # Check if the student is not already enrolled in the module
                 enrollment_exists = StudentEnrollment.query.filter_by(student_id=student_id, module_id=module_id,academic_year=academic_year).first()
                 if enrollment_exists:
@@ -306,7 +306,7 @@ def consosheet(acyear,yos,type):
                         print(new_enrollment_id)
                     db.session.commit()
                     flash('Student enrolled successfully.', 'success')
-   
+
         for student_data in student_data_dict:
                 #  print(student_data['names'])
                  failed_units=0
@@ -314,7 +314,7 @@ def consosheet(acyear,yos,type):
                  for unit_data in student_data["values"] + student_data["valuesmod2"]:
 
                     total_marks += unit_data["unit_mark"]
-                    num_units += 1                               
+                    num_units += 1
                     if unit_data["markstatus"] != None:
                         if int(unit_data["markstatus"]) == 2:
                             status = "fail"
@@ -322,7 +322,7 @@ def consosheet(acyear,yos,type):
                             print(unit_data['unit'])
                             # units="there there"
                             units.append(unit_data['unit'])
-                            
+
                             # print((unit_data["markstatus"]))
                             # Break the loop if any unit fails
                         elif int(unit_data["markstatus"]) == 0:
@@ -333,7 +333,7 @@ def consosheet(acyear,yos,type):
                         # print(failed_units,"failed_units")
                     else:
                         status="pending"
-                
+
                  if failed_units < 1:
                     recommendation="Pass"
                     Passlist.append({"regno":student_data['reg'],
@@ -350,12 +350,12 @@ def consosheet(acyear,yos,type):
                     recommendation="Discontinuation"
                     Discontinuationlist.append({"regno":student_data['reg'],
                                 "name":student_data['names'],"recommendation":recommendation,"units":units})
-                 print(Passlist,'paslist',Suppllementarylist,'supps')
-
-                    
+                #  print(Passlist,'paslist',Suppllementarylist,'supps')
 
 
-              
+
+
+
         #     average_mark = round(total_marks / num_units,2)if num_units > 0 else 0
         #     student_data["status"] = status
         #     print(Passlist,'paslist')
@@ -368,12 +368,12 @@ def consosheet(acyear,yos,type):
         #         pass
         #         # print(student_data["student_id"],"fail")
         #     else:
-                
+
         #         student_id=int(student_data["student_id"])
         #         module_id=int(modid)+1
         #         module_id2=int(modid)+2
         #         academic_year=int(academiyear)+1
-               
+
         #             # Check if the student is not already enrolled in the module
         #         enrollment_exists = StudentEnrollment.query.filter_by(student_id=student_id, module_id=module_id,academic_year=academic_year).first()
         #         if enrollment_exists:
@@ -422,7 +422,9 @@ def consosheet(acyear,yos,type):
     ln=len(student_data_dict)
 
     if type=="consosheet":
+           print(student_data_dict)
            return render_template('admin/consolidated.html',data=student_data_dict,length=ln)
+
     elif type=="passlist":
            return render_template('admin/list.html',list=Passlist)
     elif type=="supplementary":
@@ -431,6 +433,7 @@ def consosheet(acyear,yos,type):
            return render_template('admin/list.html',list=Repeatyearlist)
     elif type=="discontinuation":
        return render_template('admin/list.html',list=Discontinuationlist)
+    print(student_data_dict)
 
 
 

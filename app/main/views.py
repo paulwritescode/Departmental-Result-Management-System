@@ -46,7 +46,6 @@ def home():
             return render_template('user/lecturerlandingpage.html',lecturerunits=assigned_units)
 
 
-
 def addmarksfirsttime():
   if current_user.is_authenticated and current_user.role.name == 'Lecturer':
     lecturer_id = current_user.id
@@ -175,7 +174,6 @@ def addmarksfirsttime():
     return render_template("user/user-base.html" ,title = 'Lecture Landing page ' )
 
 
-
 @main.route("/editprofile",methods=['GET','PUT','POST'])
 @login_required
 def editprofile():
@@ -287,6 +285,8 @@ def profile():
 
 
 
+
+
 # lecture adding marks
 @main.route('/addmarks', methods=['GET', 'POST'])
 @login_required
@@ -345,9 +345,6 @@ def addmarks():
     # Handle the case where the user is not a lecturer
     flash('Permission denied. You must be a lecturer to access this page.', 'danger')
     return redirect(url_for('main.index'))
-
-
-
 def calculate_status(cat_marks, assignment_marks, practical_marks, exam_marks):
     # Customize this logic based on your grading system
     total_marks = cat_marks + assignment_marks + practical_marks + exam_marks
@@ -361,12 +358,13 @@ def calculate_status(cat_marks, assignment_marks, practical_marks, exam_marks):
     else:
         return 'Fail'
 
-
-
 def calculate_overall_marks(cat_marks, assignment_marks, practical_marks, exam_marks):
     # Customize this logic based on your weighting system
     overall_marks = (cat_marks * 0.2) + (assignment_marks * 0.3) + (practical_marks * 0.2) + (exam_marks * 0.3)
     return overall_marks
+
+
+
 
 
 
@@ -405,9 +403,6 @@ def test():
     print(f"query returns {students} while list inyear")
     return ("OLLA")
 @main.route('/getmarks/<int:student_id>/<string:academic_year>/<int:module_id>',methods=['GET','POST'])
-
-
-
 def getmarks(student_id, academic_year,module_id):
     results=db.session.query(
         User.fname.label('fname'),
@@ -421,7 +416,8 @@ def getmarks(student_id, academic_year,module_id):
         Marks.practical_marks.label("practicals"),
         Marks.exam_marks.label("exam"),
 
-        Marks.overall_marks.label('unitmark')
+        Marks.overall_marks.label('unitmark'),
+        Marks.status.label("markstatus")
         ).join(EnrollmentUnits,Marks.unitenrollment_id==EnrollmentUnits.id
                ).join(StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
                ).join(Modules,StudentEnrollment.module_id==Modules.id
@@ -441,8 +437,6 @@ def getmarks(student_id, academic_year,module_id):
 
 
     return render_template('user/Studentmarks.html',data=results,length=length)
-
-
 
 @main.route('/results/<int:student_id>/<string:academic_year>', methods=['GET'])
 def get_student_results(student_id, academic_year):
@@ -501,8 +495,8 @@ def get_student_results(student_id, academic_year):
     return render_template('user/transcript.html',data=results,length=length,meangrade=Meangrade,recommendation=recommendation,meanscore=score)
 
 
-
 # Query to fetch all students enrolled in a certain academic year
+
 @main.route('/studentYears')
 def student_academic_year():
      print(current_user.role.name)
@@ -519,8 +513,6 @@ def student_academic_year():
         print(Years)
         return render_template('user/StudentYears.html',Years=Years)
      return("unauthorized user",current_user.role.name)
-
-
 
 @main.route('/modulemarks')
 def student_modules():

@@ -27,11 +27,43 @@
       <tr>
         <td>{{ data[i][5] }}</td>
         <td>{{ data[i][4] }}</td>
-        <td>{{ data[i][6] }}</td>
-        <td>{{ data[i][8] }}</td>
-        <td>{{ data[i][7] }}</td>
-        <td>{{ data[i][8] }}</td>
-        <td>{{ data[i][9] }}</td>
+        <td>
+          {% if data[i][6] is not none %}
+              {{ data[i][6] }}
+          {% else %}
+              Missing Mark
+          {% endif %}
+      </td>
+
+      <td>
+          {% if data[i][8] is not none %}
+              {{ data[i][8] }}
+          {% else %}
+              Missing Mark
+          {% endif %}
+      </td>
+
+      <td>
+          {% if data[i][7] is not none %}
+              {{ data[i][7] }}
+          {% else %}
+              Missing Mark
+          {% endif %}
+      </td>
+
+      <td>
+          {% if data[i][9] is not none %}
+              {{ data[i][9] }}
+          {% else %}
+              Missing Mark
+          {% endif %}
+      </td>
+
+      <td>
+          {{ data[i][10] }}
+
+      </td>
+
       </tr>
       {% endfor %}
     </tbody>
