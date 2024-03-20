@@ -406,7 +406,7 @@ def consosheet(acyear,yos,type):
 
     return render_template('admin/consolidated.html',data=student_data_dict,length=ln)
 
-
+# ADMIN DASHBOSAD PRENEDNFNELFNFLKN
 # Admin Dashboard
 @admin.route('/admin_dashboard')
 def adminDashboard():
