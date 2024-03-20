@@ -358,8 +358,7 @@ def consosheet(acyear,yos,type):
                                 "name":student_data['names'],"recommendation":recommendation,"units":units})
                 #  print(Passlist,'paslist',Suppllementarylist,'supps')
                     
-                    # njlkbgflkbghfblkghflkfbhgffg
-
+               
 
 
 
