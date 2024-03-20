@@ -269,7 +269,8 @@ def consosheet(acyear,yos,type):
                     # Check if the student is not already enrolled in the module
                 enrollment_exists = StudentEnrollment.query.filter_by(student_id=student_id, module_id=module_id,academic_year=academic_year).first()
                 if enrollment_exists:
-                    flash('Student is already enrolled in the module.', 'warning')
+                    # flash('Student is already enrolled in the module.', 'warning')
+                    pass
                 else:
                     # Create a new enrollment
                     new_enrollment = StudentEnrollment(student_id=student_id, module_id=module_id, academic_year=academic_year)
@@ -343,12 +344,12 @@ def consosheet(acyear,yos,type):
                     recommendation="Pass"
                     Passlist.append({"regno":student_data['reg'],
                                 "name":student_data['names'],"recommendation":recommendation})
-                 elif failed_units < 4:
+                 elif 3<failed_units < 4:
                     recommendation="Supplementary"
                     Suppllementarylist.append({"regno":student_data['reg'],
                                 "name":student_data['names'],"recommendation":recommendation,"units":list(units)})
                  elif failed_units ==4:
-                    recommendation="Repeat Year"
+                    ecommendation="Repeat Year"
                     Repeatyearlist.append({"regno":student_data['reg'],
                                 "name":student_data['names'],"recommendation":recommendation,"units":list(units)})
                  elif failed_units > 4:
@@ -356,6 +357,8 @@ def consosheet(acyear,yos,type):
                     Discontinuationlist.append({"regno":student_data['reg'],
                                 "name":student_data['names'],"recommendation":recommendation,"units":units})
                 #  print(Passlist,'paslist',Suppllementarylist,'supps')
+                    
+                    # njlkbgflkbghfblkghflkfbhgffg
 
 
 
@@ -374,28 +377,28 @@ def consosheet(acyear,yos,type):
            if Passlist:
             return render_template('admin/list.html',list=Passlist)
            else:
-               flash("No marks have been submitted yet")
+               flash("No marks have been submitted yet or No Students fall under this category ")
                return redirect(url_for("admin.adminDashboard"))
     elif type=="supplementary":
            if Suppllementarylist:
            
             return render_template('admin/list.html',list=Suppllementarylist,)
            else:
-               flash("No marks have been submitted yet")
+               flash("No marks have been submitted yet or No Students fall under this category ")
                return redirect(url_for("admin.adminDashboard"))
     elif type=="repeatyear":
            if Repeatyearlist:
             return render_template('admin/list.html',list=Repeatyearlist)
             
            else:
-               flash("No marks have been submitted yet")
+               flash("No marks have been submitted yet or No Students fall under this category ")
                return redirect(url_for("admin.adminDashboard"))
     elif type=="discontinuation":
         if Discontinuationlist:
             return render_template('admin/list.html',list=Discontinuationlist)
             
         else:
-            flash("No marks have been submitted yet")
+            flash("No marks have been submitted yet or No Students fall under this category ")
             return redirect(url_for("admin.adminDashboard"))
     print(student_data_dict)
 

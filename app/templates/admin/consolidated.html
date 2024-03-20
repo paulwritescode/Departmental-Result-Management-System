@@ -1,3 +1,4 @@
+
 {% extends 'admin/index.html'%} {% block content %}
 
 
@@ -81,9 +82,14 @@
            <td class="border-r-2 bg-sky-300">{{ mark["unit_mark"]|round(2) }}</td>
 
 
-           {% else %}
+           {% elif mark["markstatus"]=="2"%}
 
            <td class="border-r-2 bg-red-300">{{ mark["unit_mark"]|round(2) }}</td>
+
+
+
+           {% else %} 
+           <td class="border-r-2 bg-yellow-300">{{ mark["unit_mark"]|round(2) }}</td>
 
 
 
