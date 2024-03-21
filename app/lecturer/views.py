@@ -212,6 +212,7 @@ def update_marks():
 
              mark_record = Marks.query.filter_by(id=mark_id).first()
             #  mark_record.change_status()
+            #  erkgbjhekgbjhrtkjhbt
 
 
              if mark_record:

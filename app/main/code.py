@@ -194,7 +194,45 @@ def day5():
 
     
 
-day5()
+# day5()
+def day6():
+    # FOR LOOPS
+    name:str="JIMMYJAMES"
+    for letter in name:
+        print(letter)
+    names=['Jimmy','James']
+    for name in names:
+        print(name)
+    
+
+
+    # WHILE LOOP
+    count=0
+
+
+    while True:
+        if count>10:
+            break
+        print('Keep running')
+        count+=1
+    marks: list[any]=[]
+    counter=0
+    totalmarks=0
+    while counter<3:
+       
+        Students_marks=int(input(f"Enter marks for cat {counter+1}: "))
+        marks.append(Students_marks)
+        totalmarks+=Students_marks
+    
+        counter+=1
+
+    for mark in marks:
+        print(mark)
+    print('total is: ',totalmarks)
+    
+
+day6()
+
 
 
 
