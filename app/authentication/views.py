@@ -30,41 +30,29 @@ def base():
 
 @auth.route("/admin/signup", methods=["POST", "GET"])
 def userSignUp():
-    print("blah this should appear")
+  
     reg_form = RegisterForm()
-    if request.method == "POST":
-        if reg_form.validate_on_submit():
-            print("Validation successful")
-            print("validation on going ")
-            fname = reg_form.fname.data
-            lname = reg_form.lname.data
-            email = reg_form.email.data
-            role = reg_form.role.data
-            password = reg_form.password.data
-            username = reg_form.username.data
-            hash_password = generate_password_hash(password)
-            user = User(
-                fname=fname,
-                lname=lname,
-                email=email,
-                password=hash_password,
-                role_id=role,
-                username=username,
-            )
-            db.session.add(user)
-            db.session.commit()
-            flash(
-                "Account created successfully. Admin will approve your account in 10 to 30 min",
-                "success",
-            )
-            return redirect(url_for("auth.userLogin"))
-        else:
-            print("Form validation failed")
-            for field, errors in reg_form.errors.items():
-                print(f"Validation error for {field}: {errors}")
-            flash("Form validation failed. Please check your input.", "danger")
-            return redirect(url_for("auth.userSignUp"))
-    return render_template("admin/signup.html", form=reg_form, title="User signup")
+    if request.method == 'POST':
+      if reg_form.validate_on_submit():
+        fname = reg_form.fname.data
+        lname = reg_form.lname.data
+        email = reg_form.email.data
+        role = reg_form.role.data
+        password = reg_form.password.data
+        username = reg_form.username.data
+        hash_password = generate_password_hash(password)
+        user = User(fname=fname, lname=lname, email=email, password=hash_password, role_id=role, username=username)
+        db.session.add(user)
+        db.session.commit()
+        flash('Account created successfully. Admin will approve your account in 10 to 30 min', 'success')
+        return redirect(url_for('auth.userLogin'))
+      else:
+       
+        for field, errors in reg_form.errors.items():
+             flash('Form validation failed. Please check your input.', 'danger')
+        return redirect(url_for("auth.userSignUp"))
+    return render_template('admin/signup.html', form=reg_form, title="User signup")
+
 
 
 # Landing page User login
@@ -89,9 +77,10 @@ def userLogin():
             else:
                 return "invalid role"
         else:
-            print("Error ocurred")
-            print(check_password_hash(user.password, password))
-    return render_template("login/login.html", form=log_form, title="System Login")
+              flash("Error ocurred")
+              print(check_password_hash(user.password, password))
+    return render_template('login/login.html', form=log_form, title = 'System Login')
+
 
 
 # Logout function

@@ -243,4 +243,45 @@ def day6():
     print("total is: ", totalmarks)
 
 
+<<<<<<< HEAD
 day6()
+=======
+# day6()
+
+def day7():
+    # join,split and slice functions
+    # FIZZBUZZ CHALLENGE
+
+    n=18
+   
+    def soln(n):
+        arr=[]
+        for i in range(n):
+            if i % 3==0 and i % 5==0:
+                arr.append("FIZZBUZZ")
+            elif i%3==0:
+                arr.append("FIZZ")
+            elif i%5==0:
+                arr.append("BUZZ")
+            else:
+                arr.append(str(i))
+        print(arr)
+
+        return arr
+    
+    soln(20)
+day7()
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 959fc07f81f47f95d1d534f62c0c6de7a439bf05

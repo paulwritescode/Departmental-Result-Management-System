@@ -35,96 +35,104 @@
             <i class="fa-solid fa-book-open-reader"></i>
             <div>Academic Years</div>
           </h1>
-          <!-- TODO Update this section -->
-          <div class="bg-red-200 p-1">
+          <!-- this is the academic years -->
+          <div class="flex space-x-2">
 
-            <div class="flex space-x-2">
+            {% for i in AcademicYears%}
+            <!-- Display contents -->
 
-              {% for i in AcademicYears%}
-              <!-- Display contents -->
+            <div class="p-2 bg-white shadow-md border space-y-1">
 
-              <div class="p-2 bg-white shadow-md border space-y-1">
+              <!-- passlist -->
+              <button
+                class=" flex  bg-sky-100 border   hover:shadow-lg  p-4 px-5 rounded-md">
+                <a
+                  href="{{ url_for('admin.consosheet', acyear=i.academicyears,
+                      yos=i.yearofstudy,type='passlist') }}">
+                  <div
+                    class="text-sky-500 font-bold text-lg">Passlist</div>
+                  <div class="flex ">Academic Year: <div
+                      class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div>
+                  </div>
+                  <div class="flex ">Year of study: <div
+                      class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div>
+                  </div>
+                </a>
+              </button>
 
-                <!-- passlist -->
-                <button
-                  class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
-                  <a
-                    href="{{ url_for('admin.consosheet', acyear=i.academicyears,
-                        yos=i.yearofstudy,type='passlist') }}">
-                    <div class="flex ">Academic Year: <div
-                        class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div>
-                    </div>
-                    <div class="flex ">Year of study: <div
-                        class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div>
-                    </div>
-                  </a>
-                </button>
+              <!-- supplementary -->
+              <button
+                class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
+                <a href="{{ url_for('admin.consosheet', acyear=i.academicyears,
+                       yos=i.yearofstudy,type='supplementary') }}">
+                  <div
+                    class="text-sky-500 font-bold text-lg">Supplementary</div>
 
-                <!-- supplementary -->
-                <button
-                  class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
-                  <a
-                    href="{{ url_for('admin.consosheet', acyear=i.academicyears,
-                         yos=i.yearofstudy,type='supplementary') }}">
+                  <div class="flex ">Academic Year: <div
+                      class="text-green-500 font-bold text-lg pl-1">{{i.supplementary}}</div>
+                  </div>
+                  <div class="flex ">Academic Year: <div
+                      class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div>
+                  </div>
+                  <div class="flex ">Year of study: <div
+                      class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div></div>
 
-                    <div class="flex ">Academic Year: <div
-                        class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div></div>
-                    <div class="flex ">Year of study: <div
-                        class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div></div>
+                </a>
+              </button>
 
-                  </a>
-                </button>
+              <!-- repeatyear -->
+              <button
+                class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
+                <a href="{{ url_for('admin.consosheet', acyear=i.academicyears,
+                                  yos=i.yearofstudy,type='repeatyear') }}">
+                  <div
+                    class="text-sky-500 font-bold text-lg">Repeat year</div>
+                  <div class="flex ">Academic Year: <div
+                      class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div></div>
+                  <div class="flex ">Year of study: <div
+                      class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div></div>
+                </a>
+              </button>
 
-                <!-- repeatyear -->
-                <button
-                  class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
-                  <a
-                    href="{{ url_for('admin.consosheet', acyear=i.academicyears,
-                                    yos=i.yearofstudy,type='repeatyear') }}">
-                    <div class="flex ">Academic Year: <div
-                        class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div></div>
-                    <div class="flex ">Year of study: <div
-                        class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div></div>
-                  </a>
-                </button>
+              <!-- discontinuation -->
+              <button
+                class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
+                <a href="{{ url_for('admin.consosheet', acyear=i.academicyears,
+                                  yos=i.yearofstudy,type='discontinuation') }}">
+                  <div
+                    class="text-sky-500 font-bold text-lg">Discontinuation</div>
 
-                <!-- discontinuation -->
-                <button
-                  class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
-                  <a
-                    href="{{ url_for('admin.consosheet', acyear=i.academicyears,
-                                    yos=i.yearofstudy,type='discontinuation') }}">
+                  <div class="flex ">Academic Year: <div
+                      class="text-gr een-500 font-bold text-lg pl-1">{{i.academicyears}}</div></div>
+                  <div class="flex ">Year of study: <div
+                      class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div></div>
 
-                    <div class="flex ">Academic Year: <div
-                        class="text-gr een-500 font-bold text-lg pl-1">{{i.academicyears}}</div></div>
-                    <div class="flex ">Year of study: <div
-                        class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div></div>
+                </a>
+              </button>
 
-                  </a>
-                </button>
-
-                <!-- consolidated sheet -->
-                <button
-                  class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
-                  <a
-                    href="{{ url_for('admin.consosheet', acyear=i.academicyears,
-                                    yos=i.yearofstudy,type='consosheet') }}">
-                    <div class="flex ">Academic Year: <div
-                        class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div>
-                    </div>
-                    <div class="flex ">Year of study: <div
-                        class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div>
-                    </div>
-                  </a>
-                </button>
-              </div>
-
-              {% endfor %}
-              <!-- SECTION 1 END -->
-
+              <!-- consolidated sheet -->
+              <button
+                class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
+                <a href="{{ url_for('admin.consosheet', acyear=i.academicyears,
+                                  yos=i.yearofstudy,type='consosheet') }}">
+                  <div
+                    class="text-sky-500 font-bold text-lg">Consolidated
+                    Sheets</div>
+                  <div class="flex ">Academic Year: <div
+                      class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div>
+                  </div>
+                  <div class="flex ">Year of study: <div
+                      class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div>
+                  </div>
+                </a>
+              </button>
             </div>
 
+            {% endfor %}
+            <!-- SECTION 1 END -->
+
           </div>
+
         </div>
 
       </div>
