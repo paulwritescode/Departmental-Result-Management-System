@@ -1,55 +1,52 @@
 {% extends "layout.html" %} {% block body %}
 <div
-  class="flex bg-white mt-0 mx-auto rounded-md space-x-4 items-center justify-center "
->
+  class="flex bg-white mt-0 mx-auto rounded-md space-x-4 items-center justify-center ">
   <div>
     <img
       class="w-90"
       src="{{ url_for('static', filename='schoollogo3.png') }}"
-      alt="School Logo"
-    />
+      alt="School Logo" />
   </div>
 
   <div class="p-10 pt-0">
-    <form action="" method="POST">
+    <form action method="POST">
       <div class=" font-bold text-xl text-sky-700">Create New User</div>
 
       <!-- start 1 -->
       <div class="my-2">
-        <label for="">First Name</label>
+        <label for>First Name</label>
         {{form.fname(class="rounded-md hover:shadow-md border-none
         bg-gray-100")}}
       </div>
       <!-- start 2 -->
       <div class="my-2">
-        <label for="">Last Name</label>
+        <label for>Last Name</label>
         {{form.lname(class="rounded-md hover:shadow-md border-none
         bg-gray-100")}}
       </div>
       {{ form.hidden_tag() }}
       <!-- start 3 -->
       <div class="my-2">
-        <label for="">Username</label>
+        <label for>Username</label>
 
         {{form.username(class="rounded-md hover:shadow-md border-none
         bg-gray-100")}}
       </div>
       <!-- start 4 -->
       <div class="my-2">
-        <label for="">Email</label>
+        <label for>Email</label>
 
         {{form.email(class="rounded-md hover:shadow-md border-none
         bg-gray-100")}}
       </div>
       <!-- start 5 -->
       <div class="my-2">
-        <label for="">Role</label>
+        <label for>Role</label>
         <select
           required
           class="rounded-md hover:shadow-md border-none bg-gray-100"
           name="role"
-          id="role"
-        >
+          id="role">
           <option disabled selected value="admin">Select Role</option>
           <option value="admin">Student</option>
           <option value="user">Lecturer</option>
@@ -57,13 +54,13 @@
       </div>
       <!-- start 6 -->
       <div class="my-2">
-        <label for="">Password</label>
+        <label for>Password</label>
         {{form.password( class="rounded-md hover:shadow-md border-none
         bg-gray-100")}}
       </div>
       <!-- start 7-->
       <div class="my-2">
-        <label for="">Department</label>
+        <label for>Department</label>
         {{form.Department( class="rounded-md hover:shadow-md border-none
         bg-gray-100")}}
       </div>

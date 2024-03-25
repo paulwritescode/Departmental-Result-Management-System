@@ -1,33 +1,34 @@
 {% extends "layout.html" %}
 {% block title %}
-  <title> {{title}} </title>
+<title> {{title}} </title>
 {% endblock %}
 {% block body %}
 
-<div class="h-screen bg-zinc-100 space-y-3 flex flex-col justify-center items-center ">
-  <div class="text-sky-700 font-bold text-3xl">Melick Ognee International School </div>
+<div
+  class="h-screen bg-zinc-100 space-y-3 flex flex-col justify-center items-center ">
+  <div class="text-sky-700 font-bold text-3xl">Melick Ognee International School
+  </div>
   <div
-    class=" flex justify-between  "
-  >
+    class=" flex justify-between  ">
 
-  <!-- image -->
-  <div class="flex  flex-col items-center  space-y-3">
-
+    <!-- image -->
+    <div class="flex  flex-col items-center  space-y-3">
 
       <img
         class="w-96"
         src="{{ url_for('static', filename='deer1.jpg') }}"
-        alt="School Logo"
-      />
+        alt="School Logo" />
 
+    </div>
 
-  </div>
+    <!-- Form input details -->
+    <form class="space-y-5 shadow-lg   p-12 bg-white " action method="POST">
+      <div class>
 
-  <!-- Form input details -->
-    <form class="space-y-5 shadow-lg   p-12 bg-white " action="" method="POST">
-      <div class="">
-        <div class="text-green-600 font-bold text-lg" >Computer Science Department</div>
+        <div class="text-green-600 font-bold text-lg">Computer Science
+          Department</div>
         <div class="font-bold text-xl text-sky-800">Login Page</div>
+
       </div>
 
       <!-- one -->
@@ -39,7 +40,7 @@
       {{form.hidden_tag()}}
       <!-- two -->
       <div class="flex flex-col">
-        <label for="">Password</label>
+        <label for>Password</label>
         {{form.password(class="hover:shadow-md rounded-md border-none bg-slate-50")}}
       </div>
       <div class="space-y-2">
@@ -58,7 +59,7 @@
         </div> -->
 
         <!-- TODO Figure our where this is supposed to be used -->
-  <!--
+        <!--
         <ul class="nav navbar-nav navbar-right">
           {% if current_user.is_authenticated %}
           <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>

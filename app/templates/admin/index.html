@@ -8,9 +8,8 @@
     <div class="p-2 px-3 flex shadow-md justify-end items-center space-x-1">
       <button
         class="flex space-x-1 border border-black hover:border-none bg-zinc-50 shadow-lg hover:bg-sky-600 hover:text-white p-1 px-2 rounded-md"
-        id="userButton"
-      >
-        <div class=""><i class="fa-solid fa-lg fa-circle-user"></i></div>
+        id="userButton">
+        <div class><i class="fa-solid fa-lg fa-circle-user"></i></div>
         <div>
           {% if current_user.is_authenticated %} {{ current_user.username }} {%
           else %} Stranger {% endif %}
@@ -19,13 +18,11 @@
 
       <div
         id="signOutMenu"
-        class="hidden flex flex-col rounded-md absolute right-28 p-1 overflow-hidden"
-      >
+        class="hidden flex flex-col rounded-md absolute right-28 p-1 overflow-hidden">
         <form
           action="/logout"
           class="flex items-center space-x-1 justify-center shadow-lg p-1 px-3 border border-black hover:border-none bg-zinc-50 hover:bg-rose-600 hover:text-white rounded-md"
-          href="{}"
-        >
+          href="{}">
           <button>
             <div class="space-x-1 flex justify-center items-center">
               <i class="fa-solid fa-power-off"></i>

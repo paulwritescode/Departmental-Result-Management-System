@@ -1,13 +1,11 @@
 {% extends "layout.html" %} {% block body %}
 <div
-  class="space-y-5 mt-15 m-12 py-20 rounded-md w-1/4 p-4 bg-white flex justify-center items-center flex-col"
->
+  class="space-y-5 mt-15 m-12 py-20 rounded-md w-1/4 p-4 bg-white flex justify-center items-center flex-col">
   <div class="flex flex-col items-center space-y-3">
     <img
       class="w-48"
       src="{{ url_for('static', filename='schoollogo.png') }}"
-      alt="School Logo"
-    />
+      alt="School Logo" />
     <ul class="nav navbar-nav navbar-right">
       {% if current_user.is_authenticated %}
       <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
@@ -18,7 +16,7 @@
 
     <h1 class="font-bold text-xl text-sky-800">Login Page</h1>
   </div>
-  <form class="space-y-5" action="" method="POST">
+  <form class="space-y-5" action method="POST">
     <!-- one -->
 
     <div class="flex flex-col">
@@ -28,7 +26,7 @@
     {{form.hidden_tag()}}
     <!-- two -->
     <div class="flex flex-col">
-      <label for="">Password</label>
+      <label for>Password</label>
       {{form.password(class="rounded-md border-none bg-slate-100")}}
     </div>
     <div class="space-y-2">

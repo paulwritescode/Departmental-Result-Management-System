@@ -509,9 +509,14 @@ def adminDashboard():
     )
 
 
-# TODO Handle individual update-marks for all units present
-@admin.route("/admin/edit_marks")
-@admin_required
-def editMarks():
-    if request.method == "GET":
+# Academic Year Views
+@admin.route("/admin/dashboard/academic_years")
+def academicYears():
+    return render_template("recommendations.html", title="Recomendations")
 
+
+# TODO Handle individual update-marks for all units present
+# @admin.route("/admin/edit_marks")
+# @admin_required
+# def editMarks():
+#     if request.method == "GET":

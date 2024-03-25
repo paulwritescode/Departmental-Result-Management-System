@@ -1,61 +1,61 @@
 {% extends 'admin/index.html'%}
 
-
-
 {% block content %} {{super()}}
-
 
 <div>
 
-    <!-- BreadCrumbs Navigation -->
+  <!-- BreadCrumbs Navigation -->
   <div class="flex text-lg border bg-white w-auto p-1 ">
-      <a href="{{ url_for('admin.adminDashboard') }}" class="hover:bg-sky-200 px-3   ">Dashboard</a>
+    <a href="{{ url_for('admin.adminDashboard') }}"
+      class="hover:bg-sky-200 px-3   ">Dashboard</a>
 
-      <div href="" class=" text-purple-700 border px-3 bg-zinc-100 ">Assign Units</div>
-   </div>
-
-
-
-
-
+    <div href class=" text-purple-700 border px-3 bg-zinc-100 ">Assign
+      Units</div>
+  </div>
 
   <div class="flex flex-col items-center">
 
-    <h1 class="font-bold text-lg  flex items-center space-x-1 text-sky-600">Assign Unit</h1>
+    <h1
+      class="font-bold text-lg  flex items-center space-x-1 text-sky-600">Assign
+      Unit</h1>
 
-
-    <form class="flex flex-col p-3 bg-white border shadow-md space-y-1 rounded-md"  method="post" action="{{ url_for('admin.assign_unit') }}">
-
+    <form
+      class="flex flex-col p-3 bg-white border shadow-md space-y-1 rounded-md"
+      method="post" action="{{ url_for('admin.assign_unit') }}">
 
       {{ form.hidden_tag() }}
 
       <div>
         <label for="lecturer_id">Lecturer ID:</label>
-        {{ form.lecturer_id(class="hover:shadow-md border-none bg-slate-50 rounded-md",size=10, placeholder="Enter lecturer ID", required=true)
+        {{
+        form.lecturer_id(class="hover:shadow-md border-none bg-slate-50 rounded-md",size=10,
+        placeholder="Enter lecturer ID", required=true)
         }}
       </div>
 
-
       <div>
         <label for="unit_id">Unit ID:</label>
-        {{ form.unit_id(class="hover:shadow-md border-none bg-slate-50 rounded-md",size=10, placeholder="Enter unit ID", required=true) }}
+        {{
+        form.unit_id(class="hover:shadow-md border-none bg-slate-50 rounded-md",size=10,
+        placeholder="Enter unit ID", required=true) }}
 
       </div>
 
       <div>
         <label for="academic_year">Academic Year:</label>
-        {{ form.academic_year(class="hover:shadow-md border-none bg-slate-50 rounded-md",size=4, placeholder="Enter academic year",
+        {{
+        form.academic_year(class="hover:shadow-md border-none bg-slate-50 rounded-md",size=4,
+        placeholder="Enter academic year",
         required=true) }}
       </div>
 
-      <input  class="bg-sky-600 text-white px-2 py-1 rounded-md" type="submit" value="Assign" />
+      <input class="bg-sky-600 text-white px-2 py-1 rounded-md" type="submit"
+        value="Assign" />
 
     </form>
 
   </div>
 
 </div>
-
-
 
 {% endblock %}

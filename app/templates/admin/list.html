@@ -3,28 +3,28 @@
 <h1>{{list[0].recommendation}}</h1>
 <div>
     <div style="display: flex; flex-direction: row;">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p>Reg No  </p> <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p>Reg No </p> <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
         <p>Name</p>
 
     </div>
     {% for i in list %}
-  
+
     <div style="display: flex; flex-direction: row;">
-       <p>{{loop.index}}</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p>{{i.regno}} </p>
+        <p>{{loop.index}}</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p>{{i.regno}}
+        </p>
         &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        
-        <p>{{i.name}}</p> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
+
+        <p>{{i.name}}</p> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
 
         {% for x in i.units %}
         <p>{{x}}</p> &nbsp;&nbsp;&nbsp;&nbsp;
         <br>
         {% endfor %}
-    
+
     </div>
 
-{% endfor %}
+    {% endfor %}
 </div>
-
-
 
 {% endblock %}
