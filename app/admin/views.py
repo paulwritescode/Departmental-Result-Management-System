@@ -408,7 +408,7 @@ def consosheet(acyear,yos,type):
 
 # ADMIN DASHBOSAD PRENEDNFNELFNFLKN
 # Admin Dashboard
-@admin.route('/admin_dashboard')
+@admin.route('/admin/dashboard')
 def adminDashboard():
     AcademicYears=db.session.query(
         StudentEnrollment.academic_year.label("academicyears"),
@@ -417,5 +417,163 @@ def adminDashboard():
            ).distinct().all()
     print(AcademicYears)
     return render_template('admin/dashboard.html',title= 'Admin Dashboard',AcademicYears=AcademicYears)
+
+
+@admin.route('/admin/editmarks',methods=['GET','POST'])
+@admin_required
+def editMarks():
+        if request.method=='GET':
+            # acyear = request.args.get('acyear')
+            # unit = request.args.get('unit')
+            acyear=20222023
+            unit=5
+            print(acyear,unit)
+            acadyear=acyear
+            yunit=unit
+
+
+       
+
+            query=db.session.query(
+
+                User.fname.label('student_fname'),
+                User.lname.label("student_lname"),
+                User.Reg_no.label("student_regNo"),
+                Units.name.label("unit_name"),
+                Units.code.label("unit_code"),
+                    Marks.id.label("mark_id"),
+                Marks.cat_marks.label("cats"),
+                Marks.assignment_marks.label("assignments"),
+                Marks.practical_marks.label("practicals"),
+                Marks.exam_marks.label("exam"),
+                Marks.overall_marks.label("overall"),
+
+
+
+                EnrollmentUnits.id.label("unitenrollment_id"),
+                StudentEnrollment.academic_year.label("academicYear")
+                ).join(
+                    StudentEnrollment,EnrollmentUnits.enrollment_id==StudentEnrollment.id
+                ).join(
+                    User,StudentEnrollment.student_id==User.id
+                ).join(
+                    Units, EnrollmentUnits.unit_id==Units.id
+                ).join(Marks,EnrollmentUnits.id==Marks.unitenrollment_id
+                )
+            enrolledStudents=query.filter(Units.id == unit,
+                StudentEnrollment.academic_year == acyear)
+            students=enrolledStudents.all()
+            InMyUnit=[]
+
+
+            for student_fname,student_lname,student_regNo,unit_name,unit_code,mark_id ,cats,assignments,practicals,exam,overall,unitenrollment_id,academicYear in students:
+                InMyUnit.append({
+
+                "student_name": student_fname + student_lname,
+                "course_name": unit_name,
+                "course_code": unit_code,
+                "enrollment_id":unitenrollment_id,
+                "student_reg": student_regNo,
+                "academicYear":academicYear,
+                "cats":cats,
+                "assignments":assignments,
+                "practicals":practicals,
+                "exams":exam,
+                "overall":overall,
+                "markid":mark_id,
+                        })
+            print(InMyUnit)
+
+
+            return render_template('admin/editmarks.html',students=InMyUnit)
+
+        elif request.method == 'POST':
+
+            enrollment_id=request.form.getlist('enrollment_id[]')
+            catmarks=request.form.getlist('cat_marks[]')
+            assignmentmarks=request.form.getlist('assignment_marks[]')
+            practicalmarks=request.form.getlist('practical_marks[]')
+            exammarks=request.form.getlist('exam_marks[]')
+            mark_id=request.form.getlist('mark_id[]')
+
+
+            for enrollment_id,catmarks,assignmentmarks,practicalmarks,exammarks,mark_id in zip(enrollment_id,catmarks,assignmentmarks,practicalmarks,   exammarks,mark_id):
+
+             mark_record = Marks.query.filter_by(id=mark_id).first()
+            #  mark_record.change_status()
+            #  erkgbjhekgbjhrtkjhbt
+
+
+             if mark_record:
+                catMarks=  mark_record.cat_marks
+                if catMarks is  None or catMarks=="":
+                    mark_record.cat_marks = float(catmarks) if catmarks else None
+                assignmentsMarks=mark_record.assignment_marks
+                if assignmentsMarks is None or assignmentsMarks=="":
+                    mark_record.assignment_marks = float(assignmentmarks) if assignmentmarks else None
+                practicalMarks=mark_record.practical_marks
+                if practicalMarks is  None or practicalMarks=="":
+                    mark_record.practical_marks = float(practicalmarks) if practicalmarks else None
+                examMarks=mark_record.exam_marks
+
+
+
+                status=mark_record.status
+                if exammarks and examMarks is  None or exammarks and examMarks!=exammarks or exammarks and examMarks=="":
+                    mark_record.exam_marks = float(exammarks) if exammarks else None
+                if (exammarks is not None and examMarks is None and exammarks!="" and examMarks!=exammarks)or (examMarks!="" and exammarks is not None and exammarks!="" and examMarks!=exammarks ):
+
+                    catmarks=float(catmarks) if catmarks else  0
+                    assignmentmarks=float(assignmentmarks) if assignmentmarks else 0
+                    practicalmarks=float(practicalmarks)if practicalmarks else 0
+                    exammark=float(exammarks)
+                    ov_all=(0.66*catmarks)+(assignmentmarks)+(0.5*practicalmarks)+(exammark)
+                    mark_record.overall_marks=float(ov_all)
+                    input=float(exammarks)
+                    record=float(examMarks)if examMarks else 0
+                    if catmarks==0 or assignmentmarks==0 or practicalmarks==0 or exammark==0:
+                        Marks.query.filter_by(id=mark_id).update({Marks.status: -1})
+                    elif ov_all > 39 and assignmentmarks is not None and practicalmarks is not None and catmarks is not None:
+                        Marks.query.filter_by(id=mark_id).update({Marks.status:1})
+                    elif ov_all<40 and record!=input and assignmentmarks is not None and practicalmarks is not None and catmarks is not None:
+                        Marks.query.filter_by(id=mark_id).update({Marks.status: Marks.status + 2})
+
+
+
+
+
+
+             db.session.commit()
+           
+
+
+
+            return redirect(url_for('admin.adminDashboard' ))
+
+
+@admin.route('/admin/editmarks/years',methods=['GET'])
+@admin_required
+def getAcademicYears():
+     AcademicYears=db.session.query(
+        StudentEnrollment.academic_year.label("academicyears"),
+        Modules.year.label('yearofstudy')
+    ).join(Modules,StudentEnrollment.module_id==Modules.id
+           ).distinct().all()
+     print(AcademicYears)
+     return render_template('admin/Viewyears.html',title='EditableAcademicYears',AcademicYears=AcademicYears)
+@admin.route('/admin/editmarks/years/units')
+@admin_required
+def getUnits():
+    assigned_units = (
+                    db.session.query(
+                            Units.name,
+                            Units.code
+                    )
+                    .join(Units, StudentEnrollment.unit_id == Units.id,
+                    ).join(Units, Modules.id==Units.module_id)
+                    .filter(LecturerAssignment.lecturer_id == lecturer_id)
+                    .all()
+                )
+
 
 
