@@ -513,10 +513,11 @@ def adminDashboard():
 @admin_required
 def editMarks():
         if request.method=='GET':
-            # acyear = request.args.get('acyear')
-            # unit = request.args.get('unit')
-            acyear=20222023
-            unit=5
+            acyear = request.args.get('acyear')
+            unit = request.args.get('unit')
+            year=request.args.get('year')
+            # acyear=20222023
+            # unit=5
             print(acyear,unit)
             acadyear=acyear
             yunit=unit
@@ -549,10 +550,10 @@ def editMarks():
                 ).join(
                     Units, EnrollmentUnits.unit_id==Units.id
                 ).join(Marks,EnrollmentUnits.id==Marks.unitenrollment_id
-                )
+                ).join(Modules,Units.module_id==Modules.id)
             enrolledStudents=query.filter(Units.id == unit,
-                StudentEnrollment.academic_year == acyear)
-            students=enrolledStudents.all()
+                StudentEnrollment.academic_year == acyear,Modules.year==year)
+            students=enrolledStudents.distinct()
             InMyUnit=[]
 
 
@@ -654,16 +655,36 @@ def getAcademicYears():
 @admin.route('/admin/editmarks/years/units')
 @admin_required
 def getUnits():
-    assigned_units = (
-                    db.session.query(
-                            Units.name,
-                            Units.code
-                    )
-                    .join(Units, StudentEnrollment.unit_id == Units.id,
-                    ).join(Units, Modules.id==Units.module_id)
-                    .filter(LecturerAssignment.lecturer_id == lecturer_id)
-                    .all()
-                )
+    if request.method=='GET':
+        acyear=request.args.get('acyear')
+        yr=request.args.get('year')
+        # acyear=20222024
+        # yr=2
+        print(acyear,yr)
+        year_units = (
+                        db.session.query(
+                                Units.name.label('name'),
+                                Units.code.label('code'),
+                                Units.id.label('id')
 
+                        )
+                        .join(StudentEnrollment,Units.module_id==StudentEnrollment.module_id,
+                        ).join(Modules,Units.module_id==Modules.id)
+                        .filter(StudentEnrollment.academic_year==acyear,Modules.year==yr)
+                        .distinct()
+                        .all()
+                    )
+        print(year_units)
+        unit_details = []
+        for unit in year_units:
+            unit_details.append({
+                'name': unit.name,
+                'code': unit.code,
+                'id': unit.id,
+            })
+        # print(unit_details[0])  # Just for debugging
+
+    return render_template('admin/viewunits.html', acyear=acyear, yr=yr, year_units=unit_details)
+        
 
 
