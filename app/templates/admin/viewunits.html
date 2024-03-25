@@ -1,0 +1,12 @@
+{% extends 'user/user-base.html' %}
+
+{% block content %}
+<div style="background: #ffffff; size: 25%">
+    {% for unit in year_units %}
+    <a href="{{ url_for('admin.editMarks', acyear=acyear, unit=unit.id, year=yr) }}"
+        class="flex space-x-1 bg-sky-400 hover:bg-sky-500 hover:text-white p-1 px-2 rounded-md">{{ unit.name }} {{
+        unit.code }}</a>
+    <br>
+    {% endfor %}
+</div>
+{% endblock %}
