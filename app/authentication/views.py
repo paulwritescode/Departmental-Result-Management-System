@@ -1,6 +1,11 @@
 from flask import flash, jsonify, redirect, render_template, request, url_for
-from flask_login import (LoginManager, current_user, login_required,
-                         login_user, logout_user)
+from flask_login import (
+    LoginManager,
+    current_user,
+    login_required,
+    login_user,
+    logout_user,
+)
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import db
@@ -12,20 +17,18 @@ from .forms import LoginForm, RegisterForm
 
 @auth.before_app_request
 def before_request():
-    excluded_endpoints = ['auth.userLogin', 'auth.userSignUp', 'static']
+    excluded_endpoints = ["auth.userLogin", "auth.userSignUp", "static"]
     if not current_user.is_authenticated and request.endpoint not in excluded_endpoints:
-        return redirect(url_for('auth.userLogin'))
+        return redirect(url_for("auth.userLogin"))
 
 
-
-@auth.route("/base",  methods=['POST', 'GET'])
+@auth.route("/base", methods=["POST", "GET"])
 @login_required
 def base():
-   return render_template("layout.html")
+    return render_template("layout.html")
 
 
-
-@auth.route("/admin/signup", methods=['POST', 'GET'])
+@auth.route("/admin/signup", methods=["POST", "GET"])
 def userSignUp():
   
     reg_form = RegisterForm()
@@ -53,26 +56,26 @@ def userSignUp():
 
 
 # Landing page User login
-@auth.route("/login", methods=['GET','POST'])
+@auth.route("/login", methods=["GET", "POST"])
 def userLogin():
-    log_form=LoginForm()
-    if request.method == 'POST' and log_form.validate_on_submit():
+    log_form = LoginForm()
+    if request.method == "POST" and log_form.validate_on_submit():
         # Form submitted and validated successfully
         email = log_form.email.data
         password = log_form.password.data
-        user = User.query.filter_by(email = email).first()
-        if user is not None and check_password_hash(user.password, password ):
+        user = User.query.filter_by(email=email).first()
+        if user is not None and check_password_hash(user.password, password):
             login_user(user)
-            if current_user.is_authenticated and current_user.role.name == 'Lecturer':
+            if current_user.is_authenticated and current_user.role.name == "Lecturer":
                 return redirect(url_for("lecturer.home"))
-            elif current_user.is_authenticated and current_user.role.name == 'Student':
-                return render_template('user/studentdashboard.html')
-                return("welcome Student")
-            elif current_user.is_authenticated and current_user.role.name == 'Admin':
-                return redirect(url_for('admin.adminDashboard'))
+            elif current_user.is_authenticated and current_user.role.name == "Student":
+                return render_template("user/studentdashboard.html")
+                return "welcome Student"
+            elif current_user.is_authenticated and current_user.role.name == "Admin":
+                return redirect(url_for("admin.adminDashboard"))
 
             else:
-                return("invalid role")
+                return "invalid role"
         else:
               flash("Error ocurred")
               print(check_password_hash(user.password, password))
@@ -84,6 +87,4 @@ def userLogin():
 @auth.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for('auth.userLogin'))
-
-
+    return redirect(url_for("auth.userLogin"))

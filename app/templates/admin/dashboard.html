@@ -1,134 +1,58 @@
 {% extends 'admin/index.html' %} {% block dashboard %}
 
-
 <div class="flex items-center justify-center">
-
-
 
   <div class="flex space-x-2 px-10">
 
     <!-- TODO the contents of the sidebar will go here -->
     <div class="bg-white border p-5">
 
-      <div class="p-2 px-10 bg-zinc-100 flex border items-center space-x-4 rounded-md"><i class="fa-solid fa-database"></i><div>Views</div></div>
+      <div
+        class="p-2 px-10 bg-zinc-100 flex border items-center space-x-4 rounded-md"><i
+          class="fa-solid fa-database"></i><div>Views</div></div>
 
     </div>
-
-
-
 
     <!-- Right of the Sidebar -->
     <div class="flex space-x-10">
 
       <div class="flex flex-col">
 
-
         <div class="p-3 bg-white flex flex-col w-auto border rounded-md">
 
-
-        <!-- SECTION 1 START -->
-        <!-- Houses the display for Academic Years -->
-        <h1  class="text-sky-600 font-bold text-2xl flex items-center space-x-2" >
-          <i class="fa-solid fa-book-open-reader"></i>
-          <div>Academic Years</div>
-        </h1>
-
-
-        <div class="flex space-x-2">
-
-          {% for i in AcademicYears%}
-            <!-- Display contents -->
-
-<div class="p-2 bg-white shadow-md border space-y-1">
-  <!-- passlist -->
-              <button class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
-                <a
-                  href="{{ url_for('admin.consosheet', acyear=i.academicyears,
-                  yos=i.yearofstudy,type='passlist') }}">
-                  <div class="flex ">Academic Year: <div class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div> </div>
-                  <div class="flex ">Year of study: <div class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div> </div>
-                </a>
-              </button>
-
-
-  <!-- supplementary -->
-              <button class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
-                <a href="{{ url_for('admin.consosheet', acyear=i.academicyears,
-                   yos=i.yearofstudy,type='supplementary') }}">
-
-                  <div class="flex ">Academic Year: <div class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div></div>
-                  <div class="flex ">Year of study: <div class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div></div>
-
-                </a>
-              </button>
-
-
-  <!-- repeatyear -->
-              <button class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
-                <a href="{{ url_for('admin.consosheet', acyear=i.academicyears,
-                              yos=i.yearofstudy,type='repeatyear') }}">
-                  <div class="flex ">Academic Year: <div class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div></div>
-                  <div class="flex ">Year of study: <div class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div></div>
-                </a>
-              </button>
-
-
-  <!-- discontinuation -->
-              <button class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
-                <a href="{{ url_for('admin.consosheet', acyear=i.academicyears,
-                              yos=i.yearofstudy,type='discontinuation') }}">
-
-                  <div class="flex ">Academic Year: <div class="text-gr een-500 font-bold text-lg pl-1">{{i.academicyears}}</div></div>
-                  <div class="flex ">Year of study: <div class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div></div>
-
-                </a>
-              </button>
-
-
-  <!-- consolidated sheet -->
-              <button class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
-                <a href="{{ url_for('admin.consosheet', acyear=i.academicyears,
-                              yos=i.yearofstudy,type='consosheet') }}">
-                  <div class="flex ">Academic Year: <div class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div>
-                  </div>
-                  <div class="flex ">Year of study: <div class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div>
-                  </div>
-                </a>
-              </button>
-</div>
-
-            {% endfor %}
-            <a href="{{ url_for('admin.editMarks') }}"
-              class="flex space-x-1 bg-sky-400 hover:bg-sky-500 hover:text-white p-1 px-2 rounded-md">20222023 unit=5</a>
-          <!-- SECTION 1 END -->
-
-
+          <!-- SECTION 1 START -->
+          <!-- Houses the display for Academic Years -->
+          <h1
+            class="text-sky-600 font-bold text-2xl flex items-center space-x-2">
+            <i class="fa-solid fa-book-open-reader"></i>
+            <div>Academic Years</div>
+          </h1>
+          <div class="bg-red-200 p-1">hj</div>git
         </div>
-        </div>
-
 
       </div>
 
-
       <!-- SECTION START SHORCUTS -->
       <div class="p-3 bg-white border space-y-2">
-        <div class="font-bold text-lg  flex items-center space-x-1 text-sky-600"><i class="fa-solid fa-link"></i> <div>Shortcuts</div> </div>
+        <div
+          class="font-bold text-lg  flex items-center space-x-1 text-sky-600"><i
+            class="fa-solid fa-link"></i> <div>Shortcuts</div> </div>
         <!-- Container -->
         <div class="space-y-1">
 
-          <a href="{{ url_for('admin.enroll_student') }} "  class="space-x-3 flex items-center border px-2 p-1 rounded-md bg-white  hover:shadow-md">
+          <a href="{{ url_for('admin.enroll_student') }} "
+            class="space-x-3 flex items-center border px-2 p-1 rounded-md bg-white  hover:shadow-md">
             <i class="fa-solid fa-user-plus"></i>
             <div>Enroll Students</div>
           </a>
 
-          <a href="{{ url_for('admin.assign_unit') }}"  class="space-x-3 flex items-center border px-2 p-1 rounded-md bg-white  hover:shadow-md">
+          <a href="{{ url_for('admin.assign_unit') }}"
+            class="space-x-3 flex items-center border px-2 p-1 rounded-md bg-white  hover:shadow-md">
             <i class="fa-solid fa-address-book"></i>
             <div>Assign Units</div>
           </a>
 
-
         </div>
-
 
       </div>
 
@@ -137,7 +61,6 @@
     </div>
 
   </div>
-
 
 </div>
 {% endblock %}
