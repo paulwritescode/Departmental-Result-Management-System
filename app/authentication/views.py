@@ -33,7 +33,14 @@ def userSignUp():
   
     reg_form = RegisterForm()
     if request.method == 'POST':
+      print( reg_form.fname.data,
+       reg_form.lname.data,
+         reg_form.email.data,
+        reg_form.role.data,
+        reg_form.password.data,
+        reg_form.username.data)
       if reg_form.validate_on_submit():
+        print('anything')
         fname = reg_form.fname.data
         lname = reg_form.lname.data
         email = reg_form.email.data
@@ -49,8 +56,11 @@ def userSignUp():
       else:
        
         for field, errors in reg_form.errors.items():
+             print("somrthing")
+             
              flash('Form validation failed. Please check your input.', 'danger')
         return redirect(url_for("auth.userSignUp"))
+      print("something_else")
     return render_template('admin/signup.html', form=reg_form, title="User signup")
 
 
