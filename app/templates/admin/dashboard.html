@@ -10,13 +10,13 @@
     <div class="bg-white rounded-md  border  ">
 
       <div
-        class="p-2 px-10 bg-zinc-50 shadow-md flex border-b items-center space-x-4 rounded-md"><i
+        class="p-2 px-10  bg-zinc-50 shadow-md flex border-b items-center space-x-4 rounded-md"><i
           class="fa-solid fa-folder-open"></i><div>Views</div>
       </div>
 
       <a
         href="{{ url_for('admin.getAcademicYears') }}"
-        class="p-2 px-10 flex border-b items-center space-x-4 rounded-md"><i
+        class="p-2 px-10 flex  border-b items-center space-x-4 rounded-md"><i
           class="fa-solid fa-pen-nib"></i> <div>Edit Marks</div>
       </a>
 
@@ -118,7 +118,7 @@
                                   yos=i.yearofstudy,type='consosheet') }}">
                   <div
                     class="text-sky-500 font-bold text-lg">Consolidated
-                    Sheets</div>
+                    Sheet</div>
                   <div class="flex ">Academic Year: <div
                       class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div>
                   </div>
@@ -147,13 +147,13 @@
         <div class="space-y-1">
 
           <a href="{{ url_for('admin.enroll_student') }} "
-            class="space-x-3 flex items-center border px-2 p-1 rounded-md bg-white  hover:shadow-md">
+            class="space-x-3 flex items-center border-b border-l rounded-md px-2 p-1  bg-white  hover:shadow-md">
             <i class="fa-solid fa-user-plus"></i>
             <div>Enroll Students</div>
           </a>
 
           <a href="{{ url_for('admin.assign_unit') }}"
-            class="space-x-3 flex items-center border px-2 p-1 rounded-md bg-white  hover:shadow-md">
+            class="space-x-3 flex items-center border-b border-l rounded-md px-2 p-1  bg-white  hover:shadow-md">
             <i class="fa-solid fa-address-book"></i>
             <div>Assign Units</div>
           </a>

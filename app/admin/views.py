@@ -364,7 +364,7 @@ def consosheet(acyear, yos, type):
                         db.session.add(new_unit_mark)
                         print(new_enrollment_id)
                     db.session.commit()
-                    flash("Student enrolled successfully.", "success")
+                    # flash("Student enrolled successfully.", "success")
 
         for student_data in student_data_dict:
             #  print(student_data['names'])
@@ -445,12 +445,15 @@ def consosheet(acyear, yos, type):
     if type == "consosheet":
         print(student_data_dict)
         return render_template(
-            "admin/consolidated.html", data=student_data_dict, length=ln
+            "admin/consolidated.html",
+            data=student_data_dict,
+            length=ln,
+            title="Consolidated Style Sheet",
         )
 
     elif type == "passlist":
         if Passlist:
-            return render_template("admin/list.html", list=Passlist)
+            return render_template("admin/list.html", list=Passlist, title="Pass list")
         else:
             flash(
                 "No marks have been submitted yet or No Students fall under this category "
@@ -460,8 +463,7 @@ def consosheet(acyear, yos, type):
         if Suppllementarylist:
 
             return render_template(
-                "admin/list.html",
-                list=Suppllementarylist,
+                "admin/list.html", list=Suppllementarylist, title="Supplementary"
             )
         else:
             flash(
@@ -470,7 +472,9 @@ def consosheet(acyear, yos, type):
             return redirect(url_for("admin.adminDashboard"))
     elif type == "repeatyear":
         if Repeatyearlist:
-            return render_template("admin/list.html", list=Repeatyearlist)
+            return render_template(
+                "admin/list.html", list=Repeatyearlist, title="Repeat Year"
+            )
 
         else:
             flash(
@@ -479,7 +483,9 @@ def consosheet(acyear, yos, type):
             return redirect(url_for("admin.adminDashboard"))
     elif type == "discontinuation":
         if Discontinuationlist:
-            return render_template("admin/list.html", list=Discontinuationlist)
+            return render_template(
+                "admin/list.html", list=Discontinuationlist, title="Discontinuation"
+            )
 
         else:
             flash(
@@ -488,7 +494,12 @@ def consosheet(acyear, yos, type):
             return redirect(url_for("admin.adminDashboard"))
     print(student_data_dict)
 
-    return render_template("admin/consolidated.html", data=student_data_dict, length=ln)
+    return render_template(
+        "admin/consolidated.html",
+        data=student_data_dict,
+        length=ln,
+        title="Consolidated Style Sheet",
+    )
 
 
 # Admin Dashboard
