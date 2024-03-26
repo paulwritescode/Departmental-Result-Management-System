@@ -1,14 +1,25 @@
 {% extends 'user/index.html' %}
 
+{% block content %}
 
-{% block content %} {% for year in Years %}
-<button
-  class="flex space-x-1 bg-sky-400 hover:bg-sky-500 hover:text-white p-1 px-2 rounded-md"
->
-  <a
-    href="{{ url_for('main.get_student_results', student_id=year.studid, academic_year=year.StudentYears) }}"
-    >academic year:{{ year.StudentYears }} year:{{year.moduleyear}}
-  </a>
-</button>
-</br>
-{% endfor %} {% endblock %}
+<div class="p-3 bg-white border-b shadow-md flex flex-col space-y-2">
+
+  {% for year in Years %}
+
+  <button
+    class="bg-white p-2 border  rounded-md hover:shadow-md">
+
+    <a
+      class="flex space-x-1 text-lg"
+      href="{{ url_for('main.get_student_results', student_id=year.studid, academic_year=year.StudentYears) }}">Academic
+      year:<div class="text-green-500 font-bold text-lg pl-1">{{
+        year.StudentYears }}</div> <div>Year:</div> <div
+        class="text-green-500 font-bold text-lg pl-1">{{year.moduleyear}}</div>
+    </a>
+
+  </button>
+
+  {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,63 +1,80 @@
 {% extends 'user/index.html' %}
 
 {% block content %}
-<div>
+<div class="space-y-2 bg-white p-3 rounded-md border shadow-md">
+
+  <div class="space-y-2">
+    <div class="flex">
+      <label for="fname" class="form-label">First Name:</label>
+      <b>{{ data[0][0] }}</b>
+    </div>
+    <div class="flex">
+      <label for="lname" class="form-label">Last Name: </label>
+      <b>{{ data[0][1] }}</b>
+    </div>
+    <div class="flex">
+      <label for="email" class="form-label">Registration No:</label>
+      <b
+        class="form-control"
+        id="email"
+        name="email"
+        value="{{ data[0][2] }}">{{ data[0][2] }}
+      </b>
+    </div>
+  </div>
+
   <div>
-    <label for="fname" class="form-label">First Name:</label>
-    <p>{{ data[0][0] }}</p>
+    <table>
+      <th>Unit Code</th>
+      <th>Unit Name</th>
+      <th>Unit Mark</th>
+      <th>Unit Grade</th>
+      <tbody>
+        {% set length = length %}
+        {% for i in range(length) %}
+        <tr>
+          <td>{{ data[i][5] }} </td>
+          <td>{{ data[i][4] }} . </td>
+          <td>{{ data[i][6] }} </td>
+          {% set grade = " " %}
+          {% set mark = data[i][6]|float %}
+          {% if mark > 70 %}
+          {% set grade = 'A' %}
+          {% elif mark > 59 %}
+          {% set grade = 'B' %}
+          {% elif mark > 49 %}
+          {% set grade = 'C' %}
+          {% elif mark > 39 %}
+          {% set grade = 'D' %}
+          {% elif mark==0 %}
+          {% set grade = 'Pending' %}
+          {% else %}
+          {% set grade = 'E' %}
+          {% endif %}
+          <td>{{ grade }}</td>
+        </tr>
+        {% endfor %}
+        <tr class="bg-red-100 p-2">
+          <th>Mean Score:</th>
+          <td>
+            <b>
+              <u>{{meanscore|int}}</u>
+            </b>
+          </td>
+          <th>Mean Grade:</th>
+          <td>
+            <u>
+              <b>{{meangrade}}</b>
+            </u>
+          </td>
+        </tr>
+        <tr>
+          <th>Recommendation:</th>
+          <td>{{recommendation}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div class="mb-3">
-    <label for="lname" class="form-label">Last Name:</label>
-    <p>{{ data[0][1] }}</p>
-  </div>
-  <div class="mb-3">
-    <label for="email" class="form-label">Registration No:</label>
-    <p
-      class="form-control"
-      id="email"
-      name="email"
-      value="{{ data[0][2] }}">{{ data[0][2] }}
-    </p>
-  </div>
-  <table>
-    <th>Unit Code</th>
-    <th>Unit Name</th>
-    <th>Unit Mark</th>
-    <th>Unit Grade</th>
-    <tbody>
-      {% set length = length %}
-
-      {% for i in range(length) %}
-      <tr>
-        <td>{{ data[i][5] }} </td>
-        <td>{{ data[i][4] }} . </td>
-        <td>{{ data[i][6] }} </td>
-
-        {% set grade = " " %}
-        {% set mark = data[i][6]|float %}
-
-        {% if mark > 70 %}
-        {% set grade = 'A' %}
-        {% elif mark > 59 %}
-        {% set grade = 'B' %}
-        {% elif mark > 49 %}
-        {% set grade = 'C' %}
-        {% elif mark > 39 %}
-        {% set grade = 'D' %}
-        {% elif mark==0 %}
-        {% set grade = 'Pending' %}
-        {% else %}
-        {% set grade = 'E' %}
-        {% endif %}
-        <td>{{ grade }}</td>
-      </tr>
-      {% endfor %}
-
-      <tr><th>Mean Score:</th><td><b><u>{{ meanscore|int}}</u></b></td><th>Mean
-          Grade:</th><td><u><b>{{meangrade}}</u></b></td></tr>
-      <tr><th>Recommendation:</th><td>{{recommendation}}</td></th>
-    </tbody>
-  </table>
 
 </div>
 {% endblock %}
