@@ -1,17 +1,18 @@
-{% extends 'user/user-base.html' %} {% block title %}
+{% extends 'user/index.html' %}
+
+{% block title %}
 <title>Update students</title>
 {% endblock %} {% block content %}
 
 <form
-  class="bg-white p-3 rounded-md"
+  class="bg-white p-3 border rounded-md"
   method="POST"
   action="{{ url_for('lecturer.update_marks') }}"
-  id="studentsForm"
->
-  <h2 class="text-sky-600 font-bold text-xl">Update students</h2>
+  id="studentsForm">
+  <h2 class="text-sky-600 font-bold text-xl">Enter Student Marks</h2>
   <table class="table">
     <thead>
-      <tr class="">
+      <tr class>
         <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
           Serial
         </th>
@@ -58,8 +59,7 @@
             type="hidden"
             value="{{ student.enrollment_id }}"
             readonly
-            name="enrollment_id[]"
-          />
+            name="enrollment_id[]" />
           {{loop.index}}
         </td>
         <td class="border-r-2">{{ student.student_name }}</td>
@@ -81,13 +81,12 @@
             student.cat_students
             %}readonly{%
             endif
-            %}
-          />
+            %} />
         </td>
 
         <td>
           <input
-            placeholder="Enter students"
+            placeholder="Enter marks"
             class="border-none hover:shadow-md text-center bg-green-100 w-32"
             type="number"
             name="cat_marks[]"
@@ -100,12 +99,11 @@
             student.cats
             %}readonly{%
             endif
-            %}
-          />
+            %} />
         </td>
         <td>
           <input
-            placeholder="Enter students"
+            placeholder="Enter marks"
             class="border-none hover:shadow-md text-center bg-green-100 w-32"
             type="number"
             name="assignment_marks[]"
@@ -118,12 +116,11 @@
             student.assignments
             %}readonly{%
             endif
-            %}
-          />
+            %} />
         </td>
         <td>
           <input
-            placeholder="Enter students"
+            placeholder="Enter marks"
             class="border-none hover:shadow-md text-center bg-green-100 w-32"
             type="number"
             name="practical_marks[]"
@@ -136,8 +133,7 @@
             student.practicals
             %}readonly{%
             endif
-            %}
-          />
+            %} />
         </td>
         <td>
           <input
@@ -153,8 +149,7 @@
             student.exams
             %}{%
             endif
-            %}
-          />
+            %} />
         </td>
         <td>
           <input
@@ -169,8 +164,7 @@
             student.overall
             %}readonly{%
             endif
-            %}
-          />
+            %} />
         </td>
       </tr>
       {% endfor %}
@@ -179,9 +173,8 @@
 
   <input
     type="submit"
-    class="p-2 mt-3 bg-sky-600 hover:bg-sky-700 hover:text-white rounded-md shadow-md"
-    value="Submit students"
-  />
+    class="p-2 mt-3 bg-sky-600 hover:bg-sky-700 hover:text-white text-white rounded-md "
+    value="Submit Marks" />
 </form>
 
 {% endblock %} *

@@ -1,13 +1,19 @@
-{% extends 'user/user-base.html' %} {% block content %}
-<button
-  class="flex space-x-1 bg-sky-400 hover:bg-sky-500 hover:text-white p-1 px-2 rounded-md"
->
-  <a href="{{ url_for('main.student_modules') }}">My Modules</a>
-</button>
-</br>
-<button
-  class="flex space-x-1 bg-sky-400 hover:bg-sky-500 hover:text-white p-1 px-2 rounded-md"
->
-  <a href="{{ url_for('main.student_academic_year') }}">My Transcripts</a>
-</button>
+{% extends 'user/index.html' %}
+
+{% block content %}
+
+<div class="p-3 bg-white border-b flex flex-col space-y-2">
+  <button
+    class="bg-white p-2 border  rounded-md hover:shadow-md">
+
+    <a href="{{ url_for('main.student_modules') }}">My Modules</a>
+
+  </button>
+
+  <button
+    class="bg-white p-2 border  rounded-md hover:shadow-md ">
+    <a href="{{ url_for('main.student_academic_year') }}">My Transcripts</a>
+  </button>
+</div>
+
 {% endblock %}

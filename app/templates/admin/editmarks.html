@@ -1,46 +1,59 @@
-{% extends 'user/user-base.html' %} {% block title %}
+{% extends 'admin/index.html' %} {% block title %}
 <title>Update students</title>
 {% endblock %} {% block content %}
 
-<form class="bg-white p-3 rounded-md" method="POST" action="{{ url_for('admin.editMarks') }}" id="studentsForm">
+<form class="bg-white p-3 rounded-md" method="POST"
+    action="{{ url_for('admin.editMarks') }}" id="studentsForm">
     <h2 class="text-sky-600 font-bold text-xl">Update students Marks </h2>
     <table class="table">
         <thead>
-            <tr class="">
-                <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+            <tr class>
+                <th
+                    class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
                     Serial
                 </th>
-                <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+                <th
+                    class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
                     Name
                 </th>
-                <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+                <th
+                    class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
                     Reg-No
                 </th>
-                <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+                <th
+                    class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
                     Unit-Name
                 </th>
-                <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+                <th
+                    class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
                     Unit-Code
                 </th>
-                <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+                <th
+                    class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
                     Academic-Year
                 </th>
-                <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+                <th
+                    class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
                     Unit Enroll Id
                 </th>
-                <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+                <th
+                    class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
                     CAT
                 </th>
-                <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+                <th
+                    class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
                     Assignment
                 </th>
-                <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+                <th
+                    class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
                     Practical
                 </th>
-                <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+                <th
+                    class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
                     Exam
                 </th>
-                <th class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
+                <th
+                    class="text-left bg-sky-600 text-white w-32 px-1 border-r-2">
                     Overall
                 </th>
             </tr>
@@ -49,7 +62,8 @@
             {% for student in students %}
             <tr class="border-b-2">
                 <td>
-                    <input type="hidden" value="{{ student.enrollment_id }}" readonly name="enrollment_id[]" />
+                    <input type="hidden" value="{{ student.enrollment_id }}"
+                        readonly name="enrollment_id[]" />
                     {{loop.index}}
                 </td>
                 <td class="border-r-2">{{ student.student_name }}</td>
@@ -60,36 +74,48 @@
 
                 <td>
                     <input placeholder="Enter students"
-                        class="border-none hover:shadow-md text-center bg-green-100 w-32" type="number" name="mark_id[]"
-                        step="0.1" value="{{ student.markid }}" {% if student.cat_students %}readonly{% endif %} />
+                        class="border-none hover:shadow-md text-center bg-green-100 w-32"
+                        type="number" name="mark_id[]"
+                        step="0.1" value="{{ student.markid }}" {% if
+                        student.cat_students %}readonly{% endif %} />
                 </td>
 
                 <td>
                     <input placeholder="Enter students"
-                        class="border-none hover:shadow-md text-center bg-green-100 w-32" type="number"
-                        name="cat_marks[]" min="0" max="30" step="0.1" value="{{ student.cats }}" {% if student.cats
+                        class="border-none hover:shadow-md text-center bg-green-100 w-32"
+                        type="number"
+                        name="cat_marks[]" min="0" max="30" step="0.1"
+                        value="{{ student.cats }}" {% if student.cats
                         %}readonly{% endif %} />
                 </td>
                 <td>
                     <input placeholder="Enter students"
-                        class="border-none hover:shadow-md text-center bg-green-100 w-32" type="number"
-                        name="assignment_marks[]" step="0.1" min="0" max="10" value="{{ student.assignments }}" {% if
+                        class="border-none hover:shadow-md text-center bg-green-100 w-32"
+                        type="number"
+                        name="assignment_marks[]" step="0.1" min="0" max="10"
+                        value="{{ student.assignments }}" {% if
                         student.assignments %}readonly{% endif %} />
                 </td>
                 <td>
                     <input placeholder="Enter students"
-                        class="border-none hover:shadow-md text-center bg-green-100 w-32" type="number"
-                        name="practical_marks[]" step="0.1" min="0" max="20" value="{{ student.practicals }}" {% if
+                        class="border-none hover:shadow-md text-center bg-green-100 w-32"
+                        type="number"
+                        name="practical_marks[]" step="0.1" min="0" max="20"
+                        value="{{ student.practicals }}" {% if
                         student.practicals %}readonly{% endif %} />
                 </td>
                 <td>
-                    <input placeholder="Enter Exam" class="border-none hover:shadow-md text-center bg-green-100 w-32"
-                        type="number" name="exam_marks[]" min="0" max="60" value="{{ student.exams }}" {% if
+                    <input placeholder="Enter Exam"
+                        class="border-none hover:shadow-md text-center bg-green-100 w-32"
+                        type="number" name="exam_marks[]" min="0" max="60"
+                        value="{{ student.exams }}" {% if
                         student.exams %}{% endif %} />
                 </td>
                 <td>
-                    <input placeholder="Enter Exam" class="border-none hover:shadow-md text-center bg-green-100 w-32"
-                        type="number" name="overall_marks[]" step="0.1" value="{{ student.overall }}" {% if
+                    <input placeholder="Enter Exam"
+                        class="border-none hover:shadow-md text-center bg-green-100 w-32"
+                        type="number" name="overall_marks[]" step="0.1"
+                        value="{{ student.overall }}" {% if
                         student.overall %}readonly{% endif %} />
                 </td>
             </tr>
@@ -97,7 +123,8 @@
         </tbody>
     </table>
 
-    <input type="submit" class="p-2 mt-3 bg-sky-600 hover:bg-sky-700 hover:text-white rounded-md shadow-md"
+    <input type="submit"
+        class="p-2 mt-3 bg-sky-600 hover:bg-sky-700 hover:text-white rounded-md shadow-md"
         value="Submit students" />
 </form>
 

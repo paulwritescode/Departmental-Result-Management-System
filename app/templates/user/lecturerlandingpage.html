@@ -1,13 +1,19 @@
-{% extends 'user/user-base.html'%} {%block content%}
-<div style="background: #ffffff; size: 25%">
+{% extends 'user/index.html'%}
+
+{%block content%}
+
+<div class="bg-white p-3 mt-4 border flex flex-col space-y-2 rounded-md">
+
+  <div class="text-sky-600 font-bold text-xl">Your Units</div>
+
   {%for unit,year,name in lecturerunits%}
+
   <a
     href="{{ url_for('lecturer.update_marks', acyear=year, unit=unit) }}"
-    class="flex space-x-1 bg-sky-400 hover:bg-sky-500 hover:text-white p-1 px-2 rounded-md"
-    >{{name}} {{year}}</a
-  >
-  </br>
+    class="bg-white p-2 border  rounded-md hover:shadow-md">{{name}}
+    {{year}}</a>
 
   {%endfor%}
-  <div>{%endblock%}</div>
 </div>
+
+{%endblock%}

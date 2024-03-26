@@ -1,4 +1,6 @@
-{% extends 'user/user-base.html' %} {% block title %}
+{% extends 'user/index.html' %}
+
+{% block title %}
 <title>Edit Profile</title>
 {% endblock %} {% block content %}
 <div class="bg-white p-3 rounded-md">
@@ -12,8 +14,7 @@
       id="fname"
       name="fname"
       value="{{ fname }}"
-      readonly
-    />
+      readonly />
   </div>
   <div class="mb-3">
     <label for="lname" class="form-label">Last Name</label>
@@ -23,8 +24,7 @@
       id="lname"
       name="lname"
       value="{{ lname }}"
-      readonly
-    />
+      readonly />
   </div>
   <div class="mb-3">
     <label for="email" class="form-label">Email</label>
@@ -34,8 +34,7 @@
       id="email"
       name="email"
       value="{{ email }}"
-      readonly
-    />
+      readonly />
   </div>
   <div class="mb-3">
     <label for="currentmodule" class="form-label">Current Module</label>
@@ -45,8 +44,7 @@
       id="currentmodule"
       name="currentmodule"
       value="{{ currentmodule }}"
-      readonly
-    />
+      readonly />
   </div>
   <div class="mb-3">
     <label for="phone" class="form-label">Phone</label>
@@ -56,8 +54,7 @@
       id="phone"
       name="phone"
       value="{{ phone }}"
-      readonly
-    />
+      readonly />
   </div>
   <div class="mb-3">
     <label for="regno" class="form-label">Reg No</label>
@@ -67,8 +64,7 @@
       id="regno"
       name="regno"
       value="{{ regno }}"
-      readonly
-    />
+      readonly />
   </div>
   <div class="mb-3">
     <label for="roleid" class="form-label">RoleId</label>
@@ -78,8 +74,7 @@
       id="roleid"
       name="roleid"
       value="{{ roleid }}"
-      readonly
-    />
+      readonly />
   </div>
   <div class="mb-3">
     <label for="status" class="form-label">Status</label>
@@ -89,8 +84,7 @@
       id="status"
       name="status"
       value="{{ status }}"
-      readonly
-    />
+      readonly />
   </div>
   <div class="mb-3">
     <label for="yor" class="form-label">Year Of Registration</label>
@@ -100,8 +94,7 @@
       id="yor"
       name="yor"
       value="{{ yor }}"
-      readonly
-    />
+      readonly />
   </div>
   <div class="mb-3">
     <label for="username" class="form-label">Username</label>
@@ -111,8 +104,7 @@
       id="username"
       name="username"
       value="{{ username }}"
-      readonly
-    />
+      readonly />
   </div>
 
   <!-- Add other fields as needed -->

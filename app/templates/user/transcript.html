@@ -1,4 +1,6 @@
-{% extends 'user/user-base.html'%} {% block content %}
+{% extends 'user/index.html' %}
+
+{% block content %}
 <div>
   <div>
     <label for="fname" class="form-label">First Name:</label>
@@ -11,13 +13,10 @@
   <div class="mb-3">
     <label for="email" class="form-label">Registration No:</label>
     <p
-    
       class="form-control"
       id="email"
       name="email"
-      value="{{ data[0][2] }}"
- 
-    >{{ data[0][2] }}
+      value="{{ data[0][2] }}">{{ data[0][2] }}
     </p>
   </div>
   <table>
@@ -26,44 +25,39 @@
     <th>Unit Mark</th>
     <th>Unit Grade</th>
     <tbody>
- {% set length = length %}
-  
-{% for i in range(length) %} 
-  <tr>
-    <td>{{ data[i][5] }}  </td>
-    <td>{{ data[i][4] }}  .    </td>
-    <td>{{ data[i][6] }} </td>
-   
-    {% set grade = " " %}
-    {% set mark = data[i][6]|float %}
-    
-    {% if mark > 70 %}
+      {% set length = length %}
+
+      {% for i in range(length) %}
+      <tr>
+        <td>{{ data[i][5] }} </td>
+        <td>{{ data[i][4] }} . </td>
+        <td>{{ data[i][6] }} </td>
+
+        {% set grade = " " %}
+        {% set mark = data[i][6]|float %}
+
+        {% if mark > 70 %}
         {% set grade = 'A' %}
-    {% elif mark > 59 %}
+        {% elif mark > 59 %}
         {% set grade = 'B' %}
-    {% elif mark > 49 %}
+        {% elif mark > 49 %}
         {% set grade = 'C' %}
-    {% elif mark > 39 %}
+        {% elif mark > 39 %}
         {% set grade = 'D' %}
-    {% elif mark==0 %}
+        {% elif mark==0 %}
         {% set grade = 'Pending' %}
-    {% else %}
+        {% else %}
         {% set grade = 'E' %}
-    {% endif %}
-    <td>{{ grade }}</td>
-  </tr>
-{% endfor %}
+        {% endif %}
+        <td>{{ grade }}</td>
+      </tr>
+      {% endfor %}
 
-
-
-
-      <tr><th>Mean Score:</th><td><b><u>{{ meanscore|int}}</u></b></td><th>Mean Grade:</th><td><u><b>{{meangrade}}</u></b></td></tr>
+      <tr><th>Mean Score:</th><td><b><u>{{ meanscore|int}}</u></b></td><th>Mean
+          Grade:</th><td><u><b>{{meangrade}}</u></b></td></tr>
       <tr><th>Recommendation:</th><td>{{recommendation}}</td></th>
     </tbody>
   </table>
- 
-  
 
-  
 </div>
 {% endblock %}
