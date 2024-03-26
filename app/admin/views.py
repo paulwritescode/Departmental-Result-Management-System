@@ -406,7 +406,7 @@ def consosheet(acyear, yos, type):
                         "recommendation": recommendation,
                     }
                 )
-            elif 3 < failed_units < 4:
+            elif failed_units < 4:
                 recommendation = "Supplementary"
                 Suppllementarylist.append(
                     {
