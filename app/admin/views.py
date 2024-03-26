@@ -364,7 +364,7 @@ def consosheet(acyear, yos, type):
                         db.session.add(new_unit_mark)
                         print(new_enrollment_id)
                     db.session.commit()
-                    # flash("Student enrolled successfully.", "success")
+                    flash("Student enrolled successfully.", "success")
 
         for student_data in student_data_dict:
             #  print(student_data['names'])

@@ -1,30 +1,44 @@
 {% extends 'admin/index.html'%}
 {% block content %}
-<h1>{{list[0].recommendation}}</h1>
 <div>
-    <div style="display: flex; flex-direction: row;">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p>Reg No </p> <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-        <p>Name</p>
 
+    <!-- BreadCrumbs Navigation -->
+    <div class="flex text-lg border bg-white w-auto p-1 ">
+        <a href="{{ url_for('admin.adminDashboard') }}"
+            class="hover:bg-sky-200 px-3   ">Dashboard</a>
+
+        <div href
+            class=" text-purple-700 border px-3 bg-zinc-100 ">Edit Marks</div>
     </div>
-    {% for i in list %}
 
-    <div style="display: flex; flex-direction: row;">
-        <p>{{loop.index}}</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p>{{i.regno}}
-        </p>
-        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="text-sky-500 font-bold text-lg">{{list[0].recommendation}}</div>
 
-        <p>{{i.name}}</p> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="bg-white p-3 rounded-md shadow-md border-b">
+        <div style="display: flex; flex-direction: row;">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p>Reg No </p> <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+            <p>Name</p>
 
-        {% for x in i.units %}
-        <p>{{x}}</p> &nbsp;&nbsp;&nbsp;&nbsp;
-        <br>
+        </div>
+        {% for i in list %}
+
+        <div style="display: flex; flex-direction: row;">
+            <p>{{loop.index}}</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p>{{i.regno}}
+            </p>
+            &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+            <p>{{i.name}}</p> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+
+            {% for x in i.units %}
+            <p>{{x}}</p> &nbsp;&nbsp;&nbsp;&nbsp;
+            <br>
+            {% endfor %}
+
+        </div>
+
         {% endfor %}
-
     </div>
 
-    {% endfor %}
 </div>
 
 {% endblock %}
