@@ -1,12 +1,39 @@
-{% extends 'user/user-base.html' %}
+{% extends 'admin/index.html' %}
 
 {% block content %}
-<div style="background: #ffffff; size: 25%">
-    {% for unit in year_units %}
-    <a href="{{ url_for('admin.editMarks', acyear=acyear, unit=unit.id, year=yr) }}"
-        class="flex space-x-1 bg-sky-400 hover:bg-sky-500 hover:text-white p-1 px-2 rounded-md">{{ unit.name }} {{
-        unit.code }}</a>
-    <br>
-    {% endfor %}
+
+<div class="flex flex-col space-y-2 items-center justify-center">
+
+    <!-- BreadCrumbs Navigation -->
+    <div class="flex text-lg border bg-white w-auto p-1 ">
+        <a href="{{ url_for('admin.adminDashboard') }}"
+            class="hover:bg-sky-200 px-3   ">Dashboard</a>
+
+        <div href
+            class=" hover:bg-sky-200 px-3   "> <a
+                href="{{ url_for('admin.getAcademicYears') }}"
+                class="hover:bg-sky-200   "> Edit Marks (Years) </a> </div>
+        <div href
+            class=" text-purple-700 border px-3 bg-zinc-100 ">Edit Marks</div>
+    </div>
+
+    <h1
+        class="text-sky-600 font-bold text-2xl flex items-center space-x-2">
+        <i class="fa-solid fa-pen-nib"></i>
+        <div>Edit Marks (Units)</div>
+
+    </h1>
+
+    <div class="flex bg-white p-3 border-b shadow-md flex-col space-y-1">
+        {% for unit in year_units %}
+        <a
+            href="{{ url_for('admin.editMarks', acyear=acyear, unit=unit.id, year=yr) }}"
+            class="flex space-x-1 rounded-md p-3 bg-white border-b hover:shadow-md ">{{
+            unit.name }} {{
+            unit.code }}</a>
+        {% endfor %}
+    </div>
+
 </div>
+
 {% endblock %}

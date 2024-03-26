@@ -4,20 +4,21 @@
 
 <div class="flex items-center justify-center">
 
-  <div class="flex space-x-2 px-10">
+  <div class="flex space-x-2 pl-10">
 
     <!-- TODO the contents of the sidebar will go here -->
-    <div class="bg-white space-y-1 border p-4 ">
+    <div class="bg-white rounded-md  border  ">
 
       <div
-        class="p-2 px-10 bg-zinc-100 flex border items-center space-x-4 rounded-md"><i
-          class="fa-solid fa-database"></i><div>Views</div>
+        class="p-2 px-10 bg-zinc-50 shadow-md flex border-b items-center space-x-4 rounded-md"><i
+          class="fa-solid fa-folder-open"></i><div>Views</div>
       </div>
 
-      <div
-        class="p-2 px-10 bg-zinc-100 flex border items-center space-x-4 rounded-md"><i
-          class="fa-solid fa-database"></i><div>Edit Marks</div>
-      </div>
+      <a
+        href="{{ url_for('admin.getAcademicYears') }}"
+        class="p-2 px-10 flex border-b items-center space-x-4 rounded-md"><i
+          class="fa-solid fa-pen-nib"></i> <div>Edit Marks</div>
+      </a>
 
     </div>
 
@@ -45,7 +46,7 @@
 
               <!-- passlist -->
               <button
-                class=" flex  bg-sky-100 border   hover:shadow-lg  p-4 px-5 rounded-md">
+                class=" flex  bg-white border   hover:shadow-lg  p-4 px-5 rounded-md">
                 <a
                   href="{{ url_for('admin.consosheet', acyear=i.academicyears,
                       yos=i.yearofstudy,type='passlist') }}">
@@ -103,7 +104,7 @@
                     class="text-sky-500 font-bold text-lg">Discontinuation</div>
 
                   <div class="flex ">Academic Year: <div
-                      class="text-gr een-500 font-bold text-lg pl-1">{{i.academicyears}}</div></div>
+                      class="text-green-500 font-bold text-lg pl-1">{{i.academicyears}}</div></div>
                   <div class="flex ">Year of study: <div
                       class="text-green-500 font-bold text-lg pl-1">{{i.yearofstudy}}</div></div>
 
