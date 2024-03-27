@@ -1,6 +1,10 @@
-{% extends 'layout.html' %} {% include '_messages.html' %} {% block title %}
-<title>{{title}}</title>
-{% endblock %} {% block body %}
+{% extends 'layout.html' %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+{% block body %}
 
 <!--This is the LogedIn User view section  -->
 <nav>
@@ -49,6 +53,7 @@
     {%block content %} {%endblock%}
   </div>
 </nav>
+{% include '_messages.html' %}
 
 {% block dashboard %}{% endblock %}
 {% endblock %}
