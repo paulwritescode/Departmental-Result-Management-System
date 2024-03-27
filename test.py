@@ -12,5 +12,7 @@ def arrayChallenge(arr):
         result[i] = counter
 
     return result
-arr = [4,1,2,2,3]
+
+
+arr = [4, 1, 2, 2, 3]
 print(arrayChallenge(arr))  # Output: [0, 2, 0]

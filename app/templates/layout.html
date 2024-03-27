@@ -1,36 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
-
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- scripts -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script
+      src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
     <script
       src="https://kit.fontawesome.com/312f91e59e.js"
-      crossorigin="anonymous"
-    ></script>
+      crossorigin="anonymous"></script>
     <!-- <link rel="icon" type="image/x-icon" href="favicon.ico"> -->
 
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='qwe.png') }}">
-
-
-
+    <link rel="icon" type="image/x-icon"
+      href="{{ url_for('static', filename='qwe.png') }}">
 
     <title> {{title}} </title>
 
   </head>
 
-  <body class=" bg-zinc-50 space-y-1  flex flex-col ">
+  <body class=" bg-slate-50 space-y-1  flex flex-col ">
 
-{% include '_messages.html' %}
+    {% include '_messages.html' %}
 
     {% block body %}
     {% endblock %}
-
-
 
   </body>
 </html>
