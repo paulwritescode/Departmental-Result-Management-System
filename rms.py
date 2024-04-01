@@ -3,7 +3,7 @@ import os
 from flask_migrate import Migrate
 
 from app import create_app, db
-from app.models import Role, Units
+from app.models import User, Units, Role, Modules, StudentEnrollment, EnrollmentUnits, LecturerAssignment, Marks, Status
 
 app = create_app("default")
 migrate = Migrate(app, db)

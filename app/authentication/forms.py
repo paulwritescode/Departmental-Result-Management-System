@@ -42,6 +42,9 @@ class RegisterForm(FlaskForm):
     email = EmailField(
         validators=[Email(), InputRequired()],
         render_kw={"placeholder": "abcd@gmail.com"},
+
+
+        
     )
     username = StringField(
         validators=[InputRequired(), Length(max=10, min=4)],
