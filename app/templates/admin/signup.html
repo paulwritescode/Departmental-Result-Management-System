@@ -1,4 +1,5 @@
-{% extends "admin/index.html" %} {% block body %}
+{% extends "admin/index.html" %}
+{% include '_messages.html'   %}{% block body %}
 <div
   class="flex bg-white mt-0 mx-auto rounded-md space-x-4 items-center justify-center ">
   <div>
@@ -58,12 +59,7 @@
         {{form.password( class="rounded-md hover:shadow-md border-none
         bg-gray-100")}}
       </div>
-      <!-- start 7-->
-      <div class="my-2">
-        <label for>Department</label>
-        {{form.Department( class="rounded-md hover:shadow-md border-none
-        bg-gray-100")}}
-      </div>
+     
 
       <!-- Button -->
       {{form.submit(class="p-2 px-3 bg-sky-600 rounded-md text-white

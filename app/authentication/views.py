@@ -58,7 +58,7 @@ def userSignUp():
         for field, errors in reg_form.errors.items():
              print("somrthing")
              
-             flash('Form validation failed. Please check your input.', 'danger')
+             flash(f'Form validation failed. Please check your input.{field,errors}', 'danger')
         return redirect(url_for("auth.userSignUp"))
       print("something_else")
     return render_template('admin/signup.html', form=reg_form, title="User signup")
