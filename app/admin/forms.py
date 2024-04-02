@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import FloatField, IntegerField, StringField, SubmitField,SelectField
 from wtforms.validators import DataRequired, NumberRange
+# from ..models import User,Modules,Units
+from app.models import User,Units,Modules
 
 
 class EnrollStudentForm(FlaskForm):
@@ -13,8 +15,8 @@ class EnrollStudentForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(EnrollStudentForm, self).__init__(*args, **kwargs)
 
-        self.student_id.choices=[(students.id, students.fname +  "  " +students.lname +" - " + students.Reg_no ) 
-                                for students in User.query.filter(User.role_id==1).all()]
+        self.student_id.choices=[(students.id, f"{students.fname} {students.lname}- {students.Reg_no}" ) 
+                                for students in User.query.filter(User.role_id == "1").all()]
         self.module_id.choices=[(students.id, f"{students.name} {students.year} year -{students.semester} semester" ) 
                                 for students in Modules.query.all()]
 
