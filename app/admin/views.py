@@ -796,5 +796,5 @@ def addunit():
             flash("Unit added successfully.", "success")
 
     return render_template(
-        "admin/addunit.html", form=form, title="Add Units"
+        "admin/addunit.html", form=form, title="Create Unit"
     )

@@ -1,72 +1,92 @@
-{% extends "admin/index.html" %} {% include '_messages.html' %}{% block body %}
-<div
-  class="flex bg-white mt-0 mx-auto rounded-md space-x-4 items-center justify-center"
->
-  <div>
-    <img
-      class="w-90"
-      src="{{ url_for('static', filename='schoollogo3.png') }}"
-      alt="School Logo"
-    />
+{% extends "admin/index.html" %} {% block title %}
+
+<title>{{title}}</title>
+
+{% endblock %} {% block content %}
+
+<div class="space-y-1">
+  <!-- BreadCrumbs Navigation -->
+  <div class="flex text-lg border bg-white w-auto p-1">
+    <a
+      href="{{ url_for('admin.adminDashboard') }}"
+      class="hover:bg-sky-200 px-3"
+      >Dashboard</a
+    >
+
+    <div href class="text-purple-700 border px-3 bg-zinc-100">
+      Create New User
+    </div>
   </div>
 
-  <div class="p-10 pt-0">
-    <form action method="POST">
-      <div class="font-bold text-xl text-sky-700">Create New User</div>
+  <div
+    class="flex shadow-md bg-white mt-0 mx-auto rounded-md pt-2 space-x-4 items-center justify-center"
+  >
+    <div>
+      <img
+        class="w-90"
+        src="{{ url_for('static', filename='schoollogo3.png') }}"
+        alt="School Logo"
+      />
+    </div>
 
-      <!-- start 1 -->
-      <div class="my-2">
-        <label for>First Name</label>
-        {{form.fname(class="rounded-md hover:shadow-md border-none
-        bg-gray-100")}}
-      </div>
-      <!-- start 2 -->
-      <div class="my-2">
-        <label for>Last Name</label>
-        {{form.lname(class="rounded-md hover:shadow-md border-none
-        bg-gray-100")}}
-      </div>
-      {{ form.hidden_tag() }}
-      <!-- start 3 -->
-      <div class="my-2">
-        <label for>Username</label>
+    <div class="p-10 pt-0">
+      <form action method="POST">
+        <div class="font-bold text-xl text-sky-700">Create New User</div>
 
-        {{form.username(class="rounded-md hover:shadow-md border-none
-        bg-gray-100")}}
-      </div>
-      <!-- start 4 -->
-      <div class="my-2">
-        <label for>Email</label>
+        <!-- start 1 -->
+        <div class="my-2">
+          <label for>First Name</label>
+          {{form.fname(class="rounded-md hover:shadow-md border-none
+          bg-gray-100")}}
+        </div>
+        <!-- start 2 -->
+        <div class="my-2">
+          <label for>Last Name</label>
+          {{form.lname(class="rounded-md hover:shadow-md border-none
+          bg-gray-100")}}
+        </div>
+        {{ form.hidden_tag() }}
+        <!-- start 3 -->
+        <div class="my-2">
+          <label for>Username</label>
 
-        {{form.email(class="rounded-md hover:shadow-md border-none
-        bg-gray-100")}}
-      </div>
-      <!-- start 5 -->
-      <div class="my-2">
-        <label for>Role</label>
-        <select
-          required
-          class="rounded-md hover:shadow-md border-none bg-gray-100"
-          name="role"
-          id="role"
-        >
-          <option>Select Role</option>
-          <option value="1">Student</option>
-          <option value="2">Lecturer</option>
-        </select>
-      </div>
-      <!-- start 6 -->
-      <div class="my-2">
-        <label for>Password</label>
-        {{form.password( class="rounded-md hover:shadow-md border-none
-        bg-gray-100")}}
-      </div>
+          {{form.username(class="rounded-md hover:shadow-md border-none
+          bg-gray-100")}}
+        </div>
+        <!-- start 4 -->
+        <div class="my-2">
+          <label for>Email</label>
 
-      <!-- Button -->
-      {{form.submit(class="p-2 px-3 bg-sky-600 rounded-md text-white
-      hover:shadow-md hover:cursor-icon hover:bg-sky-700")}}
-    </form>
+          {{form.email(class="rounded-md hover:shadow-md border-none
+          bg-gray-100")}}
+        </div>
+        <!-- start 5 -->
+        <div class="my-2">
+          <label for>Role</label>
+          <select
+            required
+            class="rounded-md hover:shadow-md border-none bg-gray-100"
+            name="role"
+            id="role"
+          >
+            <option>Select Role</option>
+            <option value="1">Student</option>
+            <option value="2">Lecturer</option>
+          </select>
+        </div>
+        <!-- start 6 -->
+        <div class="my-2">
+          <label for>Password</label>
+          {{form.password( class="rounded-md hover:shadow-md border-none
+          bg-gray-100")}}
+        </div>
+
+        <!-- Button -->
+        {{form.submit(class="p-2 px-3 bg-sky-600 rounded-md text-white
+        hover:shadow-md hover:cursor-icon hover:bg-sky-700")}}
+      </form>
+    </div>
   </div>
 </div>
 
-{% endblock body %}
+{% endblock content %}
