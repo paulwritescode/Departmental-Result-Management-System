@@ -32,7 +32,7 @@ class RegisterForm(FlaskForm):
         validators=[InputRequired(), Length(max=10, min=3)],
         render_kw={"placeholder": "First Name"},
     )
-    role = StringField(validators=[InputRequired()])
+    role = IntegerField(validators=[InputRequired()])
     
  
     password = PasswordField(

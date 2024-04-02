@@ -1,17 +1,18 @@
-{% extends "admin/index.html" %}
-{% include '_messages.html'   %}{% block body %}
+{% extends "admin/index.html" %} {% include '_messages.html' %}{% block body %}
 <div
-  class="flex bg-white mt-0 mx-auto rounded-md space-x-4 items-center justify-center ">
+  class="flex bg-white mt-0 mx-auto rounded-md space-x-4 items-center justify-center"
+>
   <div>
     <img
       class="w-90"
       src="{{ url_for('static', filename='schoollogo3.png') }}"
-      alt="School Logo" />
+      alt="School Logo"
+    />
   </div>
 
   <div class="p-10 pt-0">
     <form action method="POST">
-      <div class=" font-bold text-xl text-sky-700">Create New User</div>
+      <div class="font-bold text-xl text-sky-700">Create New User</div>
 
       <!-- start 1 -->
       <div class="my-2">
@@ -47,10 +48,11 @@
           required
           class="rounded-md hover:shadow-md border-none bg-gray-100"
           name="role"
-          id="role">
-          <option >Select Role</option>
-          <option value="admin">Student</option>
-          <option value="user">Lecturer</option>
+          id="role"
+        >
+          <option>Select Role</option>
+          <option value="1">Student</option>
+          <option value="2">Lecturer</option>
         </select>
       </div>
       <!-- start 6 -->
@@ -59,7 +61,6 @@
         {{form.password( class="rounded-md hover:shadow-md border-none
         bg-gray-100")}}
       </div>
-     
 
       <!-- Button -->
       {{form.submit(class="p-2 px-3 bg-sky-600 rounded-md text-white
