@@ -627,7 +627,7 @@ def get_student_results(student_id, academic_year):
 @main.route("/studentYears")
 def student_academic_year():
     print(current_user.role.name)
-    if current_user.is_authenticated and current_user.role.name == "Student":
+    if current_user.is_authenticated and current_user.role.name == "User":
         student_id = current_user.id
 
         Years = (
@@ -650,7 +650,7 @@ def student_academic_year():
 @main.route("/modulemarks")
 def student_modules():
     print(current_user.role.name)
-    if current_user.is_authenticated and current_user.role.name == "Student":
+    if current_user.is_authenticated and current_user.role.name == "User":
         student_id = current_user.id
 
         Years = (
