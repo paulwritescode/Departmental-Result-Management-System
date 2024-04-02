@@ -77,3 +77,15 @@ class LoginForm(FlaskForm):
         render_kw={"placeholder": "Enter password"},
     )
     submit = SubmitField("Submit")
+
+
+    class AddUnitForm(FlaskForm):
+        name=StringField(
+        validators=[InputRequired(), Length(max=10, min=4)],
+        render_kw={"placeholder": "Unit Name"},)
+        code=IntegerField()
+        module_id=IntegerField()
+        submit=SubmitField("Add Unit")
+
+
+

@@ -1,0 +1,58 @@
+{% extends "admin/index.html" %}
+
+{% block title %}
+
+<title> {{title}}</title>
+
+{% endblock %}
+
+{% block content %}
+
+<div>
+
+    <!-- BreadCrumbs Navigation -->
+    <div class="flex text-lg border bg-white w-auto p-1 ">
+        <a href="{{ url_for('admin.adminDashboard') }}" class="hover:bg-sky-200 px-3   ">Dashboard</a>
+
+        <div href class=" text-purple-700 border px-3 bg-zinc-100 ">Enroll
+            Students</div>
+    </div>
+
+    <div class="flex flex-col items-center">
+        <h1 class="font-bold text-lg  flex items-center space-x-1 text-sky-600">ADD Units
+        </h1>
+
+        <form class="flex flex-col p-3 bg-white border shadow-md space-y-1 rounded-md" method="post"
+            action="{{ url_for('admin.addunit') }}">
+
+            {{ form.hidden_tag() }}
+            <div>
+                <label for="unit_name">Unit Name </label>
+                {{
+                form.unit_name(class="hover:shadow-md border-none bg-slate-50 rounded-md",size=12,
+                placeholder="Enter Unit Name",
+                required=true) }}
+            </div>
+            <div>
+                <label for="unit_code">Unit Code</label>
+                {{
+                form.unit_code(class="hover:shadow-md border-none bg-slate-50 rounded-md",
+                size=10, placeholder="Enter Unit Code", required=true) }}
+            </div>
+            <div>
+                <!-- TODO will change the module id to semester id -->
+                <label for="module_id">Module ID</label>
+                {{
+                form.module_id(class="hover:shadow-md border-none bg-slate-50 rounded-md",
+                size=10, placeholder="Select module ID", required=true) }}
+            </div>
+
+
+
+            <input class="bg-sky-600 text-white px-2 py-1 rounded-md
+            hover:shadow-md hover:bg-sky-700" type="submit" value="Enroll" />
+        </form>
+    </div>
+</div>
+
+{% endblock %}

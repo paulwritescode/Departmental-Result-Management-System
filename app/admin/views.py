@@ -766,3 +766,35 @@ def getUnits():
         year_units=unit_details,
         title="Edit Marks (Units)",
     )
+
+
+
+@admin.route("/addunit", methods=["GET", "POST"])
+@admin_required
+def addunit():
+    form = AddUnit()
+    if form.validate_on_submit():
+        unit_name = form.unit_name.data
+        unit_code = form.unit_code.data
+        module_id = form.module_id.data
+
+        # Check if the student is not already enrolled in the module
+        unit_exists = Units.query.filter_by(
+            code=unit_code
+        ).first()
+        if unit_exists:
+            flash("Unit  already exist.", "warning")
+        else:
+            # Create a new enrollment
+            new_unit = Units(
+                name=unit_name, module_id=module_id, code=unit_code
+            )
+
+            db.session.add(new_unit)
+            db.session.commit()
+    
+            flash("Unit added successfully.", "success")
+
+    return render_template(
+        "admin/addunit.html", form=form, title="Add Units"
+    )

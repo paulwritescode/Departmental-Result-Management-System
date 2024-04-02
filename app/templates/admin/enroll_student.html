@@ -12,21 +12,18 @@
 
   <!-- BreadCrumbs Navigation -->
   <div class="flex text-lg border bg-white w-auto p-1 ">
-    <a href="{{ url_for('admin.adminDashboard') }}"
-      class="hover:bg-sky-200 px-3   ">Dashboard</a>
+    <a href="{{ url_for('admin.adminDashboard') }}" class="hover:bg-sky-200 px-3   ">Dashboard</a>
 
     <div href class=" text-purple-700 border px-3 bg-zinc-100 ">Enroll
       Students</div>
   </div>
 
   <div class="flex flex-col items-center">
-    <h1
-      class="font-bold text-lg  flex items-center space-x-1 text-sky-600">Enroll
+    <h1 class="font-bold text-lg  flex items-center space-x-1 text-sky-600">Enroll
       Student</h1>
 
-    <form
-      class="flex flex-col p-3 bg-white border shadow-md space-y-1 rounded-md"
-      method="post" action="{{ url_for('admin.enroll_student') }}">
+    <form class="flex flex-col p-3 bg-white border shadow-md space-y-1 rounded-md" method="post"
+      action="{{ url_for('admin.enroll_student') }}">
 
       {{ form.hidden_tag() }}
       <div>
