@@ -13,6 +13,7 @@ from app import db
 from ..models import User
 from . import auth
 from .forms import LoginForm, RegisterForm
+from ..decorators import admin_required
 
 
 @auth.before_app_request
@@ -29,6 +30,7 @@ def base():
 
 
 @auth.route("/admin/signup", methods=["POST", "GET"])
+@admin_required
 def userSignUp():
   
     reg_form = RegisterForm()
@@ -79,8 +81,8 @@ def userLogin():
             if current_user.is_authenticated and current_user.role.name == "Lecturer":
                 return redirect(url_for("lecturer.home"))
             elif current_user.is_authenticated and current_user.role.name == "User":
-                return render_template("user/studentdashboard.html")
-                return "welcome Student"
+                return redirect(url_for("main.studentdashboard"))
+               
             elif current_user.is_authenticated and current_user.role.name == "ADMIN":
                 return redirect(url_for("admin.adminDashboard"))
 

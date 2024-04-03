@@ -29,35 +29,27 @@ from .forms import *
 @permission_required(Permission.VIEW)
 def home():
 
-    return render_template("user/index.html")
+  
     if current_user.is_authenticated and current_user.role.name == "Lecturer":
-        lecturer_id = current_user.id
+         return redirect(url_for("lecturer.home"))
+    elif current_user.is_authenticated and current_user.role.name == "ADMIN":
+        return redirect(url_for("admin.adminDashboard"))
+    elif current_user.is_authenticated and current_user.role.name == "User":
+        return redirect(url_for('main.studentdashboard'))
+    
+    return redirect(url_for("auth.login"))
 
-        if request.method == "GET":
 
-            # Now you can use the lecturer_id in your queries or any other logic
-            # For example, querying for units assigned to the lecturer
-            assigned_units = (
-                db.session.query(
-                    LecturerAssignment.unit_id,
-                    LecturerAssignment.academic_year,
-                    Units.name,
-                )
-                .join(Units, Units.id == LecturerAssignment.unit_id)
-                .filter(LecturerAssignment.lecturer_id == lecturer_id)
-                .all()
-            )
+@main.route("/student/dashboard",methods=['GET'])
+@login_required
+@permission_required(Permission.VIEW)
+def studentdashboard():
 
-            lecturers_units = []
-            for unit in assigned_units:
-                print("There exists permission for", current_user.username)
-                print(assigned_units)
-                print(unit)
+    return render_template('user/studentdashboard.html')
+    
 
-            return render_template(
-                "user/lecturerlandingpage.html", lecturerunits=assigned_units
-            )
-
+     
+   
 
 def addmarksfirsttime():
     if current_user.is_authenticated and current_user.role.name == "Lecturer":
