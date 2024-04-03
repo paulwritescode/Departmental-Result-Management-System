@@ -133,7 +133,7 @@ class Units(db.Model):
     __tablename__ = "units"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
+    name = db.Column(db.String(200), nullable=False)
     code = db.Column(db.Integer, unique=True, nullable=False)
     module_id = db.Column(db.Integer, db.ForeignKey("modules.id"))
     student_enrollments = db.relationship(
@@ -185,7 +185,7 @@ class Modules(db.Model):
     __table__name = "modules"
 
     id = db.Column(db.Integer, unique=True, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
+    name = db.Column(db.String(200), nullable=False)
     year = db.Column(db.Integer, nullable=False)
     semester = db.Column(db.Integer, nullable=False)
     code = db.Column(db.Integer, unique=True, nullable=False)

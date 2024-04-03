@@ -4,8 +4,7 @@ from dotenv import load_dotenv
 from flask_migrate import Migrate
 
 from app import create_app, db
-from app.models import User, Units, Role, Modules, StudentEnrollment, EnrollmentUnits, LecturerAssignment, Marks, Status
-
+from app.models import  Units, Role
 app = create_app("default")
 migrate = Migrate(app, db)
 # db.create_all()
@@ -16,10 +15,11 @@ def make_shellprocessor():
     return dict(db=db)
 
 
-if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-        Role.insert_roles()
-        Units.insert_units()
+@app.cli.command()
+def deploy():
 
-    app.run(debug=True)
+    db.create_all()
+
+    Role.insert_roles()
+
+    Units.insert_units()
