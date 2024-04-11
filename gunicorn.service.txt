@@ -8,7 +8,7 @@ Group=manu
 WorkingDirectory=/home/manu/projects/shark-Result-Management-System/
 Environment="PATH=/home/manu/projects/shark-Result-Management-System/env/bin"
 EnvironmentFile=/home/manu/projects/shark-Result-Management-System/.env
-ExecStart=/home/manu/projects/shark-Result-Management-System/env/bin/gunicorn -w 3 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8004
+ExecStart=/home/manu/projects/shark-Result-Management-System/env/bin/gunicorn -w 3 rms:app --bind 0.0.0.0:8004
 
 
 [Install]

@@ -2,7 +2,7 @@ server {
     listen 80 ;
     listen [::]:80 ;
 
-    server_name  elimusawa.emmanuel-mwendwa.xyz;
+    server_name  elimusawa.emmanuel-mwendwa.xyz www.elimusawa.emmanuel-mwendwa.xyz;
 
     location / {
         proxy_pass http://localhost:8004;
