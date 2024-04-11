@@ -18,5 +18,9 @@ class DevelopmentConfig(Config):
 
     SQLALCHEMY_DATABASE_URI = f'postgresql://postgres:root@localhost:5432/elimusawa'
 
+    @staticmethod
+    def init_app(app):
+        pass
+
 
 config = {"development": DevelopmentConfig, "default": DevelopmentConfig}
