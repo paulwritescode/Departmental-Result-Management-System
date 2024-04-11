@@ -15,8 +15,13 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG=True
+    DATABASE_HOSTNAME=os.environ.get("DATABASE_HOSTNAME")
+    DATABASE_PORT=5432
+    DATABASE_PASSWORD=os.environ.get("DATABASE_PASSWORD")
+    DATABASE_NAME=os.environ.get("DATABASE_NAME")
+    DATABASE_USERNAME=os.environ.get("DATABASE_USERNAME")
 
-    SQLALCHEMY_DATABASE_URI = f'postgresql://postgres:root@localhost:5432/elimusawa'
+    SQLALCHEMY_DATABASE_URI = f'postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{DATABASE_HOSTNAME}:{DATABASE_PORT}/{DATABASE_NAME}'
 
     @staticmethod
     def init_app(app):
