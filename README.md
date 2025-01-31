@@ -1,6 +1,6 @@
 # Departmental Result Management System
 
-This repository contains a Flask application designed to track and manage student results within a university department. The system categorizes results into different segments such as CATs, labs, practicals, and exams, providing a comprehensive overview and detailed management capabilities for lecturers, students, and administrators.
+A Flask application designed to track and manage student results within a university department. The system categorizes results into different segments such as CATs, labs, practicals, and exams, providing a comprehensive overview and detailed management capabilities for lecturers, students, and administrators.
 
 ## Features
 
