@@ -46,7 +46,7 @@ class User(db.Model, UserMixin):
         return self.role is not None and self.role.has_permission(perm)
 
     def is_administartor(self):
-        return self.can(Permission.Admin)
+        return self.can(Permission.ADMIN)
 
 
 @login_manager.user_loader
@@ -90,14 +90,14 @@ class Role(db.Model):
 
     def add_permission(self, perm):
         if not self.has_permission(perm):
-            self.permission = +perm
+            self.permissions += perm
 
     def remove_pemision(self, perm):
         if self.has_permission(perm):
-            self.permisions = -perm
+            self.permissions -= perm
 
     def reset_permissons(self):
-        self.permission = 0
+        self.permissions = 0
 
     def has_permission(self, perm):
         return self.permissions & perm == perm
@@ -148,6 +148,10 @@ class Units(db.Model):
 
     @staticmethod
     def insert_units():
+        # Check if units already exist
+        if Units.query.first() is not None:
+            return
+            
         units_data = [
             ("Calculus 1", 1101, 1),
             ("Electricity and Magnetism ", 1102, 1),

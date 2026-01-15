@@ -40,13 +40,6 @@ class AssignUnitForm(FlaskForm):
 class AddUnit(FlaskForm):
     unit_name = StringField("Unit Name", validators=[DataRequired()])
     unit_code = IntegerField("Unit Code", validators=[DataRequired()])
-    module_id = SelectField('Modules',coerce=int)
+    module_id = IntegerField("Module ID", validators=[DataRequired()])
     submit = SubmitField("Add Unit")
-
-    
-    def __init__(self, *args, **kwargs):
-        super(AddUnit, self).__init__(*args, **kwargs)
-
-        self.module_id.choices=[(students.id, f"{students.name}  year:{students.year} semester:{students.semester}" ) 
-                                for students in Modules.query.all()]
 
