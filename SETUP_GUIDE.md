@@ -163,27 +163,27 @@ python3 setup_users.py
 
 ## 🔐 Default User Credentials
 
-### **Admin Account**
-- **Email**: `admin@rms.com`
-- **Username**: `admin`
-- **Password**: `admin123`
-- **Role**: ADMIN
-- **Access**: Full system access
+**⚠️ For security reasons, default credentials have been moved to `CREDENTIALS.md`**
 
-### **Lecturer Account**
-- **Email**: `lecturer@rms.com`
-- **Username**: `lecturer`
-- **Password**: `lecturer123`
-- **Role**: Lecturer
-- **Access**: View assigned units, update marks
+This file is excluded from version control to prevent accidental exposure of credentials.
 
-### **Student Account**
-- **Email**: `student@rms.com`
-- **Username**: `student`
-- **Password**: `student123`
-- **Role**: User (Student)
-- **Reg No**: CS001/2023
-- **Access**: View personal transcript and marks
+### Test Accounts Created
+
+The `setup_users.py` script creates three test accounts:
+
+1. **Admin Account**
+   - Role: ADMIN
+   - Access: Full system access
+
+2. **Lecturer Account**
+   - Role: Lecturer
+   - Access: View assigned units, update marks
+
+3. **Student Account**
+   - Role: User (Student)
+   - Access: View personal transcript and marks
+
+**To view credentials:** Check `CREDENTIALS.md` in your local directory or run `python3 setup_users.py`
 
 ---
 
@@ -394,13 +394,14 @@ sqlite3 results.db "UPDATE users SET status=1 WHERE username='admin';"
 
 ## 🔒 Security Considerations
 
-1. **Change default passwords** in production
-2. **Update SECRET_KEY** in config.py
+1. **Change default passwords** in production (see `CREDENTIALS.md`)
+2. **Update SECRET_KEY** - Already updated with a secure random key
 3. **Use PostgreSQL** for production (not SQLite)
 4. **Enable HTTPS** with SSL certificates
 5. **Set up proper firewall rules**
 6. **Regular database backups**
 7. **Implement rate limiting** for login attempts
+8. **Never commit `CREDENTIALS.md`** to version control (already in .gitignore)
 
 ---
 

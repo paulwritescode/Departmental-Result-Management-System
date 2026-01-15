@@ -129,6 +129,11 @@ ENV/
 env.bak/
 venv.bak/
 
+# Sensitive credentials and documentation
+CREDENTIALS.md
+*.db
+instance/*.db
+
 ()
 
 # Spyder project settings

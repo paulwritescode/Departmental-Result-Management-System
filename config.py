@@ -2,7 +2,7 @@ import os
 
 
 class Config:
-    SECRET_KEY = "mysecret_key"
+    SECRET_KEY = os.environ.get("SECRET_KEY") or "8bf80d21a8da56b92902d5ed7e6f32eb86010fcc9f8af9df79b9b6721411cca0"
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASKY_ADMIN = os.environ.get("FLASKY_ADMIN")

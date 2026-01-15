@@ -170,30 +170,14 @@ Overall Mark = (0.2 × CAT) + (0.1 × Assignment) + (0.1 × Practical) + (0.6 ×
 
 ## 🔐 Default Credentials
 
-### **Admin Account**
-```
-Email:    admin@rms.com
-Username: admin
-Password: admin123
-Role:     ADMIN
-```
+**⚠️ For security reasons, default credentials have been moved to `CREDENTIALS.md`**
 
-### **Lecturer Account**
-```
-Email:    lecturer@rms.com
-Username: lecturer
-Password: lecturer123
-Role:     Lecturer
-```
+This file is excluded from version control. Check `CREDENTIALS.md` for:
+- Admin account credentials
+- Lecturer account credentials  
+- Student account credentials
 
-### **Student Account**
-```
-Email:    student@rms.com
-Username: student
-Password: student123
-Role:     User (Student)
-Reg No:   CS001/2023
-```
+**🚨 IMPORTANT: Change all default passwords before deploying to production!**
 
 ---
 
@@ -215,10 +199,10 @@ Use any of the credentials above
 ## 🔄 Common Workflows
 
 ### **Workflow 1: Enroll a Student**
-1. Login as **admin** (`admin@rms.com` / `admin123`)
+1. Login as **admin** (see `CREDENTIALS.md`)
 2. Navigate to "Enroll Student"
 3. Select:
-   - Student: `student@rms.com`
+   - Student: the test student account
    - Module: Year 1 Semester 1
    - Academic Year: 2024
 4. Submit
@@ -230,14 +214,14 @@ Use any of the credentials above
 1. Login as **admin**
 2. Navigate to "Assign Unit"
 3. Select:
-   - Lecturer: `lecturer@rms.com`
+   - Lecturer: the test lecturer account
    - Unit: "Calculus 1"
    - Academic Year: 2024
 4. Submit
 5. Lecturer can now view and update marks for this unit
 
 ### **Workflow 3: Update Student Marks**
-1. Login as **lecturer** (`lecturer@rms.com` / `lecturer123`)
+1. Login as **lecturer** (see `CREDENTIALS.md`)
 2. View assigned units on dashboard
 3. Click on "Calculus 1" (if assigned)
 4. View list of enrolled students
@@ -253,7 +237,7 @@ Use any of the credentials above
    - Updates status: Pass (1)
 
 ### **Workflow 4: View Transcript**
-1. Login as **student** (`student@rms.com` / `student123`)
+1. Login as **student** (see `CREDENTIALS.md`)
 2. Click "View Academic Years"
 3. Select "2024"
 4. Select "Year 1 Semester 1"
